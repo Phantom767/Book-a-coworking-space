@@ -1,5 +1,4 @@
 ﻿using Coworking.Domain.Entity;
-using CoworkingDomain.Entity;
 
 namespace CoworkingDomain.Interfaces;
 

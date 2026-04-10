@@ -8,7 +8,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coworking.Infrastructure", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{51ED58E5-3FA1-4D1B-AE6B-C9F0AD9A2202}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coworking.Api", "Coworking.Api\Coworking.Api.csproj", "{E3F0FCEA-F06D-49AF-83DB-4E3A1499444B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coworking.WebApi", "Coworking.WebApi\Coworking.WebApi.csproj", "{E3F0FCEA-F06D-49AF-83DB-4E3A1499444B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{30ADAC16-D8F1-41B4-AEA3-CAC0C50B7164}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

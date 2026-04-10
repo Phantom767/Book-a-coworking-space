@@ -1,26 +1,25 @@
 ﻿using Coworking.Domain.Enums;
-using CoworkingDomain.Entity;
 
 namespace Coworking.Domain.Entity;
 
 public class Room : EntityBase
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
+    public string Name { get; init; }
+    public string Description { get; init; }
     public decimal PricePerHour { get; set; }
-    public int Capacity { get; set; }
-    public RoomType Type { get; set; }
-    public List<string> Amenities { get; set; }
-    public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+    public int Capacity { get; init; }
+    public RoomType Type { get; init; }
+    public List<string> Amenities { get; init; }
+    public virtual ICollection<Booking> Bookings { get; init; } = new List<Booking>();
     
     // Конструктор защищает инварианты
-    public Room(string name, int capacity, decimal price, string description, List<string> amenities) 
+    public Room(string name, int capacity, decimal pricePerHour, string description, List<string> amenities) 
     {
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Name is required");
-        if (price < 0) throw new ArgumentException("Price cannot be negative");
+        if (pricePerHour < 0) throw new ArgumentException("Price cannot be negative");
         
         Name = name;    
-        PricePerHour = price;
+        PricePerHour = pricePerHour;
         Capacity = capacity;
         Description = description;
         Amenities = amenities;

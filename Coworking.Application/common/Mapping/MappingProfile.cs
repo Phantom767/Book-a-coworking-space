@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Coworking.Application.DTOs;
+using Coworking.Domain.Entity;
 
 namespace Coworking.Application.common.Mapping;
 
@@ -8,9 +9,15 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         // Из сущности в DTO
-        CreateMap<Domain.Entity.Booking, BookingDto>(); 
+        CreateMap<Booking, BookingDto>(); 
         
         // Из DTO создания в сущность
-        CreateMap<CreateBookingDto, Domain.Entity.Booking>();
+        CreateMap<CreateBookingDto, Booking>();
+
+        // Из сущности в DTO 
+        CreateMap<Room, RoomDto>();
+        
+        // Из DTO создания в сущность
+        CreateMap<CreateRoomDto, Room>();
     }
 }

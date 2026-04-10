@@ -1,4 +1,4 @@
-﻿namespace CoworkingDomain.Entity;
+﻿namespace Coworking.Domain.Entity;
 
 public class EntityBase
 {
