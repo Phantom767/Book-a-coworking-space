@@ -22,10 +22,11 @@ public class RegisterService(ApplicationDbContext context, IJwtTokenGenerator jw
         var user = new User
         {
             Id = Guid.NewGuid(),
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
+            FirstName = dto.FirstName ?? "",
+            LastName = dto.LastName ?? "",
             Email = dto.Email,
-            PasswordHash = passwordHash
+            PasswordHash = passwordHash,
+            CreationTime = DateTime.UtcNow
         };
 
         context.Users.Add(user);

@@ -4,16 +4,16 @@ namespace Coworking.Application.DTOs.Auth;
 
 public class RegisterRequest
 {
-    [Required]
-    [EmailAddress]
+    [Required(ErrorMessage = "Email обязателен")]
+    [EmailAddress(ErrorMessage = "Неверный формат email")]
     public string Email { get; set; } = string.Empty;
 
-    [Required]
-    [MinLength(6)]
+    [Required(ErrorMessage = "Пароль обязателен")]
+    [MinLength(6, ErrorMessage = "Пароль должен содержать минимум 6 символов")]
     public string Password { get; set; } = string.Empty;
 
-    [Required]
-    [Compare("Password")]
+    [Required(ErrorMessage = "Подтверждение пароля обязательно")]
+    [Compare("Password", ErrorMessage = "Пароли не совпадают")]
     public string ConfirmPassword { get; set; } = string.Empty;
     
     public string? FirstName { get; set; }
