@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Coworking.Application.Interfaces;
 using Coworking.Domain.Entity;
+using Coworking.Domain.Enums;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Coworking.Infrastructure.Authentication;
@@ -19,12 +20,12 @@ public class JwtTokenGenerator(JwtSettings jwtSettings) : IJwtTokenGenerator
         return GenerateToken(user, email, null, null);
     }
 
-    public string GenerateToken(User user, string email, string role)
+    public string GenerateToken(User user, string email, Role role)
     {
         return GenerateToken(user, email, role, null);
     }
 
-    public string GenerateToken(User user, string? email, string? role, string? roomId)
+    public string GenerateToken(User user, string? email, Role? role, string? roomId)
     {
         // 1. Получаем секретный ключ из конфигурации
         var secretKey = jwtSettings.Secret;
@@ -40,17 +41,17 @@ public class JwtTokenGenerator(JwtSettings jwtSettings) : IJwtTokenGenerator
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim("name", $"{user.FirstName} {user.LastName}"),
-            new Claim(ClaimTypes.Role, "User") // Или динамически из БД
+            new Claim(ClaimTypes.Role, $"{Role.User}") // Или динамически из БД
         };
 
         // Добавляем роли
-        if (role != null) claims.Add(new Claim(ClaimTypes.Role, role));
+        if (role != null) claims.Add(new Claim(ClaimTypes.Role, $"{role}"));
 
         // 3. Настраиваем параметры токена
         var token = new JwtSecurityToken(
-            jwtSettings.Issuer,
-            jwtSettings.Audience,
-            claims,
+            issuer: jwtSettings.Issuer,
+            audience: jwtSettings.Audience,
+            claims: claims,
             expires: DateTime.UtcNow.AddMinutes(jwtSettings.ExpiryMinutes),
             signingCredentials: creds
         );

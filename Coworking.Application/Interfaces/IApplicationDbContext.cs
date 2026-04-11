@@ -5,6 +5,7 @@ namespace Coworking.Application.Interfaces;
 
 public interface IApplicationDbContext
 {
+    public DbSet<User> Users { get; }
     DbSet<Room> Rooms { get; }
     DbSet<Booking> Bookings { get; }
 

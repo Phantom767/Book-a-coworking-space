@@ -1,10 +1,10 @@
-﻿using Coworking.Application.DTOs;
-using Coworking.Application.DTOs.Auth;
+﻿using Coworking.Application.DTOs.Auth;
+using ErrorOr;
 
 namespace Coworking.Application.Interfaces;
 
 public interface IAuthService
 {
-    Task<AuthResponse> LoginAsync(LoginRequest request);
-    Task<AuthResponse> RegisterAsync(RegisterRequest request);
+    Task<ErrorOr<AuthResponse>> RegisterAsync(RegisterRequest request);
+    Task<ErrorOr<AuthResponse>> LoginAsync(LoginRequest request);
 }
