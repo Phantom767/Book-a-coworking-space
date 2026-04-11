@@ -1,8 +1,6 @@
-﻿using Coworking.Domain.Entity;
+﻿namespace Coworking.Application.DTOs;
 
-namespace Coworking.Application.DTOs;
-
-public class CreateRoomDto : EntityBase
+public class CreateRoomDto
 {
     public string Name { get; set; }
     public string? Description { get; set; }
