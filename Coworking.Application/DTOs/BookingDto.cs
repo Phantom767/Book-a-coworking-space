@@ -1,8 +1,9 @@
-﻿namespace Coworking.Application.DTOs;
+﻿using Coworking.Domain.Entity;
 
-public class BookingDto
+namespace Coworking.Application.DTOs;
+
+public class BookingDto : EntityBase
 {
-    public Guid Id { get; set; }
     public Guid UserId { get; set; }
     public Guid RoomId { get; set; }
     

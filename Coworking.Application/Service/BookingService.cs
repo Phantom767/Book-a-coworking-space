@@ -1,5 +1,6 @@
 ﻿using Coworking.Application.DTOs;
 using Coworking.Application.Interfaces;
+using Coworking.Domain.Entity;
 using Coworking.Domain.Enums;
 using ErrorOr;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ namespace Coworking.Application.Service;
 
 public class BookingService(IApplicationDbContext context) : IBookingService
 {
-    public async Task<ErrorOr<Domain.Entity.Booking>> CreateBookingAsync(CreateBookingDto dto)
+    public async Task<ErrorOr<Booking>> CreateBookingAsync(CreateBookingDto dto)
     {
         // 1. Проверяем базовую логику времени
         if (dto.StartTime >= dto.EndTime)
@@ -46,12 +47,12 @@ public class BookingService(IApplicationDbContext context) : IBookingService
         {
             return Error.Validation("Booking.TooShort", "Минимальное время бронирования — 1 час.");
         }
-        var totalHours = (decimal)(dto.EndTime - dto.StartTime).TotalHours;
+        // var totalHours = (decimal)(dto. EndTime - dto. StartTime). TotalHours;
         var totalPrice = room.PricePerHour * (decimal)duration.TotalHours;  
         
 
         // 5. Создаем бронь
-        var booking = new Domain.Entity.Booking
+        var booking = new Booking
         {
             Id = Guid.NewGuid(),
             UserId = dto.UserId,
@@ -66,5 +67,30 @@ public class BookingService(IApplicationDbContext context) : IBookingService
         await context.SaveChangesAsync();
 
         return booking; // Возвращаем созданный объект (ErrorOr сам упакует его в Success)
+    }
+
+    public async Task<ErrorOr<Booking>> GetBookingsByUserAsync(Guid userId)
+    {
+        var room = await context.Bookings.FindAsync(userId);
+        if (room == null)
+            return Error.NotFound("Booking.RoomNotFound", "Указанная бронь не найдена.");
+
+        return room;
+    }
+
+    public Task<ErrorOr<List<Booking>>> OccupiedTimeRoom(Guid roomId, DateTime date)
+    {
+        try
+        {
+            var room =  context.Bookings.Where(b => b.RoomId == roomId && b.StartTime.Date == date.Date).ToList();
+            if (room == null || !room.Any())
+                return Task.FromResult<ErrorOr<List<Booking>>>(Error.NotFound("Booking.RoomNotFound", "Указанная бронь не найдена."));
+        
+            return Task.FromResult<ErrorOr<List<Booking>>>(room);
+        }
+        catch (Exception exception)
+        {
+            return Task.FromException<ErrorOr<List<Booking>>>(exception);
+        }
     }
 }

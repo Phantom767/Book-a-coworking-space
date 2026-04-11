@@ -3,12 +3,13 @@ using Coworking.Domain.Enums;
 
 namespace Coworking.Domain.Entity;
 
-public class Booking : EntityBase
+public sealed class Booking : EntityBase
 {
     public Guid UserId { get; set; }
     public Guid RoomId { get; set; }
     
-    public virtual Room Room { get; set; } = null!;
+    public Room Room { get; set; } = null!;
+    public User? User { get; set; }
     
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
