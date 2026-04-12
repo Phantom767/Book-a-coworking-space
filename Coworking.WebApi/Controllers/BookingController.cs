@@ -41,18 +41,4 @@ public class BookingsController(IBookingService bookingService) : ApiController
             Problem
         );
     }
-    
-    [HttpGet("api/rooms/{id}/availability")]
-    public async Task<IActionResult> BookingBusyTime(Guid roomId, DateTime date)
-    {        
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (userIdClaim == null) return Unauthorized();
-        var userId = Guid.Parse(userIdClaim);
-        var result = await bookingService.OccupiedTimeRoom(roomId, date);
-        
-        return result.Match(
-            bookings => Ok(bookings),
-            Problem
-        );
-    }
 }

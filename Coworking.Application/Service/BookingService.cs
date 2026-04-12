@@ -1,4 +1,5 @@
-﻿using Coworking.Application.DTOs;
+﻿using AutoMapper;
+using Coworking.Application.DTOs;
 using Coworking.Application.Interfaces;
 using Coworking.Domain.Entity;
 using Coworking.Domain.Enums;
@@ -7,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Coworking.Application.Service;
 
-public class BookingService(IApplicationDbContext context) : IBookingService
+public class BookingService(IApplicationDbContext context, IMapper mapper) : IBookingService
 {
     public async Task<ErrorOr<Booking>> CreateBookingAsync(CreateBookingDto dto)
     {
@@ -52,16 +53,10 @@ public class BookingService(IApplicationDbContext context) : IBookingService
         
 
         // 5. Создаем бронь
-        var booking = new Booking
-        {
-            Id = Guid.NewGuid(),
-            UserId = dto.UserId,
-            RoomId = dto.RoomId,
-            StartTime = dto.StartTime,
-            EndTime = dto.EndTime,
-            TotalPrice = totalPrice,
-            Status = BookingStatus.Pending // Ждет подтверждения
-        };
+        var booking = mapper.Map<Booking>(dto);
+            booking.Id = Guid.NewGuid();
+            booking.TotalPrice = totalPrice;
+            booking.Status = BookingStatus.Pending; // Ждет подтверждения
 
         context.Bookings.Add(booking);
         await context.SaveChangesAsync();
@@ -69,28 +64,13 @@ public class BookingService(IApplicationDbContext context) : IBookingService
         return booking; // Возвращаем созданный объект (ErrorOr сам упакует его в Success)
     }
 
-    public async Task<ErrorOr<Booking>> GetBookingsByUserAsync(Guid userId)
+    public async Task<ErrorOr<List<BookingDto>>> GetBookingsByUserAsync(Guid userId)
     {
-        var room = await context.Bookings.FindAsync(userId);
-        if (room == null)
-            return Error.NotFound("Booking.RoomNotFound", "Указанная бронь не найдена.");
+        // Используем Where, чтобы найти все записи этого пользователя
+        var bookings = await context.Bookings
+            .Where(b => b.UserId == userId)
+            .ToListAsync();
 
-        return room;
-    }
-
-    public Task<ErrorOr<List<Booking>>> OccupiedTimeRoom(Guid roomId, DateTime date)
-    {
-        try
-        {
-            var room =  context.Bookings.Where(b => b.RoomId == roomId && b.StartTime.Date == date.Date).ToList();
-            if (room == null || !room.Any())
-                return Task.FromResult<ErrorOr<List<Booking>>>(Error.NotFound("Booking.RoomNotFound", "Указанная бронь не найдена."));
-        
-            return Task.FromResult<ErrorOr<List<Booking>>>(room);
-        }
-        catch (Exception exception)
-        {
-            return Task.FromException<ErrorOr<List<Booking>>>(exception);
-        }
+        return mapper.Map<List<BookingDto>>(bookings);
     }
 }
