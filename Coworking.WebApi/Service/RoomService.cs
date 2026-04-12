@@ -22,6 +22,15 @@ public class RoomService(ApplicationDbContext context, IMapper mapper) : IRoomSe
         return mapper.Map<RoomDto>(room);
     }
 
+    public async Task<List<RoomDto>> BookingBusyTimeAsync(Guid id, DateTime date)
+    {
+        var rooms = await context.Rooms.Where(x => x.Id == id)
+            .Include(x => x.Bookings.Where(b => b.StartTime.Date == date.Date))
+            .ToListAsync();
+        
+        return mapper.Map<List<RoomDto>>(rooms);
+    }
+    
     public Task<RoomDto> CreateRoomAsync(CreateRoomDto dto)
     {
         try

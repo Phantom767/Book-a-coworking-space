@@ -9,7 +9,7 @@ namespace Coworking.WebApi.Controllers;
 public class RoomsController(IRoomService roomService) : ControllerBase
 {
     // Получить все комнаты
-    [HttpGet]
+    [HttpGet("api/rooms")]
     public async Task<IActionResult> GetRooms()
     {
         var rooms = await roomService.GetAllRoomsAsync();
@@ -18,8 +18,8 @@ public class RoomsController(IRoomService roomService) : ControllerBase
     }
 
     // Получить одну комнату
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetRoom(Guid id)
+    [HttpGet("api/rooms/{id}")]
+    public async Task<IActionResult> GetRoom(Guid id)   
     {
         var rooms = await roomService.GetRoomAsync(id);
 
@@ -53,5 +53,13 @@ public class RoomsController(IRoomService roomService) : ControllerBase
         var rooms = await roomService.DeleteRoomAsync(id);
 
         return Ok(rooms);
+    }
+    
+    [HttpGet("api/rooms/{id}/availability")]
+    public async Task<IActionResult> BookingBusyTime(Guid id, DateTime date)
+    {        
+        var result = await roomService.BookingBusyTimeAsync(id, date);
+
+        return Ok(result);
     }
 }
