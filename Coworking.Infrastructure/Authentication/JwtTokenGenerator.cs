@@ -57,11 +57,5 @@ public class JwtTokenGenerator(JwtSettings jwtSettings) : IJwtTokenGenerator
         );
         
         return new JwtSecurityTokenHandler().WriteToken(token);
-        // // Логика генерации JWT токена с использованием _jwtSettings
-        // // и включением userId, email, role и roomId в payload токена
-        //
-        // // Здесь должна быть реализация генерации токена (например, с помощью библиотеки System.IdentityModel.Tokens.Jwt)
-        //
-        // return "generated_jwt_token"; // Заглушка для примера
     }
 }
