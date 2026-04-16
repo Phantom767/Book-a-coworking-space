@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Coworking.WebApi.Controllers;
 
 [Authorize]
+[Route("api/[controller]")]
 public class BookingsController(IBookingService bookingService) : ApiController
 {
     [HttpPost]
@@ -16,6 +17,8 @@ public class BookingsController(IBookingService bookingService) : ApiController
         if (userIdClaim == null) return Unauthorized();
 
         request.UserId = Guid.Parse(userIdClaim);
+        request.StartTime = request.StartTime.ToUniversalTime();
+        request.EndTime = request.EndTime.ToUniversalTime();
 
         var result = await bookingService.CreateBookingAsync(request);
         // Используем метод Match из ErrorOr: 
@@ -27,7 +30,7 @@ public class BookingsController(IBookingService bookingService) : ApiController
         );
     }
     
-    [HttpGet("/api/bookings/my")]
+    [HttpGet("my")]
     public async Task<IActionResult> GetMyBookings()
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

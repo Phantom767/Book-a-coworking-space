@@ -10,8 +10,10 @@ namespace Coworking.Application.Service;
 
 public class BookingService(IApplicationDbContext context, IMapper mapper) : IBookingService
 {
-    public async Task<ErrorOr<Booking>> CreateBookingAsync(CreateBookingDto dto)
+    public async Task<ErrorOr<BookingDto>> CreateBookingAsync(CreateBookingDto dto)
     {
+        Console.WriteLine($"Start: {dto.StartTime} | End: {dto.EndTime}");
+        Console.WriteLine($"Now UTC: {DateTime.UtcNow}");
         // 1. Проверяем базовую логику времени
         if (dto.StartTime >= dto.EndTime)
         {
@@ -61,8 +63,8 @@ public class BookingService(IApplicationDbContext context, IMapper mapper) : IBo
         context.Bookings.Add(booking);
         await context.SaveChangesAsync();
 
-        return booking; // Возвращаем созданный объект (ErrorOr сам упакует его в Success)
-    }
+        return mapper.Map<BookingDto>(booking);
+    }   
 
     public async Task<ErrorOr<List<BookingDto>>> GetBookingsByUserAsync(Guid userId)
     {
