@@ -9,4 +9,5 @@ public class RoomDto : EntityBase
     public decimal PricePerHour { get; set; }
     public int Capacity { get; set; }
     public List<string>? Amenities { get; set; }
+    public virtual ICollection<Booking> Bookings { get; init; } = new List<Booking>();
 }

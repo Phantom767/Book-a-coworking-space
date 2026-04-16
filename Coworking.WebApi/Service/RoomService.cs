@@ -36,6 +36,8 @@ public class RoomService(ApplicationDbContext context, IMapper mapper) : IRoomSe
         try
         {
             var room = mapper.Map<Room>(dto);
+            room.CreationTime = DateTime.UtcNow;
+            room.LastModificationTime = DateTime.UtcNow;
             context.Add(room);
             context.SaveChanges();
         
