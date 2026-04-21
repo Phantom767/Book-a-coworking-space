@@ -1,14 +1,16 @@
-﻿using Coworking.Application.DTOs.Auth;
+using Coworking.Application.DTOs.Auth;
 using Coworking.Application.Interfaces;
 using Coworking.Domain.Entity;
 using ErrorOr;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coworking.Application.Service;
 
 public class AuthService(
     IJwtTokenGenerator jwtTokenGenerator,
-    IApplicationDbContext context)
+    IApplicationDbContext context,
+    UserManager<ApplicationUser> userManager)
     : IAuthService
 {
     public async Task<ErrorOr<AuthResponse>> RegisterAsync(RegisterRequest request)
@@ -17,31 +19,33 @@ public class AuthService(
         if (await context.Users.AnyAsync(u => u.Email == request.Email))
             return Error.Conflict("User.DuplicateEmail", "Пользователь с таким email уже существует.");
 
-        // Хеширование пароля
-        string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-
-        var user = new User
+        var user = new ApplicationUser
         {
-            Id = Guid.NewGuid(),
+            UserName = request.Email,
+            Email = request.Email,        // ← ИСПРАВЛЕНО: Email обязателен для JWT-клейма
             FirstName = request.FirstName ?? "",
             LastName = request.LastName ?? "",
-            Email = request.Email,
-            PasswordHash = passwordHash,
             CreationTime = DateTime.UtcNow
         };
 
-        context.Users.Add(user);
-        await context.SaveChangesAsync();
+        // Создаем пользователя с хешированием пароля через UserManager
+        var result = await userManager.CreateAsync(user, request.Password);
+        
+        if (!result.Succeeded)
+            return Error.Failure("User.CreationFailed", string.Join(", ", result.Errors.Select(e => e.Description)));
+
+        // Назначаем роль "User" новому пользователю
+        await userManager.AddToRoleAsync(user, "User");
 
         // Генерация токена
-        var token = jwtTokenGenerator.GenerateToken(user);
+        string token = await jwtTokenGenerator.GenerateToken(user);
         
         var authResponse = new AuthResponse
         {
             UserId = user.Id.ToString(),
-            Email = user.Email,
+            Email = request.Email,
             Token = token,
-            Expiration = DateTime.UtcNow.AddHours(24) // или бери из JWT
+            Expiration = DateTime.UtcNow.AddHours(24)
         };
 
         return authResponse;
@@ -49,25 +53,24 @@ public class AuthService(
 
     public async Task<ErrorOr<AuthResponse>> LoginAsync(LoginRequest request)
     {
-        var user = await context.Users
-            .FirstOrDefaultAsync(u => u.Email == request.Email);
+        var user = await userManager.FindByEmailAsync(request.Email);
 
         if (user == null)
             return Error.NotFound("User.NotFound", "Пользователь не найден.");
 
-        // Проверка пароля
-        bool isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
+        // Проверка пароля через UserManager
+        bool isPasswordValid = await userManager.CheckPasswordAsync(user, request.Password);
         if (!isPasswordValid)
             return Error.Unauthorized("User.InvalidCredentials", "Неверный email или пароль.");
 
-        var token = jwtTokenGenerator.GenerateToken(user);
+        string token = await jwtTokenGenerator.GenerateToken(user);
         
         var authResponse = new AuthResponse
         {
             UserId = user.Id.ToString(),
-            Email = user.Email,
+            Email =  request.Email,
             Token = token,
-            Expiration = DateTime.UtcNow.AddHours(24) // или бери из JWT
+            Expiration = DateTime.UtcNow.AddHours(24)
         };
 
         return authResponse;

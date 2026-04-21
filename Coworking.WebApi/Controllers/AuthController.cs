@@ -1,13 +1,15 @@
 ﻿using Coworking.Application.DTOs.Auth;
 using Coworking.Application.Interfaces;
+using Coworking.Domain.Entity;
 using ErrorOr;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coworking.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController(IAuthService authService) : ControllerBase
+public class AuthController(IAuthService authService, SignInManager<ApplicationUser> signInManager) : ControllerBase
 {
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
@@ -21,11 +23,6 @@ public class AuthController(IAuthService authService) : ControllerBase
                 statusCode: 400
                 )
             );
-            // error => error.Type switch
-            // {
-            //     "User.DuplicateEmail" => Conflict(error.Description),
-            //     _ => StatusCode(500, "Internal Server Error")
-            // });
     }
     
     [HttpPost("login")]
@@ -40,11 +37,12 @@ public class AuthController(IAuthService authService) : ControllerBase
                 statusCode: errors.First().Type == ErrorType.NotFound ? 404 : 401
             )
         );
-            // error => error.Type switch
-            // {
-            //     "User.NotFound" => NotFound(error.Description),
-            //     "User.InvalidCredentials" => Unauthorized(error.Description),
-            //     _ => StatusCode(500, "Internal Server Error")
-            // });
     }   
+    
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        await signInManager.SignOutAsync();
+        return Ok(new { success = true });
+    }
 }
