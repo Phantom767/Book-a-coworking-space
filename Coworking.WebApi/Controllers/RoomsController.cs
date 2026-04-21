@@ -1,9 +1,10 @@
-﻿using Coworking.Application.DTOs;
-using Coworking.WebApi.Service;
+﻿using Coworking.WebApi.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coworking.WebApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class RoomsController(IRoomService roomService) : ControllerBase
@@ -25,36 +26,7 @@ public class RoomsController(IRoomService roomService) : ControllerBase
 
         return Ok(rooms);
     }
-
-    // Создать комнату
-    [HttpPost]
-    public async Task<IActionResult> CreateRoom(CreateRoomDto dto)
-    {
-        if (dto == null) throw new ArgumentNullException(nameof(dto));
         
-        var rooms = await roomService.CreateRoomAsync(dto);
-
-        return Ok(rooms);
-    }
-
-    // Обновить цену
-    [HttpPut("{id}/price")]
-    public async Task<IActionResult> UpdatePrice(Guid id, decimal price)
-    {
-        var rooms = await roomService.UpdatePriceAsync(id, price);
-
-        return Ok(rooms);
-    }
-
-    // Удалить
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteRoom(Guid id)
-    {
-        var rooms = await roomService.DeleteRoomAsync(id);
-
-        return Ok(rooms);
-    }
-    
     [HttpGet("{id}/availability")]
     public async Task<IActionResult> BookingBusyTime(Guid id, DateTime date)
     {        
