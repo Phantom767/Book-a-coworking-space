@@ -1,5 +1,4 @@
 ﻿using Coworking.Application.DTOs;
-using Coworking.Domain.Entity;
 using ErrorOr;
 
 namespace Coworking.Application.Interfaces;

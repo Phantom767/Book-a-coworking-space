@@ -1,5 +1,4 @@
-﻿
-using Coworking.Domain.Enums;
+﻿using Coworking.Domain.Enums;
 
 namespace Coworking.Domain.Entity;
 
@@ -9,7 +8,7 @@ public sealed class Booking : EntityBase
     public Guid RoomId { get; set; }
     
     public required string RoomName { get; set; }
-    public User? User { get; set; }
+    public ApplicationUser? User { get; set; }
     
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
