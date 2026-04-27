@@ -15,8 +15,13 @@ public class AdminRoomService(
     public async Task<ErrorOr<RoomDto>> CreateRoomAsync(CreateRoomDto dto)
     {
         var room = mapper.Map<Room>(dto);
+        
+        room.PhotoUrl ??= string.Empty; 
+        room.PhotoHash ??= string.Empty;
+        
         room.CreationTime = DateTime.UtcNow;
         room.LastModificationTime = DateTime.UtcNow;
+        
         await context.Rooms.AddAsync(room);
         await context.SaveChangesAsync();
     
