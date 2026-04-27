@@ -1,0 +1,103 @@
+﻿@page
+@using Coworking.Domain.Enums
+@model MyBookingsModel
+@{
+    ViewData["Title"] = Localizer["PageTitle"];
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <style>
+        .table {
+            background: #1e1e2e;
+            color: #e0e0e0;
+        }
+
+        .table th {
+            background: #25253a;
+            color: #aaa;
+            border-bottom: 1px solid #444;
+        }
+
+        .table td {
+            border-bottom: 1px solid #333;
+        }
+        .hero {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            padding: 100px 0 80px;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: -56px; 
+        }
+
+        .status-confirmed { color: #4ade80; }
+        .status-pending   { color: #facc15; }
+    </style>
+}
+
+<div class="container my-5">
+    <h2 class="mb-4 text-white">@Localizer["PageTitle"]</h2>
+
+    @if (!Model.Bookings.Any())
+    {
+    <div class="hero">
+        <div class="container text-center">
+            <div class="display-3 fw-bold mb-3 text-white" role="alert">
+                <h4>@Localizer["NoBookingsTitle"]</h4>
+                <a asp-page="/Rooms/Room" class="btn btn-primary mt-3">@Localizer["FindRoomsButton"]</a>
+            </div>
+        </div>
+    </div>
+    }
+    else
+    {
+    <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle">
+            <thead>
+            <tr>
+                <th>@Localizer["TableRoomHeader"]</th>
+                <th>@Localizer["TableStartHeader"]</th>
+                <th>@Localizer["TableEndHeader"]</th>
+                <th>@Localizer["TableStatusHeader"]</th>
+                <th>@Localizer["TablePriceHeader"]</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var booking in Model.Bookings)
+            {
+                <tr>
+                    <td><strong>@booking.RoomName</strong></td>
+                    <td>@booking.StartTime.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@booking.EndTime.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>
+                        @{
+                        string? statusText;
+                        string badgeClass;
+                        switch (booking.Status)
+                            {
+                                case BookingStatus.Confirmed:
+                                statusText = Localizer["StatusConfirmed"].ToString();
+                                badgeClass = "bg-success";
+                                break;
+                                case BookingStatus.Pending:
+                                statusText = Localizer["StatusPending"].ToString();
+                                badgeClass = "bg-warning";
+                                break;
+                                default:
+                                statusText = Localizer["StatusCancelled"].ToString();
+                                badgeClass = "bg-danger";
+                                break;
+                            }
+                        }
+                        <span class="badge @badgeClass">
+                            @statusText
+                        </span>
+                    </td>
+                    <td><strong>@booking.TotalPrice ₸</strong></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    }
+</div>

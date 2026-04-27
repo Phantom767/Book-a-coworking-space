@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="PageTitle" xml:space="preserve"><value>Менің брондауларым</value></data>
+    <data name="NoBookingsTitle" xml:space="preserve"><value>Сізде әзірше брондау жоқ</value></data>
+    <data name="FindRoomsButton" xml:space="preserve"><value>Бос аймақтарды табу</value></data>
+    <data name="TableRoomHeader" xml:space="preserve"><value>Бөлме</value></data>
+    <data name="TableStartHeader" xml:space="preserve"><value>Басталуы</value></data>
+    <data name="TableEndHeader" xml:space="preserve"><value>Аяқталуы</value></data>
+    <data name="TableStatusHeader" xml:space="preserve"><value>Мәртебе</value></data>
+    <data name="TablePriceHeader" xml:space="preserve"><value>Сома</value></data>
+    <data name="StatusConfirmed" xml:space="preserve"><value>Расталды</value></data>
+    <data name="StatusPending" xml:space="preserve"><value>Қаралуда</value></data>
+    <data name="StatusCancelled" xml:space="preserve"><value>Бас тартылды</value></data>
+</root>
