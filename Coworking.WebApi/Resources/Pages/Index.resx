@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            <xsd:choice maxOccurs="unbounded">
+                <xsd:element name="data">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                        </xsd:sequence>
+                        <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="0" />
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:choice>
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="HeroTitle" xml:space="preserve">
+    <value>Добро пожаловать в бронирование коворкинга</value>
+  </data>
+    <data name="HeroSubtitle" xml:space="preserve">
+    <value>Современные рабочие зоны в самом центре города.</value>
+  </data>
+    <data name="WhyUsTitle" xml:space="preserve">
+    <value>Почему выбирают нас?</value>
+  </data>
+    <data name="WhyUsSubtitle" xml:space="preserve">
+    <value>Мы создаем идеальное пространство для вашего бизнеса и творчества</value>
+  </data>
+    <data name="FeatureInternetTitle" xml:space="preserve">
+    <value>Скоростной Интернет</value>
+  </data>
+    <data name="FeatureInternetDesc" xml:space="preserve">
+    <value>Оптоволоконный канал 1 Гбит/с и резервное питание для бесперебойной работы.</value>
+  </data>
+    <data name="FeatureCoffeeTitle" xml:space="preserve">
+    <value>Бесплатный Кофе</value>
+  </data>
+    <data name="FeatureCoffeeDesc" xml:space="preserve">
+    <value>Неограниченный доступ к кофе-машине, чаю и печенью для всех резидентов.</value>
+  </data>
+    <data name="FeatureCommunityTitle" xml:space="preserve">
+    <value>Комьюнити</value>
+  </data>
+    <data name="FeatureCommunityDesc" xml:space="preserve">
+    <value>Регулярные нетворки-сессии, мастер-классы и встречи с единомышленниками.</value>
+  </data>
+    <data name="FeatureLocationTitle" xml:space="preserve">
+    <value>Удобное Расположение</value>
+  </data>
+    <data name="FeatureLocationDesc" xml:space="preserve">
+    <value>Центр города с легким доступом к общественному транспорту и парковке.</value>
+  </data>
+</root>
