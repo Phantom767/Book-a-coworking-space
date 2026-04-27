@@ -1,0 +1,292 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Coworking</title>
+    <!-- Подключаем Bootstrap (если еще не подключен) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        /* Глобальные настройки темы */
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* HEADER */
+        header {
+            background-color: #1e293b; /* Чуть светлее фона (Slate 800) */
+            border-bottom: 1px solid #334155;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+
+        /* Навигация внутри хедера */
+        .navbar-brand {
+            color: #ffffff !important;
+            font-weight: 700;
+        }
+        .nav-link {
+            color: #94a3b8 !important; /* Серый текст ссылок */
+            transition: color 0.2s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #6c5ce7 !important; /* Акцентный цвет при наведении */
+        }
+
+        /* MAIN CONTENT */
+        main {
+            flex: 1;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #1e293b;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            padding: 1.5rem 0;
+            margin-top: auto;
+        }
+
+        .lang-switcher {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: #1e1e2e;
+            border: 1px solid #2a2a3e;
+            border-radius: 10px;
+            padding: 4px;
+        }
+
+        .lang-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 7px;
+            text-decoration: none;
+            color: #888;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all .2s;
+            white-space: nowrap;
+        }
+
+        .lang-btn:hover {
+            background: #2a2a3e;
+            color: #fff;
+        }
+
+        .lang-btn.active {
+            background: #6c5ce7;
+            color: #fff;
+        }
+
+        .lang-flag { font-size: 14px; }
+        .lang-label { font-size: 12px; }
+
+        /* Мобильные — только флаг */
+        @* @media (max-width: 480px) { *@
+        @* .lang-label { display: none; } *@
+        @* .lang-btn { padding: 5px 7px; } *@
+        @* } *@
+        
+        /* ТЕМНЫЕ КАРТОЧКИ (Переопределение стилей Bootstrap) */
+        .card {
+            background-color: #1e293b; /* Фон карточки */
+            border: 1px solid #334155; /* Граница */
+            color: #e2e8f0; /* Текст внутри */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+        }
+
+        .card-title {
+            color: #ffffff;
+        }
+
+        .card-text {
+            color: #94a3b8;
+        }
+
+        /* Эффект наведения для карточек */
+        .hover-card:hover {
+            transform: translateY(-5px);
+            border-color: #6c5ce7; /* Фиолетовая граница при наведении */
+            box-shadow: 0 10px 25px -5px rgba(108, 92, 231, 0.3); /* Фиолетовое свечение */
+        }
+
+        /* Иконки в кружочках */
+        .icon-box {
+            background-color: rgba(108, 92, 231, 0.15); /* Полупрозрачный фиолетовый */
+        }
+        
+        /* Поля ввода (чтобы тоже были темными) */
+        .form-control {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: #ffffff;
+        }
+        .form-control:focus {
+            background-color: #1e293b;
+            color: #ffffff;
+            border-color: #6c5ce7;
+            box-shadow: 0 0 0 0.25rem rgba(108, 92, 231, 0.25);
+        }
+        .form-label {
+            color: #cbd5e1;
+        }
+    </style>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+@if (ViewData["Header"] == null || ViewData["Header"]!.ToString() != "false")
+{
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/">Coworking Space</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        
+                        <!-- Переключатель языков -->
+                        <div class="dropdown lang-switcher me-3">
+                            <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                @System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToUpper()
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-dark">
+                                <li><a class="dropdown-item" asp-page="/SetLanguage" asp-route-culture="ru" asp-route-returnUrl="@Context.Request.Path">Русский</a></li>
+                                <li><a class="dropdown-item" asp-page="/SetLanguage" asp-route-culture="kk" asp-route-returnUrl="@Context.Request.Path">Қазақша</a></li>
+                                <li><a class="dropdown-item" asp-page="/SetLanguage" asp-route-culture="en" asp-route-returnUrl="@Context.Request.Path">English</a></li>
+                            </ul>
+                        </div>
+
+                        <li class="nav-item"><a class="nav-link" asp-page="/Index">@Localizer["NavHome"]</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-page="/About">@Localizer["NavAbout"]</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-page="/Rooms/Room">@Localizer["NavRooms"]</a></li>
+                        
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                             <li class="nav-item"><a class="nav-link" asp-page="/Bookings/MyBooking">@Localizer["NavMyBookings"]</a></li>
+                        }
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["page"]?.ToString()?.StartsWith("/Admin") == true ? "active" : "")"
+                                   asp-page="/Admin/Rooms">@Localizer["NavAdmin"]</a>
+                            </li>
+                        }
+
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                    <i class="bi bi-person-circle"></i> @User.Identity.Name
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" asp-page="/Bookings/MyBooking">@Localizer["NavMyBookings"]</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-page="/Account/Profile">@Localizer["NavProfile"]</a>
+                                    </li>
+                
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" asp-page="/Admin/Rooms">@Localizer["NavAdmin"]</a>
+                                        </li>
+                                    }
+                
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                            @Localizer["NavLogout"]
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-page="/Account/Login">@Localizer["NavLogin"]</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-page="/Account/Register">@Localizer["NavRegister"]</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+}
+<main class="container">
+    @RenderBody()
+</main>
+
+<!-- ==================== МОДАЛЬНОЕ ОКНО ВЫХОДА ==================== -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background:#1e293b; border:1px solid rgba(255,255,255,0.07); border-radius:20px; overflow:hidden;">
+                
+            <!-- Заголовок -->
+            <div style="padding:32px 28px 24px; text-align:center;">
+                <div style="width:72px;height:72px;border-radius:50%;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                </div>
+                <h3 id="logoutModalLabel" style="font-size:18px;font-weight:600;margin:0 0 8px;color:#f1f5f9;">@Localizer["LogoutModalTitle"]</h3>
+                <p style="font-size:13px;color:#64748b;margin:0;line-height:1.6;">
+                    @Localizer["LogoutModalText"]
+                </p>
+            </div>
+
+            <div style="height:1px;background:rgba(255,255,255,0.06);"></div>
+
+            <!-- Кнопки -->
+            <div style="padding:20px 24px 32px;">
+                <form asp-page="/Account/Logout" method="post">
+                    <button type="submit"
+                            class="btn w-100"
+                            style="padding:13px;background:#ef4444;border:none;border-radius:11px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;"
+                            onmouseover="this.style.background='#dc2626'"
+                            onmouseout="this.style.background='#ef4444'">
+                        @Localizer["LogoutConfirmBtn"]
+                    </button>
+                </form>
+                
+                <button type="button" 
+                        class="btn w-100 mt-3"
+                        data-bs-dismiss="modal" 
+                        style="background:transparent; border:1px solid rgba(255,255,255,0.1); color:#94a3b8; padding:12px; border-radius:11px; font-size:14px;">
+                    @Localizer["LogoutCancelBtn"]
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Футер -->
+<footer class="footer text-center py-4" style="background-color: #1e293b; color: #94a3b8;">
+    <div class="container">
+        <p class="mb-0">@Localizer["FooterCopyright"]</p>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

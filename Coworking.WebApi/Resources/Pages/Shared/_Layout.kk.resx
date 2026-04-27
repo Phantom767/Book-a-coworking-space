@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="BrandName" xml:space="preserve"><value>Coworking Space</value></data>
+    <data name="NavHome" xml:space="preserve"><value>Басты бет</value></data>
+    <data name="NavAbout" xml:space="preserve"><value>Біз туралы</value></data>
+    <data name="NavRooms" xml:space="preserve"><value>Бөлмелер</value></data>
+    <data name="NavMyBookings" xml:space="preserve"><value>Менің брондауларым</value></data>
+    <data name="NavAdmin" xml:space="preserve"><value>Әкімшілік</value></data>
+    <data name="NavProfile" xml:space="preserve"><value>Профиль</value></data>
+    <data name="NavLogin" xml:space="preserve"><value>Кіру</value></data>
+    <data name="NavRegister" xml:space="preserve"><value>Тіркеу</value></data>
+    <data name="NavLogout" xml:space="preserve"><value>Шығу</value></data>
+    <data name="LogoutModalTitle" xml:space="preserve"><value>Аккаунттан шығу</value></data>
+    <data name="LogoutModalText" xml:space="preserve"><value>Сіз шығуды қалайсыз ба? Кіру үшін қайтадан авторизациядан өту керек болады.</value></data>
+    <data name="LogoutConfirmBtn" xml:space="preserve"><value>Иә, шығу</value></data>
+    <data name="LogoutCancelBtn" xml:space="preserve"><value>Бас тарту</value></data>
+    <data name="FooterCopyright" xml:space="preserve"><value>© 2026 Coworking Booking. Барлық құқықтар қорғалған.</value></data>
+</root>

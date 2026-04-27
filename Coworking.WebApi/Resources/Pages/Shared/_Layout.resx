@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+        <xsd:element name="root" msdata:IsDataSet="true">
+            <xsd:complexType>
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="0" />
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
+            </xsd:complexType>
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+    <resheader name="version"><value>2.0</value></resheader>
+    <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+    <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+    <data name="BrandName" xml:space="preserve"><value>Coworking Space</value></data>
+    <data name="NavHome" xml:space="preserve"><value>Главная</value></data>
+    <data name="NavAbout" xml:space="preserve"><value>О нас</value></data>
+    <data name="NavRooms" xml:space="preserve"><value>Комнаты</value></data>
+    <data name="NavMyBookings" xml:space="preserve"><value>Мои бронирования</value></data>
+    <data name="NavAdmin" xml:space="preserve"><value>Администрирование</value></data>
+    <data name="NavProfile" xml:space="preserve"><value>Профиль</value></data>
+    <data name="NavLogin" xml:space="preserve"><value>Вход</value></data>
+    <data name="NavRegister" xml:space="preserve"><value>Регистрация</value></data>
+    <data name="NavLogout" xml:space="preserve"><value>Выйти</value></data>
+    <data name="LogoutModalTitle" xml:space="preserve"><value>Выход из аккаунта</value></data>
+    <data name="LogoutModalText" xml:space="preserve"><value>Вы уверены, что хотите выйти? Вам придется войти снова, чтобы получить доступ.</value></data>
+    <data name="LogoutConfirmBtn" xml:space="preserve"><value>Да, выйти</value></data>
+    <data name="LogoutCancelBtn" xml:space="preserve"><value>Отмена</value></data>
+    <data name="FooterCopyright" xml:space="preserve"><value>© 2026 Coworking Booking. Все права защищены.</value></data>
+</root>

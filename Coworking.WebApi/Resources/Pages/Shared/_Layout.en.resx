@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="BrandName" xml:space="preserve"><value>Coworking Space</value></data>
+    <data name="NavHome" xml:space="preserve"><value>Home</value></data>
+    <data name="NavAbout" xml:space="preserve"><value>About Us</value></data>
+    <data name="NavRooms" xml:space="preserve"><value>Rooms</value></data>
+    <data name="NavMyBookings" xml:space="preserve"><value>My Bookings</value></data>
+    <data name="NavAdmin" xml:space="preserve"><value>Administration</value></data>
+    <data name="NavProfile" xml:space="preserve"><value>Profile</value></data>
+    <data name="NavLogin" xml:space="preserve"><value>Login</value></data>
+    <data name="NavRegister" xml:space="preserve"><value>Register</value></data>
+    <data name="NavLogout" xml:space="preserve"><value>Logout</value></data>
+    <data name="LogoutModalTitle" xml:space="preserve"><value>Log Out</value></data>
+    <data name="LogoutModalText" xml:space="preserve"><value>Are you sure you want to log out? You will need to log in again to access your account.</value></data>
+    <data name="LogoutConfirmBtn" xml:space="preserve"><value>Yes, Log Out</value></data>
+    <data name="LogoutCancelBtn" xml:space="preserve"><value>Cancel</value></data>
+    <data name="FooterCopyright" xml:space="preserve"><value>© 2026 Coworking Booking. All rights reserved.</value></data>
+</root>
