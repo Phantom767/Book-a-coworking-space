@@ -1,6 +1,7 @@
 using Coworking.Application.DTOs.Auth;
 using Coworking.Application.Interfaces;
 using Coworking.Domain.Entity;
+using Coworking.Domain.Enums;
 using ErrorOr;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,8 @@ public class AuthService(
             Email = request.Email,        // ← ИСПРАВЛЕНО: Email обязателен для JWT-клейма
             FirstName = request.FirstName ?? "",
             LastName = request.LastName ?? "",
-            CreationTime = DateTime.UtcNow
+            CreationTime = DateTime.UtcNow,
+            RoleStatuse = Role.User
         };
 
         // Создаем пользователя с хешированием пароля через UserManager
@@ -35,7 +37,7 @@ public class AuthService(
             return Error.Failure("User.CreationFailed", string.Join(", ", result.Errors.Select(e => e.Description)));
 
         // Назначаем роль "User" новому пользователю
-        await userManager.AddToRoleAsync(user, "User");
+        await userManager.AddToRoleAsync(user, user.RoleStatuse.ToString());
 
         // Генерация токена
         string token = await jwtTokenGenerator.GenerateToken(user);
