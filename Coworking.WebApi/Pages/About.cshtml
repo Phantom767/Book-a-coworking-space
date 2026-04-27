@@ -1,0 +1,80 @@
+﻿@page
+@{
+    ViewData["Title"] = Localizer["PageTitle"];
+    Layout = "_Layout";
+}
+
+@section Styles
+{
+<style>
+    .bg-dark {
+        background-color: #1e1b4b !important;
+    }
+    .text-white-70 {
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+    .text-muted {
+        color: rgba(255, 255, 255, 0.6) !important;
+    }
+    .border-4 {
+        border-width: 4px !important;
+    }
+</style>
+}
+
+<div class="container py-5">
+    <!-- Заголовок -->
+    <div class="row mb-5 align-items-center">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold text-white">@Localizer["HistoryTitle"]</h1>
+            <p class="lead text-white-70">@Localizer["HistoryLead"]</p>
+            <p class="text-white-70">
+                @Localizer["HistoryText"]
+            </p>
+        </div>
+        <div class="col-lg-6">
+            <!-- Плейсхолдер для картинки -->
+            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1000"
+                 class="img-fluid rounded-4 shadow" alt="@Localizer["PageTitle"]">
+        </div>
+    </div>
+
+    <!-- Миссия и Ценности -->
+    <div class="row g-4 mt-4">
+        <div class="col-md-6">
+            <div class="p-4 bg-dark rounded-3 shadow-sm h-100 border-start border-4" style="border-color: #6c5ce7 !important;">
+                <h3 class="fw-bold text-white-70">@Localizer["MissionTitle"]</h3>
+                <p class="text-muted card-text">
+                    @Localizer["MissionText"]
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-4 bg-dark rounded-3 shadow-sm h-100 border-start border-4" style="border-color: #00b894 !important;">
+                <h3 class="fw-bold text-white-70">@Localizer["ValuesTitle"]</h3>
+                <ul class="list-unstyled text-muted">
+                    <li class="mb-2 text-muted">✅ <strong>@Localizer["ValueOpenness"].ToString()?.Split(':')[0]:</strong> @Localizer["ValueOpenness"].ToString()?.Split(':')[1]</li>
+                    <li class="mb-2 text-muted">✅ <strong>@Localizer["ValueComfort"].ToString()?.Split(':')[0]:</strong> @Localizer["ValueComfort"].ToString()?.Split(':')[1]</li>
+                    <li class="mb-2 text-muted">✅ <strong>@Localizer["ValueGrowth"].ToString()?.Split(':')[0]:</strong> @Localizer["ValueGrowth"].ToString()?.Split(':')[1]</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Команда (опционально) -->
+    <div class="mt-5 pt-4 text-center">
+        <h2 class="fw-bold mb-4 text-white">@Localizer["TeamTitle"]</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-3 col-6 mb-4">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle mb-2" width="100" alt="@Localizer["FounderName"]">
+                <h5 class="fw-bold mb-0 text-white">@Localizer["FounderName"]</h5>
+                <small class="text-muted">@Localizer["FounderRole"]</small>
+            </div>
+            <div class="col-md-3 col-6 mb-4">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mb-2" width="100" alt="@Localizer["ManagerName"]">
+                <h5 class="fw-bold mb-0 text-white">@Localizer["ManagerName"]</h5>
+                <small class="text-muted">@Localizer["ManagerRole"]</small>
+            </div>
+        </div>
+    </div>
+</div>

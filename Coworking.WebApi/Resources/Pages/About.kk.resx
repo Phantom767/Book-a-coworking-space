@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="PageTitle" xml:space="preserve"><value>Біз туралы</value></data>
+    <data name="HistoryTitle" xml:space="preserve"><value>Біздің тарихымыз</value></data>
+    <data name="HistoryLead" xml:space="preserve"><value>Біз идеялар туатын орын жасадық.</value></data>
+    <data name="HistoryText" xml:space="preserve"><value>Coworking Space қарапайым идеядан басталды: фрилансерлер мен стартаптарға кеңсе жалдау бойынша ұзақ мерзімді міндеттемелерсіз кәсіби орта беру. Бүгінде бізде 200-ден астам резидент бар.</value></data>
+    <data name="MissionTitle" xml:space="preserve"><value>Біздің миссиямыз</value></data>
+    <data name="MissionText" xml:space="preserve"><value>Әрбір кәсіпкерге өсу құралдарын беру. Біз дұрыс орта бизнестің дамуын 2 есе жылдамдататынына сенеміз.</value></data>
+    <data name="ValuesTitle" xml:space="preserve"><value>Біздің құндылықтарымыз</value></data>
+    <data name="ValueOpenness" xml:space="preserve"><value>Ашықтық: Біз жаңа идеялар мен адамдарға ашықпыз.</value></data>
+    <data name="ValueComfort" xml:space="preserve"><value>Жайлылық: Эргономикалық жиһаз және тыныштық.</value></data>
+    <data name="ValueGrowth" xml:space="preserve"><value>Даму: Біз оқуды және өсуді қолдаймыз.</value></data>
+    <data name="TeamTitle" xml:space="preserve"><value>Біздің команда</value></data>
+    <data name="FounderName" xml:space="preserve"><value>Алексей</value></data>
+    <data name="FounderRole" xml:space="preserve"><value>Негізін қалаушы</value></data>
+    <data name="ManagerName" xml:space="preserve"><value>Мария</value></data>
+    <data name="ManagerRole" xml:space="preserve"><value>Комьюнити-менеджер</value></data>
+</root>

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+        <xsd:element name="root" msdata:IsDataSet="true">
+            <xsd:complexType>
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="0" />
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
+            </xsd:complexType>
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+    <resheader name="version"><value>2.0</value></resheader>
+    <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+    <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+    <data name="PageTitle" xml:space="preserve"><value>О нас</value></data>
+    <data name="HistoryTitle" xml:space="preserve"><value>Наша история</value></data>
+    <data name="HistoryLead" xml:space="preserve"><value>Мы создали место, где рождаются идеи.</value></data>
+    <data name="HistoryText" xml:space="preserve"><value>Coworking Space начался с простой идеи: предоставить фрилансерам и стартапам профессиональное окружение без долгосрочных обязательств по аренде офиса. Сегодня мы — дом для более чем 200 резидентов.</value></data>
+    <data name="MissionTitle" xml:space="preserve"><value>Наша миссия</value></data>
+    <data name="MissionText" xml:space="preserve"><value>Предоставить каждому предпринимателю инструменты для роста. Мы верим, что правильное окружение ускоряет развитие бизнеса в 2 раза.</value></data>
+    <data name="ValuesTitle" xml:space="preserve"><value>Наши ценности</value></data>
+    <data name="ValueOpenness" xml:space="preserve"><value>Открытость: Мы открыты для новых идей и людей.</value></data>
+    <data name="ValueComfort" xml:space="preserve"><value>Комфорт: Эргономичная мебель и тишина.</value></data>
+    <data name="ValueGrowth" xml:space="preserve"><value>Развитие: Мы поддерживаем обучение и рост.</value></data>
+    <data name="TeamTitle" xml:space="preserve"><value>Наша команда</value></data>
+    <data name="FounderName" xml:space="preserve"><value>Алексей</value></data>
+    <data name="FounderRole" xml:space="preserve"><value>Основатель</value></data>
+    <data name="ManagerName" xml:space="preserve"><value>Мария</value></data>
+    <data name="ManagerRole" xml:space="preserve"><value>Комьюнити-менеджер</value></data>
+</root>

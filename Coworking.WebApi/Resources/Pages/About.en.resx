@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="PageTitle" xml:space="preserve"><value>About Us</value></data>
+    <data name="HistoryTitle" xml:space="preserve"><value>Our History</value></data>
+    <data name="HistoryLead" xml:space="preserve"><value>We created a place where ideas are born.</value></data>
+    <data name="HistoryText" xml:space="preserve"><value>Coworking Space started with a simple idea: to provide freelancers and startups with a professional environment without long-term office lease obligations. Today we are home to over 200 residents.</value></data>
+    <data name="MissionTitle" xml:space="preserve"><value>Our Mission</value></data>
+    <data name="MissionText" xml:space="preserve"><value>To provide every entrepreneur with tools for growth. We believe that the right environment accelerates business development by 2 times.</value></data>
+    <data name="ValuesTitle" xml:space="preserve"><value>Our Values</value></data>
+    <data name="ValueOpenness" xml:space="preserve"><value>Openness: We are open to new ideas and people.</value></data>
+    <data name="ValueComfort" xml:space="preserve"><value>Comfort: Ergonomic furniture and silence.</value></data>
+    <data name="ValueGrowth" xml:space="preserve"><value>Growth: We support learning and development.</value></data>
+    <data name="TeamTitle" xml:space="preserve"><value>Our Team</value></data>
+    <data name="FounderName" xml:space="preserve"><value>Alexey</value></data>
+    <data name="FounderRole" xml:space="preserve"><value>Founder</value></data>
+    <data name="ManagerName" xml:space="preserve"><value>Maria</value></data>
+    <data name="ManagerRole" xml:space="preserve"><value>Community Manager</value></data>
+</root>
