@@ -9,13 +9,15 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         // Из сущности в DTO
-        CreateMap<Booking, BookingDto>(); 
+        CreateMap<Booking, BookingDto>();
         
         // Из DTO создания в сущность
         CreateMap<CreateBookingDto, Booking>();
 
         // Из сущности в DTO 
         CreateMap<Room, RoomDto>();
+        
+        CreateMap<UpdateRoomDto, Room>().ReverseMap();
         
         // Из DTO создания в сущность
         CreateMap<CreateRoomDto, Room>();
