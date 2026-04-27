@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+        <xsd:element name="root" msdata:IsDataSet="true">
+            <xsd:complexType>
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="0" />
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
+            </xsd:complexType>
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+    <resheader name="version"><value>2.0</value></resheader>
+    <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+    <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+    <data name="PageTitle" xml:space="preserve"><value>Coworking - Available Zones</value></data>
+    <data name="HeroTitle" xml:space="preserve"><value>Space to Create</value></data>
+    <data name="HeroSubtitle" xml:space="preserve"><value>Modern workspaces in the heart of the city. Book online in a couple of clicks.</value></data>
+    <data name="SectionTitle" xml:space="preserve"><value>Available Zones</value></data>
+    <data name="NoRoomsMessage" xml:space="preserve"><value>Currently, all rooms are occupied or unavailable.</value></data>
+    <data name="CapacityLabel" xml:space="preserve"><value>people</value></data>
+    <data name="PricePerHourLabel" xml:space="preserve"><value>per hour</value></data>
+    <data name="BookButton" xml:space="preserve"><value>Book Now</value></data>
+    <data name="ModalTitleLabel" xml:space="preserve"><value>Booking</value></data>
+    <data name="SelectDateLabel" xml:space="preserve"><value>Select Date</value></data>
+    <data name="SelectTimeLabel" xml:space="preserve"><value>Start Time</value></data>
+    <data name="DurationLabel" xml:space="preserve"><value>Duration</value></data>
+    <data name="SummaryDatetimeLabel" xml:space="preserve"><value>Date &amp; Time</value></data>
+    <data name="SummaryDurationLabel" xml:space="preserve"><value>Duration</value></data>
+    <data name="TotalLabel" xml:space="preserve"><value>Total</value></data>
+    <data name="ConfirmButton" xml:space="preserve"><value>Confirm Booking</value></data>
+    <data name="SuccessTitle" xml:space="preserve"><value>Booking Confirmed!</value></data>
+    <data name="DayMon" xml:space="preserve"><value>Mon</value></data>
+    <data name="DayTue" xml:space="preserve"><value>Tue</value></data>
+    <data name="DayWed" xml:space="preserve"><value>Wed</value></data>
+    <data name="DayThu" xml:space="preserve"><value>Thu</value></data>
+    <data name="DayFri" xml:space="preserve"><value>Fri</value></data>
+    <data name="DaySat" xml:space="preserve"><value>Sat</value></data>
+    <data name="DaySun" xml:space="preserve"><value>Sun</value></data>
+    <data name="HourLabel" xml:space="preserve"><value>h</value></data>
+</root>

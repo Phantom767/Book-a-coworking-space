@@ -1,0 +1,291 @@
+﻿@page
+@model Coworking.WebApi.Pages.Admin.Rooms
+@{
+ViewData["Title"] = "Управление комнатами";
+Layout = "_Layout";
+}
+
+@section Styles {
+<style>
+    .admin-container { padding: 2rem; width: 100%; }
+    .table { background: #1e1e2e; color: #e0e0e0; }
+    .table th { background: #25253a; }
+    .btn-purple { background: #6c5ce7; border: none; color: #fff; }
+    .btn-purple:hover { background: #5a4bd1; color: #fff; }
+    .room-thumb { width: 52px; height: 40px; object-fit: cover;
+        border-radius: 6px; border: 1px solid #3a3a5e; }
+    .no-photo { width: 52px; height: 40px; border-radius: 6px;
+        background: #2a2a3e; border: 1px dashed #3a3a5e;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; color: #555; }
+    .upload-zone { border: 2px dashed #3a3a5e; border-radius: 8px;
+        padding: 20px; text-align: center; cursor: pointer;
+        transition: border-color .2s; position: relative; }
+    .upload-zone:hover { border-color: #6c5ce7; }
+    .upload-zone input[type=file] { position: absolute; inset: 0;
+        opacity: 0; cursor: pointer; }
+    .upload-zone .preview { width: 100%; max-height: 160px;
+        object-fit: cover; border-radius: 6px;
+        display: none; margin-top: 10px; }
+    .form-control { background: #2a2a3e; border: 1px solid #3a3a5e; color: #fff; }
+    .form-control:focus { background: #2a2a3e; border-color: #6c5ce7;
+        color: #fff; box-shadow: none; }
+</style>
+}
+
+<div class="container-fluid mt-4 px-4">
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+    <div class="alert alert-danger">
+        @foreach (var e in ViewData.ModelState[""]?.Errors ?? [])
+        { <div>@e.ErrorMessage</div> }
+    </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 style="color:#fff">Управление комнатами</h2>
+        <button class="btn btn-purple" data-bs-toggle="modal" data-bs-target="#createRoomModal">
+            <i class="bi bi-plus-lg"></i> Добавить комнату
+        </button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle">
+            <thead>
+            <tr>
+                <th>Фото</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Цена (₸/час)</th>
+                <th>Вместимость</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var room in Model.RoomDtos)
+            {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(room.PhotoUrl))
+                    {
+                    <img src="@room.PhotoUrl" class="room-thumb" alt="@room.Name" />
+                    }
+                    else
+                    {
+                    <div class="no-photo">🖼</div>
+                    }
+                </td>
+                <td><strong>@room.Name</strong></td>
+                <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">
+                    @room.Description
+                </td>
+                <td>@room.PricePerHour ₸</td>
+                <td>@room.Capacity чел.</td>
+                <td>
+                    <button type="button" 
+                            class="btn btn-sm btn-outline-light me-1" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#editRoomModal"
+                            data-room-id="@room.Id"
+                            data-room-name="@room.Name"
+                            data-room-desc="@room.Description"
+                            data-room-price="@room.PricePerHour"
+                            data-room-cap="@room.Capacity">
+                        Изменить
+                    </button>
+    
+                    <button class="btn btn-sm btn-danger"
+                            onclick="deleteRoom('@room.Id', '@room.Name')">
+                        Удалить
+                    </button>
+                </td>
+            </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Модальное окно создания комнаты -->
+<div class="modal fade" id="createRoomModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background:#1e1e2e; color:#e0e0e0;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title" style="color:#fff">Новая комната</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- ✅ enctype для загрузки файла -->
+                <form method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <div class="mb-3">
+                        <label class="form-label">Название</label>
+                        <input asp-for="Input.Name" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Описание</label>
+                        <textarea asp-for="Input.Description" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Цена в час (₸)</label>
+                            <input asp-for="Input.Price" type="number" class="form-control" required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Вместимость</label>
+                            <input asp-for="Input.Capacity" type="number" class="form-control" required />
+                        </div>
+                    </div>
+                    <!-- Зона загрузки фото -->
+                    <div class="mb-3">
+                        <label class="form-label">Фото комнаты <span style="color:#888">(необязательно)</span></label>
+                        <div class="upload-zone" id="createUploadZone">
+                            <input type="file" asp-for="Photo"
+                                   accept="image/jpeg,image/png,image/webp"
+                                   onchange="previewPhoto(this, 'createPreview', 'createUploadText')" />
+                            <div id="createUploadText">
+                                <i class="bi bi-cloud-upload" style="font-size:24px; color:#6c5ce7"></i>
+                                <p style="color:#888; margin:6px 0 0; font-size:13px">
+                                    Нажмите или перетащите файл<br>
+                                    <small>JPG, PNG, WEBP · до 5 МБ</small>
+                                </p>
+                            </div>
+                            <img id="createPreview" class="preview" alt="Превью" />
+                        </div>
+                    </div>
+
+                    <div class="modal-footer border-secondary px-0 pb-0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-purple">Создать</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== МОДАЛЬНОЕ ОКНО РЕДАКТИРОВАНИЯ ==================== -->
+<div class="modal fade" id="editRoomModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background:#1e1e2e; color:#e0e0e0;">
+            <form method="post" enctype="multipart/form-data" asp-page-handler="Edit">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" style="color:#fff">Редактировать комнату</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+                    
+                    <!-- Скрытое поле ID комнаты -->
+                    <input type="hidden" name="roomId" id="editRoomId" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Название</label>
+                        <input asp-for="Input.Name" id="editInputName" class="form-control" required />
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Описание</label>
+                        <textarea asp-for="Input.Description" id="editInputDesc" class="form-control" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Цена в час (₸)</label>
+                            <input asp-for="Input.Price" id="editInputPrice" type="number" class="form-control" required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Вместимость</label>
+                            <input asp-for="Input.Capacity" id="editInputCap" type="number" class="form-control" required />
+                        </div>
+                    </div>
+
+                    <!-- Зона загрузки фото -->
+                    <div class="mb-3">
+                        <label class="form-label">Фото комнаты <span style="color:#888">(необязательно)</span></label>
+                        <div class="upload-zone" id="createUploadZone">
+                            <input type="file" asp-for="Photo"
+                                   accept="image/jpeg,image/png,image/webp"
+                                   onchange="previewPhoto(this, 'createPreview', 'createUploadText')" />
+                            <div id="createUploadText">
+                                <i class="bi bi-cloud-upload" style="font-size:24px; color:#6c5ce7"></i>
+                                <p style="color:#888; margin:6px 0 0; font-size:13px">
+                                    Нажмите или перетащите файл<br>
+                                    <small>JPG, PNG, WEBP · до 5 МБ</small>
+                                </p>
+                            </div>
+                            <img id="createPreview" class="preview" alt="Превью" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-purple">Сохранить изменения</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const editModal = document.getElementById('editRoomModal');
+
+        if (editModal) {
+            editModal.addEventListener('show.bs.modal', function (event) {
+                // Кнопка, которая вызвала модальное окно
+                const button = event.relatedTarget;
+
+                // Извлекаем данные из data-атрибутов
+                const roomId = button.getAttribute('data-room-id');
+                const roomName = button.getAttribute('data-room-name');
+                const roomDesc = button.getAttribute('data-room-desc');
+                const roomPrice = button.getAttribute('data-room-price');
+                const roomCap = button.getAttribute('data-room-cap');
+
+                // Обновляем поля формы внутри модального окна
+                document.getElementById('editRoomId').value = roomId;
+                document.getElementById('editInputName').value = roomName;
+                document.getElementById('editInputDesc').value = roomDesc;
+                document.getElementById('editInputPrice').value = roomPrice;
+                document.getElementById('editInputCap').value = roomCap;
+
+                // Сброс поля файла (чтобы не отправлять старый файл случайно)
+                const fileInput = editModal.querySelector('input[type="file"]');
+                if(fileInput) fileInput.value = '';
+            });
+        }
+        // Превью фото до загрузки
+        function previewPhoto(input, previewId, textId) {
+            const file = input.files[0];
+            if (!file) return;
+            const preview = document.getElementById(previewId);
+            const text    = document.getElementById(textId);
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+            text.style.display    = 'none';
+        }
+    
+        // Подставляем roomId в модальное окно загрузки
+        document.getElementById('uploadPhotoModal').addEventListener('show.bs.modal', e => {
+            const btn = e.relatedTarget;
+            document.getElementById('uploadRoomId').value   = btn.dataset.roomId;
+            document.getElementById('uploadRoomName').textContent = 'Комната: ' + btn.dataset.roomName;
+            // Сброс превью
+            document.getElementById('editPreview').style.display = 'none';
+            document.getElementById('editUploadText').style.display = 'block';
+        });
+    
+        function deleteRoom(id, name) {
+            if (confirm(`Удалить комнату "${name}"?`)) {
+                fetch(`?handler=Delete&roomId=${id}`, {
+                    method: 'POST',
+                    headers: { 'RequestVerificationToken': document.querySelector('[name=__RequestVerificationToken]').value }
+                }).then(() => location.reload());
+            }
+        }
+    </script>
+}

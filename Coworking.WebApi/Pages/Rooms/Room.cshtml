@@ -1,0 +1,261 @@
+﻿@page
+@model Coworking.WebApi.Pages.Rooms.Room
+@{
+ViewData["Title"] = Localizer["PageTitle"];
+Layout = "_Layout";
+}
+
+@section Styles {
+<style>
+    .hero {
+        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+        padding: 100px 0 80px;
+        position: relative;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    nav{
+        background-color: rgba(15, 23, 42, 0.9) !important;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .room-card {
+        background-color: var(--card-bg);
+        border: 1px solid #334155;
+        border-radius: 20px;
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+        height: 100%;
+    }
+
+    .room-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        border-color: var(--accent-color);
+    }
+
+    .price-tag {
+        color: #818cf8;
+        font-size: 1.4rem;
+        font-weight: 800;
+    }
+
+    .btn-book {
+        background: linear-gradient(90deg, #4f46e5, #7c3aed);
+        border: none;
+        border-radius: 12px;
+        padding: 12px;
+        font-weight: 600;
+        color: white;
+        transition: all 0.3s;
+    }
+
+    .btn-book:hover {
+        filter: brightness(1.2);
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+        color: white;
+    }
+
+    .room-image-placeholder {
+        height: 200px;
+        background: #2d3748;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px 20px 0 0;
+        color: #4a5568;
+        overflow: hidden; /* Чтобы картинка не вылезала */
+    }
+
+    .room-thumb {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .section-label {
+        font-size: 11px; letter-spacing: .1em; color: #64748b;
+        text-transform: uppercase; margin: 0 0 12px;
+    }
+    .cal-nav-btn {
+        background: transparent; border: 1px solid rgba(255,255,255,.08);
+        color: #e2e8f0; border-radius: 8px; width: 30px; height: 30px;
+        cursor: pointer; font-size: 16px; line-height: 1;
+    }
+    .cal-nav-btn:hover { background: rgba(255,255,255,.06); }
+    .dow { font-size: 11px; color: #64748b; padding: 4px 0; display: block; }
+    .dur-btn {
+        flex: 1; padding: 10px 0; border: 1px solid rgba(255,255,255,.08);
+        background: transparent; border-radius: 10px; color: #e2e8f0;
+        font-size: 13px; cursor: pointer; transition: all .12s;
+    }
+    .dur-btn:hover { background: #243045; }
+    .dur-btn.active { background: rgba(99,102,241,.15); border-color: #6366f1; color: #6366f1; }
+</style>
+}
+
+<div class="hero">
+    <div class="container text-center">
+        <h1 class="display-3 fw-bold mb-3 text-white">@Localizer["HeroTitle"]</h1>
+        <p class="fs-5 text-light opacity-75 mx-auto" style="max-width: 700px; color: #ffffff">
+            @Localizer["HeroSubtitle"]
+        </p>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-end mb-5">
+        <div>
+            <h2 class="h2 text-white mb-0" style="color: #ffffff">@Localizer["SectionTitle"]</h2>
+            <div style="width: auto; height: 4px; background: var(--accent-color); border-radius: 2px; margin-top: 8px;"></div>
+        </div>
+    </div>
+
+    @if (Model.Rooms.Any())
+    {
+    <div class="row g-4">
+        @foreach (var room in Model.Rooms)
+        {
+        <div class="col-12 col-md-6 col-lg-4">
+            <a asp-page="/Rooms/Details" asp-route-id="@room.Id" class="text-decoration-none text-reset">
+                <div class="card room-card shadow-sm h-100">
+                    <div class="room-image-placeholder">
+                        @if (!string.IsNullOrEmpty(room.PhotoUrl))
+                        {
+                        <img src="@room.PhotoUrl" class="room-thumb" alt="@room.Name" />
+                        }
+                        else
+                        {
+                        <i class="bi bi-door-open fs-1"></i>
+                        }
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h5 class="card-title h4 mb-0 text-white">@room.Name</h5>
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2">
+                                    @room.Capacity @Localizer["CapacityLabel"]
+                                </span>
+                        </div>
+
+                        <p class="text-secondary mb-4" style="color: #ffffff">
+                            @(room.Description ?? "Превосходное пространство для фокусировки и продуктивной работы.")
+                        </p>
+
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <div>
+                                <span class="price-tag">@room.PricePerHour ₸</span>
+                                <small class="text-muted d-block">@Localizer["PricePerHourLabel"]</small>
+                            </div>
+                            <button class="btn btn-book px-4"
+                                    onclick="event.preventDefault(); event.stopPropagation(); openBookingModal('@room.Id', '@room.Name', @room.Capacity, @room.PricePerHour)">
+                                @Localizer["BookButton"]
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        }
+    </div>
+    }
+    else
+    {
+    <div class="text-center py-5 rounded-4" style="background: rgba(255,255,255,0.02); border: 2px dashed rgba(255,255,255,0.1)">
+        <p class="fs-5" style="color: #ffffff">@Localizer["NoRoomsMessage"]</p>
+    </div>
+    }
+</div>
+
+<!-- Модальное окно бронирования -->
+<div class="modal fade" id="bookingModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:480px;">
+        <div class="modal-content" style="background:#1e293b;border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;color:#e2e8f0;">
+
+            <div style="background:linear-gradient(135deg,#1e1b4b,#312e81);padding:24px 28px 20px;">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p style="font-size:11px;letter-spacing:.12em;color:rgba(255,255,255,.45);text-transform:uppercase;margin:0 0 4px;">@Localizer["ModalTitleLabel"]</p>
+                        <h5 id="modalTitle" style="font-size:20px;font-weight:600;margin:0;color:#fff;"></h5>
+                        <div class="d-flex gap-3 mt-2">
+                            <span id="modalCapacity" style="font-size:12px;color:rgba(255,255,255,.5);"></span>
+                            <span id="modalPrice"    style="font-size:12px;color:rgba(255,255,255,.5);"></span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            style="background-color:rgba(255,255,255,.1);border-radius:8px;padding:8px;opacity:1;"></button>
+                </div>
+            </div>
+
+            <div class="modal-body" style="padding:24px 28px;">
+
+                <!-- Выбор даты -->
+                <p class="section-label">@Localizer["SelectDateLabel"]</p>
+                <div id="bookCalendar" style="background:#0f172a;border-radius:14px;padding:16px;margin-bottom:24px;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <button onclick="prevMonth()" class="cal-nav-btn">&#8249;</button>
+                        <span id="monthLabel" style="font-size:14px;font-weight:500;"></span>
+                        <button onclick="nextMonth()" class="cal-nav-btn">&#8250;</button>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;margin-bottom:8px;">
+                        <!-- Дни недели теперь берутся из ресурсов через JS или можно захардкодить, если язык меняется редко -->
+                        <span class="dow">@Localizer["DayMon"]</span><span class="dow">@Localizer["DayTue"]</span><span class="dow">@Localizer["DayWed"]</span>
+                        <span class="dow">@Localizer["DayThu"]</span><span class="dow">@Localizer["DayFri"]</span><span class="dow">@Localizer["DaySat"]</span><span class="dow">@Localizer["DaySun"]</span>
+                    </div>
+                    <div id="calDays" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;"></div>
+                </div>
+
+                <!-- Выбор времени -->
+                <div id="timeSection" style="display:none;">
+                    <p class="section-label">@Localizer["SelectTimeLabel"]</p>
+                    <div id="timeSlots" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px;"></div>
+
+                    <!-- Продолжительность -->
+                    <div id="durSection" style="display:none;">
+                        <p class="section-label">@Localizer["DurationLabel"]</p>
+                        <div class="d-flex gap-2 mb-4" id="durBtns">
+                            <button onclick="setDur(1)" data-d="1" class="dur-btn">1 @Localizer["HourLabel"]</button>
+                            <button onclick="setDur(2)" data-d="2" class="dur-btn">2 @Localizer["HourLabel"]</button>
+                            <button onclick="setDur(3)" data-d="3" class="dur-btn">3 @Localizer["HourLabel"]</button>
+                            <button onclick="setDur(4)" data-d="4" class="dur-btn">4 @Localizer["HourLabel"]</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Итого -->
+                <div id="summarySection" style="display:none;background:#0f172a;border-radius:14px;padding:16px;margin-bottom:20px;">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span style="font-size:13px;color:#64748b;">@Localizer["SummaryDatetimeLabel"]</span>
+                        <span id="sumDatetime" style="font-size:13px;"></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span style="font-size:13px;color:#64748b;">@Localizer["SummaryDurationLabel"]</span>
+                        <span id="sumDur" style="font-size:13px;"></span>
+                    </div>
+                    <hr style="border-color:rgba(255,255,255,.08);margin:12px 0;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span style="font-weight:600;">@Localizer["TotalLabel"]</span>
+                        <span id="sumPrice" style="font-size:20px;font-weight:700;color:#6366f1;"></span>
+                    </div>
+                </div>
+
+                <button id="confirmBtn" onclick="createBooking()" style="display:none;width:100%;padding:14px;background:#6366f1;border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;">
+                    @Localizer["ConfirmButton"]
+                </button>
+
+                <div id="successMsg" style="display:none;text-align:center;padding:8px 0;">
+                    <div style="width:52px;height:52px;background:rgba(16,185,129,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M5 13l4 4L19 7" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <p style="font-size:16px;font-weight:600;margin:0 0 6px;">@Localizer["SuccessTitle"]</p>
+                    <p id="successDetail" style="font-size:13px;color:#64748b;margin:0;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="~/js/booking.js"></script>
+}

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="PageTitle" xml:space="preserve"><value>Коворкинг - Қолжетімді аймақтар</value></data>
+    <data name="HeroTitle" xml:space="preserve"><value>Шығармашылық кеңістігі</value></data>
+    <data name="HeroSubtitle" xml:space="preserve"><value>Қаланың қақ ортасындағы заманауи жұмыс орындары. Бірнеше рет басу арқылы онлайн брондаңыз.</value></data>
+    <data name="SectionTitle" xml:space="preserve"><value>Қолжетімді аймақтар</value></data>
+    <data name="NoRoomsMessage" xml:space="preserve"><value>Қазіргі уақытта барлық бөлмелер бос емес немесе қолжетімсіз.</value></data>
+    <data name="CapacityLabel" xml:space="preserve"><value>адам</value></data>
+    <data name="PricePerHourLabel" xml:space="preserve"><value>сағатына</value></data>
+    <data name="BookButton" xml:space="preserve"><value>Брондау</value></data>
+    <data name="ModalTitleLabel" xml:space="preserve"><value>Брондау</value></data>
+    <data name="SelectDateLabel" xml:space="preserve"><value>Күнді таңдаңыз</value></data>
+    <data name="SelectTimeLabel" xml:space="preserve"><value>Басталу уақыты</value></data>
+    <data name="DurationLabel" xml:space="preserve"><value>Ұзақтығы</value></data>
+    <data name="SummaryDatetimeLabel" xml:space="preserve"><value>Күні мен уақыты</value></data>
+    <data name="SummaryDurationLabel" xml:space="preserve"><value>Ұзақтығы</value></data>
+    <data name="TotalLabel" xml:space="preserve"><value>Барлығы</value></data>
+    <data name="ConfirmButton" xml:space="preserve"><value>Брондауды растау</value></data>
+    <data name="SuccessTitle" xml:space="preserve"><value>Брондау расталды!</value></data>
+    <data name="DayMon" xml:space="preserve"><value>дс</value></data>
+    <data name="DayTue" xml:space="preserve"><value>сс</value></data>
+    <data name="DayWed" xml:space="preserve"><value>ср</value></data>
+    <data name="DayThu" xml:space="preserve"><value>бс</value></data>
+    <data name="DayFri" xml:space="preserve"><value>жм</value></data>
+    <data name="DaySat" xml:space="preserve"><value>сб</value></data>
+    <data name="DaySun" xml:space="preserve"><value>жк</value></data>
+    <data name="HourLabel" xml:space="preserve"><value>с</value></data>
+</root>
