@@ -1,0 +1,98 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = Localizer["PageTitle"];
+    ViewData["Header"] = "false";
+    Layout = "_Layout";
+}
+
+@section Styles {
+<style>
+    .login-wrapper {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #0f172a;
+    }
+    .login-card {
+        background: #1e1e2e;
+        border: 1px solid #444;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        width: 460px;
+        padding: 40px 35px;
+    }
+    .form-control {
+        background: #2a2a3e;
+        border: 1px solid #555;
+        color: #fff;
+    }
+    .form-control:focus {
+        background: #2a2a3e;
+        border-color: #6c5ce7;
+        color: #fff;
+        box-shadow: 0 0 0 0.2rem rgba(108,92,231,0.25);
+    }
+    .form-control::placeholder { color: #888; }
+    .text-danger { font-size: 0.85rem; }
+</style>
+}
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold" style="color:#ffffff">@Localizer["Heading"]</h2>
+            <p style="color:#aaa">@Localizer["Subheading"]</p>
+        </div>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+        <div class="alert alert-danger">
+            @foreach (var error in ViewData.ModelState[""]?.Errors
+            ?? Enumerable.Empty<Microsoft.AspNetCore.Mvc.ModelBinding.ModelError>())
+            {
+            <div>@error.ErrorMessage</div>
+            }
+        </div>
+        }
+
+        <form method="post">
+            <div class="mb-3">
+                <label asp-for="Input.Email" class="form-label" style="color:#fff">
+                    @Localizer["EmailLabel"]
+                </label>
+                <input asp-for="Input.Email" class="form-control form-control-lg"
+                       placeholder="@Localizer["EmailPlaceholder"]" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.Password" class="form-label" style="color:#fff">
+                    @Localizer["PasswordLabel"]
+                </label>
+                <input asp-for="Input.Password" type="password" class="form-control form-control-lg"
+                       placeholder="@Localizer["PasswordPlaceholder"]" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-check mb-4">
+                <input asp-for="Input.RememberMe" class="form-check-input" />
+                <label asp-for="Input.RememberMe" class="form-check-label" style="color:#aaa">
+                    @Localizer["RememberMe"]
+                </label>
+            </div>
+
+            <button type="submit" class="btn w-100 mb-3"
+                    style="background:#6c5ce7; border:none; padding:12px;
+                           color:#fff; font-weight:600; border-radius:8px;">
+                @Localizer["LoginButton"]
+            </button>
+
+            <div class="text-center" style="color:#aaa">
+                @Localizer["NoAccount"]
+                <a asp-page="/Account/Register" style="color:#6c5ce7">@Localizer["RegisterLink"]</a>
+            </div>
+        </form>
+    </div>
+</div>
