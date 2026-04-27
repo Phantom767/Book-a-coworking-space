@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="xml:space" default="preserve" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+
+  <data name="PageTitle" xml:space="preserve"><value>Личный кабинет</value></data>
+
+  <data name="TabBookings" xml:space="preserve"><value>Бронирования</value></data>
+  <data name="TabProfile" xml:space="preserve"><value>Профиль</value></data>
+  <data name="TabSecurity" xml:space="preserve"><value>Безопасность</value></data>
+
+  <data name="HoursThisMonth" xml:space="preserve"><value>Часов в этом месяце</value></data>
+  <data name="ActiveBookings" xml:space="preserve"><value>Активных бронирований</value></data>
+
+  <data name="SectionUpcoming" xml:space="preserve"><value>Ближайшие и текущие</value></data>
+  <data name="SectionPast" xml:space="preserve"><value>Прошедшие</value></data>
+  <data name="BadgeNow" xml:space="preserve"><value>Сейчас</value></data>
+  <data name="BadgeSoon" xml:space="preserve"><value>Скоро</value></data>
+  <data name="BadgeDone" xml:space="preserve"><value>Завершено</value></data>
+  <data name="CountdownEnd" xml:space="preserve"><value>до конца</value></data>
+  <data name="CountdownStart" xml:space="preserve"><value>до начала</value></data>
+  <data name="DurationHours" xml:space="preserve"><value>ч</value></data>
+
+  <data name="SectionPersonal" xml:space="preserve"><value>Личная информация</value></data>
+  <data name="FirstNameLabel" xml:space="preserve"><value>Имя</value></data>
+  <data name="FirstNamePlaceholder" xml:space="preserve"><value>Имя</value></data>
+  <data name="LastNameLabel" xml:space="preserve"><value>Фамилия</value></data>
+  <data name="LastNamePlaceholder" xml:space="preserve"><value>Фамилия</value></data>
+  <data name="EmailLabel" xml:space="preserve"><value>Email</value></data>
+  <data name="EmailPlaceholder" xml:space="preserve"><value>email@example.com</value></data>
+  <data name="PhoneLabel" xml:space="preserve"><value>Телефон</value></data>
+  <data name="PhonePlaceholder" xml:space="preserve"><value>+7 (999) 000-00-00</value></data>
+  <data name="SaveButton" xml:space="preserve"><value>Сохранить изменения</value></data>
+
+  <data name="SectionSecurity" xml:space="preserve"><value>Безопасность аккаунта</value></data>
+  <data name="PasswordTitle" xml:space="preserve"><value>Пароль</value></data>
+  <data name="PasswordLastChanged" xml:space="preserve"><value>Последнее изменение:</value></data>
+  <data name="ChangeButton" xml:space="preserve"><value>Изменить</value></data>
+  <data name="TwoFATitle" xml:space="preserve"><value>Двухфакторная аутентификация</value></data>
+  <data name="TwoFASub" xml:space="preserve"><value>Дополнительная защита входа</value></data>
+  <data name="NotificationsTitle" xml:space="preserve"><value>Email-уведомления</value></data>
+  <data name="NotificationsSub" xml:space="preserve"><value>Напоминания о бронированиях</value></data>
+  <data name="DeleteTitle" xml:space="preserve"><value>Удалить аккаунт</value></data>
+  <data name="DeleteSub" xml:space="preserve"><value>Все данные будут удалены безвозвратно</value></data>
+  <data name="DeleteButton" xml:space="preserve"><value>Удалить</value></data>
+</root>

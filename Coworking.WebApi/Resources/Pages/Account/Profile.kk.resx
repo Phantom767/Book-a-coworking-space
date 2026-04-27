@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="xml:space" default="preserve" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+
+  <data name="PageTitle" xml:space="preserve"><value>Жеке кабинет</value></data>
+
+  <data name="TabBookings" xml:space="preserve"><value>Брондаулар</value></data>
+  <data name="TabProfile" xml:space="preserve"><value>Профиль</value></data>
+  <data name="TabSecurity" xml:space="preserve"><value>Қауіпсіздік</value></data>
+
+  <data name="HoursThisMonth" xml:space="preserve"><value>Осы айдағы сағаттар</value></data>
+  <data name="ActiveBookings" xml:space="preserve"><value>Белсенді брондаулар</value></data>
+
+  <data name="SectionUpcoming" xml:space="preserve"><value>Жақын және ағымдағы</value></data>
+  <data name="SectionPast" xml:space="preserve"><value>Өткен</value></data>
+  <data name="BadgeNow" xml:space="preserve"><value>Қазір</value></data>
+  <data name="BadgeSoon" xml:space="preserve"><value>Жақында</value></data>
+  <data name="BadgeDone" xml:space="preserve"><value>Аяқталды</value></data>
+  <data name="CountdownEnd" xml:space="preserve"><value>аяқталуға дейін</value></data>
+  <data name="CountdownStart" xml:space="preserve"><value>басталуға дейін</value></data>
+  <data name="DurationHours" xml:space="preserve"><value>сағ</value></data>
+
+  <data name="SectionPersonal" xml:space="preserve"><value>Жеке ақпарат</value></data>
+  <data name="FirstNameLabel" xml:space="preserve"><value>Аты</value></data>
+  <data name="FirstNamePlaceholder" xml:space="preserve"><value>Аты</value></data>
+  <data name="LastNameLabel" xml:space="preserve"><value>Тегі</value></data>
+  <data name="LastNamePlaceholder" xml:space="preserve"><value>Тегі</value></data>
+  <data name="EmailLabel" xml:space="preserve"><value>Электрондық пошта</value></data>
+  <data name="EmailPlaceholder" xml:space="preserve"><value>email@example.com</value></data>
+  <data name="PhoneLabel" xml:space="preserve"><value>Телефон</value></data>
+  <data name="PhonePlaceholder" xml:space="preserve"><value>+7 (999) 000-00-00</value></data>
+  <data name="SaveButton" xml:space="preserve"><value>Өзгерістерді сақтау</value></data>
+
+  <data name="SectionSecurity" xml:space="preserve"><value>Аккаунт қауіпсіздігі</value></data>
+  <data name="PasswordTitle" xml:space="preserve"><value>Құпия сөз</value></data>
+  <data name="PasswordLastChanged" xml:space="preserve"><value>Соңғы өзгерту:</value></data>
+  <data name="ChangeButton" xml:space="preserve"><value>Өзгерту</value></data>
+  <data name="TwoFATitle" xml:space="preserve"><value>Екі факторлы аутентификация</value></data>
+  <data name="TwoFASub" xml:space="preserve"><value>Кіруді қосымша қорғау</value></data>
+  <data name="NotificationsTitle" xml:space="preserve"><value>Email хабарландырулары</value></data>
+  <data name="NotificationsSub" xml:space="preserve"><value>Брондау еске салғыштары</value></data>
+  <data name="DeleteTitle" xml:space="preserve"><value>Аккаунтты жою</value></data>
+  <data name="DeleteSub" xml:space="preserve"><value>Барлық деректер біржола жойылады</value></data>
+  <data name="DeleteButton" xml:space="preserve"><value>Жою</value></data>
+</root>

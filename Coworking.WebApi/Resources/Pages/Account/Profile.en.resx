@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="xml:space" default="preserve" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+
+  <data name="PageTitle" xml:space="preserve"><value>My Profile</value></data>
+
+  <!-- Tabs -->
+  <data name="TabBookings" xml:space="preserve"><value>Bookings</value></data>
+  <data name="TabProfile" xml:space="preserve"><value>Profile</value></data>
+  <data name="TabSecurity" xml:space="preserve"><value>Security</value></data>
+
+  <!-- Stats -->
+  <data name="HoursThisMonth" xml:space="preserve"><value>Hours this month</value></data>
+  <data name="ActiveBookings" xml:space="preserve"><value>Active bookings</value></data>
+
+  <!-- Bookings -->
+  <data name="SectionUpcoming" xml:space="preserve"><value>Upcoming &amp; current</value></data>
+  <data name="SectionPast" xml:space="preserve"><value>Past</value></data>
+  <data name="BadgeNow" xml:space="preserve"><value>Now</value></data>
+  <data name="BadgeSoon" xml:space="preserve"><value>Soon</value></data>
+  <data name="BadgeDone" xml:space="preserve"><value>Completed</value></data>
+  <data name="CountdownEnd" xml:space="preserve"><value>until end</value></data>
+  <data name="CountdownStart" xml:space="preserve"><value>until start</value></data>
+  <data name="DurationHours" xml:space="preserve"><value>h</value></data>
+
+  <!-- Profile form -->
+  <data name="SectionPersonal" xml:space="preserve"><value>Personal information</value></data>
+  <data name="FirstNameLabel" xml:space="preserve"><value>First Name</value></data>
+  <data name="FirstNamePlaceholder" xml:space="preserve"><value>First Name</value></data>
+  <data name="LastNameLabel" xml:space="preserve"><value>Last Name</value></data>
+  <data name="LastNamePlaceholder" xml:space="preserve"><value>Last Name</value></data>
+  <data name="EmailLabel" xml:space="preserve"><value>Email</value></data>
+  <data name="EmailPlaceholder" xml:space="preserve"><value>email@example.com</value></data>
+  <data name="PhoneLabel" xml:space="preserve"><value>Phone</value></data>
+  <data name="PhonePlaceholder" xml:space="preserve"><value>+7 (999) 000-00-00</value></data>
+  <data name="SaveButton" xml:space="preserve"><value>Save changes</value></data>
+
+  <!-- Security -->
+  <data name="SectionSecurity" xml:space="preserve"><value>Account security</value></data>
+  <data name="PasswordTitle" xml:space="preserve"><value>Password</value></data>
+  <data name="PasswordLastChanged" xml:space="preserve"><value>Last changed:</value></data>
+  <data name="ChangeButton" xml:space="preserve"><value>Change</value></data>
+  <data name="TwoFATitle" xml:space="preserve"><value>Two-factor authentication</value></data>
+  <data name="TwoFASub" xml:space="preserve"><value>Extra login protection</value></data>
+  <data name="NotificationsTitle" xml:space="preserve"><value>Email notifications</value></data>
+  <data name="NotificationsSub" xml:space="preserve"><value>Booking reminders</value></data>
+  <data name="DeleteTitle" xml:space="preserve"><value>Delete account</value></data>
+  <data name="DeleteSub" xml:space="preserve"><value>All data will be permanently deleted</value></data>
+  <data name="DeleteButton" xml:space="preserve"><value>Delete</value></data>
+</root>

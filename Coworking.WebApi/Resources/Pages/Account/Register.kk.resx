@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="xml:space" default="preserve" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+
+  <data name="PageTitle" xml:space="preserve"><value>Тіркелу</value></data>
+  <data name="Heading" xml:space="preserve"><value>Аккаунт жасау</value></data>
+  <data name="Subheading" xml:space="preserve"><value>Біздің коворкингке қосылыңыз</value></data>
+  <data name="FirstNameLabel" xml:space="preserve"><value>Аты</value></data>
+  <data name="FirstNamePlaceholder" xml:space="preserve"><value>Аты</value></data>
+  <data name="LastNameLabel" xml:space="preserve"><value>Тегі</value></data>
+  <data name="LastNamePlaceholder" xml:space="preserve"><value>Тегі</value></data>
+  <data name="EmailLabel" xml:space="preserve"><value>Электрондық пошта</value></data>
+  <data name="EmailPlaceholder" xml:space="preserve"><value>example@mail.com</value></data>
+  <data name="PasswordLabel" xml:space="preserve"><value>Құпия сөз</value></data>
+  <data name="PasswordPlaceholder" xml:space="preserve"><value>Кемінде 6 таңба</value></data>
+  <data name="ConfirmPasswordLabel" xml:space="preserve"><value>Құпия сөзді растау</value></data>
+  <data name="ConfirmPasswordPlaceholder" xml:space="preserve"><value>Құпия сөзді қайталаңыз</value></data>
+  <data name="RegisterButton" xml:space="preserve"><value>Тіркелу</value></data>
+  <data name="HaveAccount" xml:space="preserve"><value>Аккаунтыңыз бар ма?</value></data>
+  <data name="LoginLink" xml:space="preserve"><value>Кіру</value></data>
+</root>

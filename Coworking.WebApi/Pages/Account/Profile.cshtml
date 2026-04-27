@@ -1,0 +1,250 @@
+﻿@page
+@model ProfileModel
+@{
+    ViewData["Title"] = "Личный кабинет";
+    Layout = "_Layout";
+}
+
+@section Styles {
+<style>
+    .cab { background: #0f172a; min-height: 100vh; padding: 32px 20px; }
+    .cab-inner { max-width: 680px; margin: 0 auto; }
+    .cab-header { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+    .avatar { width: 56px; height: 56px; border-radius: 50%; background: #6c5ce7;
+              display: flex; align-items: center; justify-content: center;
+              font-size: 20px; font-weight: 600; color: #fff; flex-shrink: 0; }
+    .cab-header-text h2 { color: #fff; font-size: 20px; font-weight: 600; margin: 0; }
+    .cab-header-text p  { color: #888; font-size: 13px; margin: 3px 0 0; }
+    .tabs { display: flex; gap: 4px; background: #1e1e2e; border-radius: 10px;
+            padding: 4px; margin-bottom: 22px; }
+    .tab-btn { flex: 1; padding: 9px; border-radius: 7px; font-size: 13px;
+               border: none; background: transparent; color: #888; cursor: pointer; transition: all .2s; }
+    .tab-btn.active { background: #6c5ce7; color: #fff; }
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+    .card { background: #1e1e2e; border: 1px solid #2a2a3e; border-radius: 12px;
+            padding: 20px; margin-bottom: 16px; }
+    .card-title { color: #888; font-size: 11px; text-transform: uppercase;
+                  letter-spacing: .6px; margin-bottom: 14px; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .stat-card { background: #1e1e2e; border: 1px solid #2a2a3e; border-radius: 12px; padding: 16px; }
+    .stat-card .val { color: #fff; font-size: 24px; font-weight: 600; }
+    .stat-card .lbl { color: #888; font-size: 12px; margin-top: 4px; }
+    .progress-bar { background: #2a2a3e; border-radius: 20px; height: 5px; margin-top: 10px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 20px; }
+    .booking-item { display: flex; justify-content: space-between; align-items: center;
+                    padding: 14px 0; border-bottom: 1px solid #2a2a3e; }
+    .booking-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .bi-title { color: #fff; font-size: 14px; font-weight: 500; }
+    .bi-sub   { color: #888; font-size: 12px; margin-top: 3px; }
+    .badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+    .badge-active   { background: rgba(16,185,129,.15); color: #10b981; }
+    .badge-upcoming { background: rgba(108,92,231,.15);  color: #a78bfa; }
+    .badge-done     { background: rgba(100,100,100,.12); color: #888; }
+    .countdown .time  { color: #6c5ce7; font-size: 15px; font-weight: 600; text-align: right; }
+    .countdown .label { color: #888; font-size: 11px; text-align: right; margin-top: 2px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; color: #aaa; font-size: 12px; margin-bottom: 6px; }
+    .form-group input { width: 100%; background: #2a2a3e; border: 1px solid #3a3a5e;
+                        border-radius: 8px; padding: 10px 12px; color: #fff;
+                        font-size: 13px; outline: none; transition: border .2s; }
+    .form-group input:focus { border-color: #6c5ce7; }
+    .btn-save { width: 100%; background: #6c5ce7; color: #fff; border: none;
+                padding: 11px; border-radius: 8px; font-size: 14px;
+                font-weight: 600; cursor: pointer; margin-top: 4px; }
+    .sec-item { display: flex; justify-content: space-between; align-items: center;
+                padding: 14px 0; border-bottom: 1px solid #2a2a3e; }
+    .sec-item:last-child { border-bottom: none; }
+    .si-title { color: #fff; font-size: 13px; font-weight: 500; }
+    .si-sub   { color: #888; font-size: 11px; margin-top: 3px; }
+    .btn-sm-outline { background: transparent; border: 1px solid #3a3a5e; color: #aaa;
+                      padding: 6px 14px; border-radius: 7px; font-size: 12px; cursor: pointer; }
+    .btn-sm-danger  { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3);
+                      color: #ef4444; padding: 6px 14px; border-radius: 7px;
+                      font-size: 12px; cursor: pointer; }
+    .toggle-wrap { position: relative; width: 38px; height: 22px; flex-shrink: 0; }
+    .toggle-wrap input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; inset: 0; background: #2a2a3e;
+                     border-radius: 20px; cursor: pointer; transition: .2s; }
+    .toggle-slider::before { content: ''; position: absolute; width: 16px; height: 16px;
+                             background: #fff; border-radius: 50%; top: 3px; left: 3px; transition: .2s; }
+    .toggle-wrap input:checked + .toggle-slider { background: #6c5ce7; }
+    .toggle-wrap input:checked + .toggle-slider::before { transform: translateX(16px); }
+</style>
+}
+
+<div class="cab">
+  <div class="cab-inner">
+
+    <div class="cab-header">
+      <div class="avatar">@(Model.FirstName?.FirstOrDefault())@(Model.LastName?.FirstOrDefault())</div>
+      <div class="cab-header-text">
+        <h2>@Model.FirstName @Model.LastName</h2>
+        <p>@Model.Email</p>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <!-- Используем ключи из Profile.resx -->
+      <button class="tab-btn active" onclick="switchTab('bookings', this)">@Localizer["TabBookings"]</button>
+      <button class="tab-btn"       onclick="switchTab('profile',  this)">@Localizer["TabProfile"]</button>
+      <button class="tab-btn"       onclick="switchTab('security', this)">@Localizer["TabSecurity"]</button>
+    </div>
+
+    <!-- ===== БРОНИРОВАНИЯ ===== -->
+    <div id="tab-bookings" class="tab-section active">
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="val">@Model.HoursThisMonth</div>
+          <div class="lbl">@Localizer["HoursThisMonth"]</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:@(Model.HoursThisMonth * 5)%;background:#6c5ce7"></div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="val">@Model.ActiveBookings.Count</div>
+          <div class="lbl">@Localizer["ActiveBookings"]</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:@(Model.ActiveBookings.Count * 20)%;background:#10b981"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">@Localizer["SectionUpcoming"]</div>
+        @foreach (var b in Model.ActiveBookings)
+        {
+          <div class="booking-item">
+            <div>
+              <div class="bi-title">@b.RoomName</div>
+              <div class="bi-sub">@b.DateDisplay · @b.DurationHours @Localizer["DurationHours"]</div>
+            </div>
+            <div>
+              <div class="badge @(b.IsNow ? "badge-active" : "badge-upcoming")">
+                @(b.IsNow ? Localizer["BadgeNow"] : Localizer["BadgeSoon"])
+              </div>
+              <div class="countdown">
+                <div class="time">@b.CountdownDisplay</div>
+                <div class="label">@(b.IsNow ? Localizer["CountdownEnd"] : Localizer["CountdownStart"])</div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      @if (Model.PastBookings.Any())
+      {
+        <div class="card">
+          <div class="card-title">@Localizer["SectionPast"]</div>
+          @foreach (var b in Model.PastBookings)
+          {
+            <div class="booking-item">
+              <div>
+                <div class="bi-title">@b.RoomName</div>
+                <div class="bi-sub">@b.DateDisplay · @b.DurationHours @Localizer["DurationHours"]</div>
+              </div>
+              <span class="badge badge-done">@Localizer["BadgeDone"]</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- ===== ПРОФИЛЬ ===== -->
+    <div id="tab-profile" class="tab-section">
+      <div class="card">
+        <div class="card-title">@Localizer["SectionPersonal"]</div>
+        <form method="post" asp-page-handler="UpdateProfile">
+          @Html.AntiForgeryToken()
+          <div class="form-row">
+            <div class="form-group">
+              <label>@Localizer["FirstNameLabel"]</label>
+              <input asp-for="ProfileInput.FirstName" placeholder="@Localizer["FirstNamePlaceholder"]" />
+              <span asp-validation-for="ProfileInput.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+              <label>@Localizer["LastNameLabel"]</label>
+              <input asp-for="ProfileInput.LastName" placeholder="@Localizer["LastNamePlaceholder"]" />
+              <span asp-validation-for="ProfileInput.LastName" class="text-danger"></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>@Localizer["EmailLabel"]</label>
+            <input asp-for="ProfileInput.Email" placeholder="@Localizer["EmailPlaceholder"]" />
+            <span asp-validation-for="ProfileInput.Email" class="text-danger"></span>
+          </div>
+          <div class="form-group">
+            <label>@Localizer["PhoneLabel"]</label>
+            <input asp-for="ProfileInput.Phone" placeholder="@Localizer["PhonePlaceholder"]" />
+          </div>
+          <button type="submit" class="btn-save">@Localizer["SaveButton"]</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ===== БЕЗОПАСНОСТЬ ===== -->
+    <div id="tab-security" class="tab-section">
+      <div class="card">
+        <div class="card-title">@Localizer["SectionSecurity"]</div>
+
+        <div class="sec-item">
+          <div>
+            <div class="si-title">@Localizer["PasswordTitle"]</div>
+            <div class="si-sub">@Localizer["PasswordLastChanged"] @Model.PasswordChangedDisplay</div>
+          </div>
+          <a asp-page="/Account/ChangePassword"><button class="btn-sm-outline">@Localizer["ChangeButton"]</button></a>
+        </div>
+
+        <form method="post" asp-page-handler="Toggle2FA">
+          @Html.AntiForgeryToken()
+          <div class="sec-item">
+            <div>
+              <div class="si-title">@Localizer["TwoFATitle"]</div>
+              <div class="si-sub">@Localizer["TwoFASub"]</div>
+            </div>
+            <label class="toggle-wrap">
+              <input type="checkbox" name="enable2fa" @(Model.Is2FAEnabled ? "checked" : "")
+                     onchange="this.form.submit()" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </form>
+
+        <form method="post" asp-page-handler="ToggleNotifications">
+          @Html.AntiForgeryToken()
+          <div class="sec-item">
+            <div>
+              <div class="si-title">@Localizer["NotificationsTitle"]</div>
+              <div class="si-sub">@Localizer["NotificationsSub"]</div>
+            </div>
+            <label class="toggle-wrap">
+              <input type="checkbox" name="enableNotifications"
+                     @(Model.EmailNotificationsEnabled ? "checked" : "")
+                     onchange="this.form.submit()" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </form>
+
+        <div class="sec-item">
+          <div>
+            <div class="si-title">@Localizer["DeleteTitle"]</div>
+            <div class="si-sub">@Localizer["DeleteSub"]</div>
+          </div>
+          <a asp-page="/Account/DeleteAccount"><button class="btn-sm-danger">@Localizer["DeleteButton"]</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function switchTab(name, el) {
+    document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    el.classList.add('active');
+  }
+</script>

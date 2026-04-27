@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="xml:space" default="preserve" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+
+  <data name="PageTitle" xml:space="preserve"><value>Registration</value></data>
+  <data name="Heading" xml:space="preserve"><value>Create an account</value></data>
+  <data name="Subheading" xml:space="preserve"><value>Join our coworking space</value></data>
+  <data name="FirstNameLabel" xml:space="preserve"><value>First Name</value></data>
+  <data name="FirstNamePlaceholder" xml:space="preserve"><value>First Name</value></data>
+  <data name="LastNameLabel" xml:space="preserve"><value>Last Name</value></data>
+  <data name="LastNamePlaceholder" xml:space="preserve"><value>Last Name</value></data>
+  <data name="EmailLabel" xml:space="preserve"><value>Email</value></data>
+  <data name="EmailPlaceholder" xml:space="preserve"><value>example@mail.com</value></data>
+  <data name="PasswordLabel" xml:space="preserve"><value>Password</value></data>
+  <data name="PasswordPlaceholder" xml:space="preserve"><value>Minimum 6 characters</value></data>
+  <data name="ConfirmPasswordLabel" xml:space="preserve"><value>Confirm Password</value></data>
+  <data name="ConfirmPasswordPlaceholder" xml:space="preserve"><value>Repeat password</value></data>
+  <data name="RegisterButton" xml:space="preserve"><value>Register</value></data>
+  <data name="HaveAccount" xml:space="preserve"><value>Already have an account?</value></data>
+  <data name="LoginLink" xml:space="preserve"><value>Sign in</value></data>
+</root>
