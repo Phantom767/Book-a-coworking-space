@@ -8,6 +8,7 @@ public sealed class Booking : EntityBase
     public Guid RoomId { get; set; }
     
     public required string RoomName { get; set; }
+    RoomType Type { get; init; }
     public ApplicationUser? User { get; set; }
     
     public DateTime StartTime { get; set; }

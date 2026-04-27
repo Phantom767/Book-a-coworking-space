@@ -35,7 +35,7 @@ public class BookingService(IApplicationDbContext context, IMapper mapper) : IBo
         // 3. ПРОВЕРКА ПЕРЕСЕЧЕНИЯ ВРЕМЕНИ
         bool isOccupied = await context.Bookings
             .AnyAsync(b => b.RoomId == dto.RoomId &&
-                           b.Status != BookingStatus.Canceled && // Отмененные брони не мешают
+                           b.Status != BookingStatus.Cancelled && // Отмененные брони не мешают
                            dto.StartTime < b.EndTime && 
                            dto.EndTime > b.StartTime);
 
@@ -55,10 +55,11 @@ public class BookingService(IApplicationDbContext context, IMapper mapper) : IBo
         
 
         // 5. Создаем бронь
-        var booking = mapper.Map<Booking>(dto);
-            booking.Id = Guid.NewGuid();
-            booking.TotalPrice = totalPrice;
-            booking.Status = BookingStatus.Pending; // Ждет подтверждения
+         var booking = mapper.Map<Booking>(dto);
+             booking.Id = Guid.NewGuid();
+             booking.RoomName = room.Name;  // Устанавливаем имя комнаты
+             booking.TotalPrice = totalPrice;
+             booking.Status = BookingStatus.Pending; // Ждет подтверждения
 
         context.Bookings.Add(booking);
         await context.SaveChangesAsync();
@@ -66,7 +67,7 @@ public class BookingService(IApplicationDbContext context, IMapper mapper) : IBo
         return mapper.Map<BookingDto>(booking);
     }   
 
-    public async Task<ErrorOr<List<BookingDto>>> GetBookingsByUserAsync(Guid userId)
+    public async Task<List<BookingDto>> GetBookingsByUserAsync(Guid userId)
     {
         // Используем Where, чтобы найти все записи этого пользователя
         var bookings = await context.Bookings
