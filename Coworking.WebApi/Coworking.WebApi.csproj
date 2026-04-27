@@ -9,21 +9,196 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Coworking.Application\Coworking.Application.csproj" />
-      <ProjectReference Include="..\Coworking.Infrastructure\Coworking.Infrastructure.csproj" />
+        <ProjectReference Include="..\Coworking.Application\Coworking.Application.csproj" />
+        <ProjectReference Include="..\Coworking.Infrastructure\Coworking.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="12.0.1" />
-      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-      <PackageReference Include="ErrorOr" Version="2.0.1" />
-      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.6">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.17.0" />
-      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+        <PackageReference Include="AutoMapper" Version="12.0.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="ErrorOr" Version="2.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.6">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.17.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\uploads\rooms\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Pages\Index.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Index.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Index.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <DependentUpon>Index.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Index.kk.resx">
+        <DependentUpon>Index.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Rooms\Room.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Room.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Rooms\Room.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <DependentUpon>Room.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Rooms\Room.kk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <DependentUpon>Room.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Rooms\Details.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Details.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Rooms\Details.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <DependentUpon>Details.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Rooms\Details.kk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <DependentUpon>Details.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Bookings\MyBooking.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>MyBookings.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Bookings\MyBooking.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <DependentUpon>MyBooking.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Bookings\MyBooking.kk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <DependentUpon>MyBooking.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Account\Login.en.resx">
+        <DependentUpon>Login.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Account\Login.kk.resx">
+        <DependentUpon>Login.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Account\Profile.en.resx">
+        <DependentUpon>Profile.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Account\Profile.kk.resx">
+        <DependentUpon>Profile.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Account\Register.en.resx">
+        <DependentUpon>Register.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Account\Register.kk.resx">
+        <DependentUpon>Register.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\About.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>About.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\About.kk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>About.kk.Designer.cs</LastGenOutput>
+        <DependentUpon>About.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\About.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>About.en.Designer.cs</LastGenOutput>
+        <DependentUpon>About.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="SharedResources\SharedResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>SharedResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="SharedResources\SharedResources.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>SharedResources.en.Designer.cs</LastGenOutput>
+        <DependentUpon>SharedResources.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="SharedResources\SharedResources.kk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>SharedResources.kk.Designer.cs</LastGenOutput>
+        <DependentUpon>SharedResources.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\SharedResources\SharedResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>SharedResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\SharedResources\SharedResources.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>SharedResources.en.Designer.cs</LastGenOutput>
+        <DependentUpon>SharedResources.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\SharedResources\SharedResources.kk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>SharedResources.kk.Designer.cs</LastGenOutput>
+        <DependentUpon>SharedResources.resx</DependentUpon>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Pages\Index.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Index.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Pages\Rooms\Room.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Room.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Pages\Rooms\Details.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Details.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Pages\Bookings\MyBooking.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>MyBooking.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Pages\About.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>About.resx</DependentUpon>
+      </Compile>
+      <Compile Update="SharedResources\SharedResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>SharedResources.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Resources\Pages\Bookings\MyBooking.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <DependentUpon>MyBooking.resx</DependentUpon>
+      </AdditionalFiles>
+      <AdditionalFiles Include="Resources\Pages\Bookings\MyBooking.kk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <DependentUpon>MyBooking.resx</DependentUpon>
+      </AdditionalFiles>
+      <AdditionalFiles Include="Resources\Pages\Rooms\Details.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <DependentUpon>Details.resx</DependentUpon>
+      </AdditionalFiles>
+      <AdditionalFiles Include="Resources\Pages\Rooms\Details.kk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <DependentUpon>Details.resx</DependentUpon>
+      </AdditionalFiles>
+      <AdditionalFiles Include="Resources\Pages\Rooms\Room.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <DependentUpon>Room.resx</DependentUpon>
+      </AdditionalFiles>
+      <AdditionalFiles Include="Resources\Pages\Rooms\Room.kk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <DependentUpon>Room.resx</DependentUpon>
+      </AdditionalFiles>
     </ItemGroup>
 
 </Project>

@@ -1,28 +1,38 @@
 ﻿using Coworking.Application.Interfaces;
 using Coworking.Domain.Entity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coworking.Infrastructure.Persistence;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-    : DbContext(options), IApplicationDbContext
+    : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>(options), IApplicationDbContext
 {
-    public DbSet<User> Users => Set<User>();
+    public new DbSet<ApplicationUser> Users => Set<ApplicationUser>();
     
     public DbSet<Room> Rooms => Set<Room>();
     public DbSet<Booking> Bookings => Set<Booking>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().HasMany(u => u.Bookings)
+        modelBuilder.Entity<ApplicationUser>().HasMany(u => u.Bookings)
             .WithOne(b => b.User)
             .HasForeignKey(b => b.UserId)
             .OnDelete(DeleteBehavior.Cascade);
         
         // Конфигурация цены с точностью до 2 знаков после запятой
-        modelBuilder.Entity<Room>()
-            .Property(r => r.PricePerHour)
-            .HasPrecision(18, 2);
+        modelBuilder.Entity<Room>(entity =>
+        {
+            entity.Property(r => r.PricePerHour)
+                .HasPrecision(18, 2);
+
+            // Настройка новых полей
+            entity.Property(r => r.PhotoUrl)
+                .HasMaxLength(500); // Ограничение длины ссылки
+
+            entity.Property(r => r.PhotoHash)
+                .HasMaxLength(256); // Хэш обычно фиксированной длины (SHA256 и т.д.)
+        });
 
         modelBuilder.Entity<Booking>()
             .Property(b => b.TotalPrice)
