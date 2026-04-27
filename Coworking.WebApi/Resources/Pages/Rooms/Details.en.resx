@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="PageTitle" xml:space="preserve"><value>Room Details</value></data>
+    <data name="PricePerHourLabel" xml:space="preserve"><value>/ hour</value></data>
+    <data name="CharacteristicsTitle" xml:space="preserve"><value>Characteristics</value></data>
+    <data name="CapacityLabel" xml:space="preserve"><value>Capacity:</value></data>
+    <data name="PeopleLabel" xml:space="preserve"><value>people</value></data>
+    <data name="RoomTypeLabel" xml:space="preserve"><value>Room Type:</value></data>
+    <data name="RoomTypeValue" xml:space="preserve"><value>Workspace</value></data>
+    <data name="AvailabilityLabel" xml:space="preserve"><value>Availability:</value></data>
+    <data name="AvailabilityValue" xml:space="preserve"><value>24/7</value></data>
+    <data name="LocationLabel" xml:space="preserve"><value>Location:</value></data>
+    <data name="LocationValue" xml:space="preserve"><value>Main Building</value></data>
+    <data name="BookNowButton" xml:space="preserve"><value>Book Now</value></data>
+    <data name="ModalTitleLabel" xml:space="preserve"><value>Booking</value></data>
+    <data name="SelectDateLabel" xml:space="preserve"><value>Select Date</value></data>
+    <data name="SelectTimeLabel" xml:space="preserve"><value>Start Time</value></data>
+    <data name="DurationLabel" xml:space="preserve"><value>Duration</value></data>
+    <data name="SummaryDatetimeLabel" xml:space="preserve"><value>Date &amp; Time</value></data>
+    <data name="SummaryDurationLabel" xml:space="preserve"><value>Duration</value></data>
+    <data name="TotalLabel" xml:space="preserve"><value>Total</value></data>
+    <data name="ConfirmButton" xml:space="preserve"><value>Confirm Booking</value></data>
+    <data name="SuccessTitle" xml:space="preserve"><value>Booking Confirmed!</value></data>
+    <data name="DayMon" xml:space="preserve"><value>Mon</value></data>
+    <data name="DayTue" xml:space="preserve"><value>Tue</value></data>
+    <data name="DayWed" xml:space="preserve"><value>Wed</value></data>
+    <data name="DayThu" xml:space="preserve"><value>Thu</value></data>
+    <data name="DayFri" xml:space="preserve"><value>Fri</value></data>
+    <data name="DaySat" xml:space="preserve"><value>Sat</value></data>
+    <data name="DaySun" xml:space="preserve"><value>Sun</value></data>
+    <data name="HourLabel" xml:space="preserve"><value>h</value></data>
+</root>

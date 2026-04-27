@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="PageTitle" xml:space="preserve"><value>Бөлме мәліметтері</value></data>
+    <data name="PricePerHourLabel" xml:space="preserve"><value>/ сағ</value></data>
+    <data name="CharacteristicsTitle" xml:space="preserve"><value>Сипаттамалары</value></data>
+    <data name="CapacityLabel" xml:space="preserve"><value>Сыйымдылығы:</value></data>
+    <data name="PeopleLabel" xml:space="preserve"><value>адам</value></data>
+    <data name="RoomTypeLabel" xml:space="preserve"><value>Бөлме түрі:</value></data>
+    <data name="RoomTypeValue" xml:space="preserve"><value>Жұмыс аймағы</value></data>
+    <data name="AvailabilityLabel" xml:space="preserve"><value>Қолжетімділік:</value></data>
+    <data name="AvailabilityValue" xml:space="preserve"><value>24/7</value></data>
+    <data name="LocationLabel" xml:space="preserve"><value>Орналасуы:</value></data>
+    <data name="LocationValue" xml:space="preserve"><value>Негізгі ғимарат</value></data>
+    <data name="BookNowButton" xml:space="preserve"><value>Қазір брондау</value></data>
+    <data name="ModalTitleLabel" xml:space="preserve"><value>Брондау</value></data>
+    <data name="SelectDateLabel" xml:space="preserve"><value>Күнді таңдаңыз</value></data>
+    <data name="SelectTimeLabel" xml:space="preserve"><value>Басталу уақыты</value></data>
+    <data name="DurationLabel" xml:space="preserve"><value>Ұзақтығы</value></data>
+    <data name="SummaryDatetimeLabel" xml:space="preserve"><value>Күні мен уақыты</value></data>
+    <data name="SummaryDurationLabel" xml:space="preserve"><value>Ұзақтығы</value></data>
+    <data name="TotalLabel" xml:space="preserve"><value>Барлығы</value></data>
+    <data name="ConfirmButton" xml:space="preserve"><value>Брондауды растау</value></data>
+    <data name="SuccessTitle" xml:space="preserve"><value>Брондау расталды!</value></data>
+    <data name="DayMon" xml:space="preserve"><value>дс</value></data>
+    <data name="DayTue" xml:space="preserve"><value>сс</value></data>
+    <data name="DayWed" xml:space="preserve"><value>ср</value></data>
+    <data name="DayThu" xml:space="preserve"><value>бс</value></data>
+    <data name="DayFri" xml:space="preserve"><value>жм</value></data>
+    <data name="DaySat" xml:space="preserve"><value>сб</value></data>
+    <data name="DaySun" xml:space="preserve"><value>жк</value></data>
+    <data name="HourLabel" xml:space="preserve"><value>с</value></data>
+</root>

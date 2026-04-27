@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+        <xsd:element name="root" msdata:IsDataSet="true">
+            <xsd:complexType>
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="0" />
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
+            </xsd:complexType>
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+    <resheader name="version"><value>2.0</value></resheader>
+    <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+    <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+    <data name="PageTitle" xml:space="preserve"><value>Детали комнаты</value></data>
+    <data name="PricePerHourLabel" xml:space="preserve"><value>/ час</value></data>
+    <data name="CharacteristicsTitle" xml:space="preserve"><value>Характеристики</value></data>
+    <data name="CapacityLabel" xml:space="preserve"><value>Вместимость:</value></data>
+    <data name="PeopleLabel" xml:space="preserve"><value>человек</value></data>
+    <data name="RoomTypeLabel" xml:space="preserve"><value>Тип помещения:</value></data>
+    <data name="RoomTypeValue" xml:space="preserve"><value>Рабочая зона</value></data>
+    <data name="AvailabilityLabel" xml:space="preserve"><value>Доступность:</value></data>
+    <data name="AvailabilityValue" xml:space="preserve"><value>24/7</value></data>
+    <data name="LocationLabel" xml:space="preserve"><value>Местоположение:</value></data>
+    <data name="LocationValue" xml:space="preserve"><value>Главный корпус</value></data>
+    <data name="BookNowButton" xml:space="preserve"><value>Забронировать сейчас</value></data>
+    <data name="ModalTitleLabel" xml:space="preserve"><value>Бронирование</value></data>
+    <data name="SelectDateLabel" xml:space="preserve"><value>Выберите дату</value></data>
+    <data name="SelectTimeLabel" xml:space="preserve"><value>Время начала</value></data>
+    <data name="DurationLabel" xml:space="preserve"><value>Продолжительность</value></data>
+    <data name="SummaryDatetimeLabel" xml:space="preserve"><value>Дата и время</value></data>
+    <data name="SummaryDurationLabel" xml:space="preserve"><value>Длительность</value></data>
+    <data name="TotalLabel" xml:space="preserve"><value>Итого</value></data>
+    <data name="ConfirmButton" xml:space="preserve"><value>Подтвердить бронирование</value></data>
+    <data name="SuccessTitle" xml:space="preserve"><value>Бронирование подтверждено!</value></data>
+    <data name="DayMon" xml:space="preserve"><value>пн</value></data>
+    <data name="DayTue" xml:space="preserve"><value>вт</value></data>
+    <data name="DayWed" xml:space="preserve"><value>ср</value></data>
+    <data name="DayThu" xml:space="preserve"><value>чт</value></data>
+    <data name="DayFri" xml:space="preserve"><value>пт</value></data>
+    <data name="DaySat" xml:space="preserve"><value>сб</value></data>
+    <data name="DaySun" xml:space="preserve"><value>вс</value></data>
+    <data name="HourLabel" xml:space="preserve"><value>ч</value></data>
+</root>
