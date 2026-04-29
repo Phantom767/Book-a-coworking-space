@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+        <xsd:element name="root" msdata:IsDataSet="true">
+            <xsd:complexType>
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="0" />
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
+            </xsd:complexType>
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+    <resheader name="version"><value>2.0</value></resheader>
+    <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+    <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+    <data name="PageTitle" xml:space="preserve"><value>Управление комнатами</value></data>
+    <data name="AddRoomButton" xml:space="preserve"><value>Добавить комнату</value></data>
+    <data name="TablePhotoHeader" xml:space="preserve"><value>Фото</value></data>
+    <data name="TableNameHeader" xml:space="preserve"><value>Название</value></data>
+    <data name="TableDescHeader" xml:space="preserve"><value>Описание</value></data>
+    <data name="TablePriceHeader" xml:space="preserve"><value>Цена (₸/час)</value></data>
+    <data name="TableCapacityHeader" xml:space="preserve"><value>Вместимость</value></data>
+    <data name="TableActionsHeader" xml:space="preserve"><value>Действия</value></data>
+    <data name="EditButton" xml:space="preserve"><value>Изменить</value></data>
+    <data name="DeleteButton" xml:space="preserve"><value>Удалить</value></data>
+    <data name="CreateModalTitle" xml:space="preserve"><value>Новая комната</value></data>
+    <data name="EditModalTitle" xml:space="preserve"><value>Редактировать комнату</value></data>
+    <data name="LabelName" xml:space="preserve"><value>Название</value></data>
+    <data name="LabelDescription" xml:space="preserve"><value>Описание</value></data>
+    <data name="LabelPrice" xml:space="preserve"><value>Цена в час (₸)</value></data>
+    <data name="LabelCapacity" xml:space="preserve"><value>Вместимость</value></data>
+    <data name="LabelPhoto" xml:space="preserve"><value>Фото комнаты</value></data>
+    <data name="PhotoHint" xml:space="preserve"><value>(необязательно)</value></data>
+    <data name="PhotoUploadText" xml:space="preserve"><value>Нажмите или перетащите файл &lt;small&gt;JPG, PNG, WEBP · до 5 МБ&lt;/small&gt;</value></data>
+    <data name="CancelButton" xml:space="preserve"><value>Отмена</value></data>
+    <data name="CreateButton" xml:space="preserve"><value>Создать</value></data>
+    <data name="SaveButton" xml:space="preserve"><value>Сохранить изменения</value></data>
+    <data name="DeleteConfirm" xml:space="preserve"><value>Удалить комнату "{0}"?</value></data>
+</root>
