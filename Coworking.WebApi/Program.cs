@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Coworking.Application.common.Mapping;
 using Coworking.Application.Interfaces;
+using Coworking.Application.Models;
 using Coworking.Application.Service;
 using Coworking.Domain.Entity;
 using Coworking.Infrastructure;
@@ -28,6 +29,8 @@ builder.Services.AddScoped<IAdminRoomService, AdminRoomService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.AddScoped<IApplicationDbContext>(provider =>
     provider.GetRequiredService<ApplicationDbContext>());

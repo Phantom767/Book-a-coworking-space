@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
@@ -6,7 +6,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>Coworking.WebApi</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    </PropertyGroup>
+      <UserSecretsId>3209b74e-ed6d-46fa-82cd-2160f5d8a061</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Coworking.Application\Coworking.Application.csproj" />
@@ -28,6 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="wwwroot\css\" />
       <Folder Include="wwwroot\uploads\rooms\" />
     </ItemGroup>
 
@@ -139,6 +141,28 @@
         <LastGenOutput>SharedResources.kk.Designer.cs</LastGenOutput>
         <DependentUpon>SharedResources.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Admin\Rooms.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Rooms.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Admin\Rooms.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Rooms.en.Designer.cs</LastGenOutput>
+        <DependentUpon>Rooms.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Admin\Rooms.kk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Rooms.kk.Designer.cs</LastGenOutput>
+        <DependentUpon>Rooms.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Account\ForgotPassword.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ForgotPassword.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Account\ResetPassword.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ResetPassword.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -171,6 +195,21 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>SharedResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Pages\Admin\Rooms.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Rooms.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Pages\Account\ForgotPassword.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ForgotPassword.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Pages\Account\ResetPassword.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ResetPassword.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
