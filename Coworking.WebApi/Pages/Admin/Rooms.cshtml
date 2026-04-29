@@ -1,7 +1,7 @@
 ﻿@page
 @model Coworking.WebApi.Pages.Admin.Rooms
 @{
-ViewData["Title"] = "Управление комнатами";
+ViewData["Title"] = Localizer["PageTitle"];
 Layout = "_Layout";
 }
 
@@ -44,9 +44,9 @@ Layout = "_Layout";
     }
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 style="color:#fff">Управление комнатами</h2>
+        <h2 style="color:#fff">@Localizer["PageTitle"]</h2>
         <button class="btn btn-purple" data-bs-toggle="modal" data-bs-target="#createRoomModal">
-            <i class="bi bi-plus-lg"></i> Добавить комнату
+            <i class="bi bi-plus-lg"></i> @Localizer["AddRoomButton"]
         </button>
     </div>
 
@@ -54,12 +54,12 @@ Layout = "_Layout";
         <table class="table table-dark table-hover align-middle">
             <thead>
             <tr>
-                <th>Фото</th>
-                <th>Название</th>
-                <th>Описание</th>
-                <th>Цена (₸/час)</th>
-                <th>Вместимость</th>
-                <th>Действия</th>
+                <th>@Localizer["TablePhotoHeader"]</th>
+                <th>@Localizer["TableNameHeader"]</th>
+                <th>@Localizer["TableDescHeader"]</th>
+                <th>@Localizer["TablePriceHeader"]</th>
+                <th>@Localizer["TableCapacityHeader"]</th>
+                <th>@Localizer["TableActionsHeader"]</th>
             </tr>
             </thead>
             <tbody>
@@ -83,21 +83,21 @@ Layout = "_Layout";
                 <td>@room.PricePerHour ₸</td>
                 <td>@room.Capacity чел.</td>
                 <td>
-                    <button type="button" 
-                            class="btn btn-sm btn-outline-light me-1" 
-                            data-bs-toggle="modal" 
+                    <button type="button"
+                            class="btn btn-sm btn-outline-light me-1"
+                            data-bs-toggle="modal"
                             data-bs-target="#editRoomModal"
                             data-room-id="@room.Id"
                             data-room-name="@room.Name"
                             data-room-desc="@room.Description"
                             data-room-price="@room.PricePerHour"
                             data-room-cap="@room.Capacity">
-                        Изменить
+                        @Localizer["EditButton"]
                     </button>
-    
+
                     <button class="btn btn-sm btn-danger"
                             onclick="deleteRoom('@room.Id', '@room.Name')">
-                        Удалить
+                        @Localizer["DeleteButton"]
                     </button>
                 </td>
             </tr>
@@ -112,34 +112,33 @@ Layout = "_Layout";
     <div class="modal-dialog">
         <div class="modal-content" style="background:#1e1e2e; color:#e0e0e0;">
             <div class="modal-header border-secondary">
-                <h5 class="modal-title" style="color:#fff">Новая комната</h5>
+                <h5 class="modal-title" style="color:#fff">@Localizer["CreateModalTitle"]</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <!-- ✅ enctype для загрузки файла -->
                 <form method="post" enctype="multipart/form-data">
                     @Html.AntiForgeryToken()
                     <div class="mb-3">
-                        <label class="form-label">Название</label>
+                        <label class="form-label">@Localizer["LabelName"]</label>
                         <input asp-for="Input.Name" class="form-control" required />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Описание</label>
+                        <label class="form-label">@Localizer["LabelDescription"]</label>
                         <textarea asp-for="Input.Description" class="form-control" rows="3" required></textarea>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Цена в час (₸)</label>
+                            <label class="form-label">@Localizer["LabelPrice"]</label>
                             <input asp-for="Input.Price" type="number" class="form-control" required />
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Вместимость</label>
+                            <label class="form-label">@Localizer["LabelCapacity"]</label>
                             <input asp-for="Input.Capacity" type="number" class="form-control" required />
                         </div>
                     </div>
                     <!-- Зона загрузки фото -->
                     <div class="mb-3">
-                        <label class="form-label">Фото комнаты <span style="color:#888">(необязательно)</span></label>
+                        <label class="form-label">@Localizer["LabelPhoto"] <span style="color:#888">@Localizer["PhotoHint"]</span></label>
                         <div class="upload-zone" id="createUploadZone">
                             <input type="file" asp-for="Photo"
                                    accept="image/jpeg,image/png,image/webp"
@@ -147,8 +146,7 @@ Layout = "_Layout";
                             <div id="createUploadText">
                                 <i class="bi bi-cloud-upload" style="font-size:24px; color:#6c5ce7"></i>
                                 <p style="color:#888; margin:6px 0 0; font-size:13px">
-                                    Нажмите или перетащите файл<br>
-                                    <small>JPG, PNG, WEBP · до 5 МБ</small>
+                                    @Html.Raw(Localizer["PhotoUploadText"])
                                 </p>
                             </div>
                             <img id="createPreview" class="preview" alt="Превью" />
@@ -156,8 +154,8 @@ Layout = "_Layout";
                     </div>
 
                     <div class="modal-footer border-secondary px-0 pb-0">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                        <button type="submit" class="btn btn-purple">Создать</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["CancelButton"]</button>
+                        <button type="submit" class="btn btn-purple">@Localizer["CreateButton"]</button>
                     </div>
                 </form>
             </div>
@@ -171,59 +169,58 @@ Layout = "_Layout";
         <div class="modal-content" style="background:#1e1e2e; color:#e0e0e0;">
             <form method="post" enctype="multipart/form-data" asp-page-handler="Edit">
                 <div class="modal-header border-secondary">
-                    <h5 class="modal-title" style="color:#fff">Редактировать комнату</h5>
+                    <h5 class="modal-title" style="color:#fff">@Localizer["EditModalTitle"]</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                
+
                 <div class="modal-body">
                     @Html.AntiForgeryToken()
-                    
+
                     <!-- Скрытое поле ID комнаты -->
                     <input type="hidden" name="roomId" id="editRoomId" />
 
                     <div class="mb-3">
-                        <label class="form-label">Название</label>
+                        <label class="form-label">@Localizer["LabelName"]</label>
                         <input asp-for="Input.Name" id="editInputName" class="form-control" required />
                     </div>
-                    
+
                     <div class="mb-3">
-                        <label class="form-label">Описание</label>
+                        <label class="form-label">@Localizer["LabelDescription"]</label>
                         <textarea asp-for="Input.Description" id="editInputDesc" class="form-control" rows="3" required></textarea>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Цена в час (₸)</label>
+                            <label class="form-label">@Localizer["LabelPrice"]</label>
                             <input asp-for="Input.Price" id="editInputPrice" type="number" class="form-control" required />
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Вместимость</label>
+                            <label class="form-label">@Localizer["LabelCapacity"]</label>
                             <input asp-for="Input.Capacity" id="editInputCap" type="number" class="form-control" required />
                         </div>
                     </div>
 
                     <!-- Зона загрузки фото -->
                     <div class="mb-3">
-                        <label class="form-label">Фото комнаты <span style="color:#888">(необязательно)</span></label>
-                        <div class="upload-zone" id="createUploadZone">
+                        <label class="form-label">@Localizer["LabelPhoto"] <span style="color:#888">@Localizer["PhotoHint"]</span></label>
+                        <div class="upload-zone" id="editUploadZone">
                             <input type="file" asp-for="Photo"
                                    accept="image/jpeg,image/png,image/webp"
-                                   onchange="previewPhoto(this, 'createPreview', 'createUploadText')" />
-                            <div id="createUploadText">
+                                   onchange="previewPhoto(this, 'editPreview', 'editUploadText')" />
+                            <div id="editUploadText">
                                 <i class="bi bi-cloud-upload" style="font-size:24px; color:#6c5ce7"></i>
                                 <p style="color:#888; margin:6px 0 0; font-size:13px">
-                                    Нажмите или перетащите файл<br>
-                                    <small>JPG, PNG, WEBP · до 5 МБ</small>
+                                    @Html.Raw(Localizer["PhotoUploadText"])
                                 </p>
                             </div>
-                            <img id="createPreview" class="preview" alt="Превью" />
+                            <img id="editPreview" class="preview" alt="Превью" />
                         </div>
                     </div>
                 </div>
 
                 <div class="modal-footer border-secondary">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                    <button type="submit" class="btn btn-purple">Сохранить изменения</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["CancelButton"]</button>
+                    <button type="submit" class="btn btn-purple">@Localizer["SaveButton"]</button>
                 </div>
             </form>
         </div>
@@ -231,61 +228,48 @@ Layout = "_Layout";
 </div>
 
 @section Scripts {
-    <script>
-        const editModal = document.getElementById('editRoomModal');
+<script>
+    const editModal = document.getElementById('editRoomModal');
 
-        if (editModal) {
-            editModal.addEventListener('show.bs.modal', function (event) {
-                // Кнопка, которая вызвала модальное окно
-                const button = event.relatedTarget;
+    if (editModal) {
+        editModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const roomId = button.getAttribute('data-room-id');
+            const roomName = button.getAttribute('data-room-name');
+            const roomDesc = button.getAttribute('data-room-desc');
+            const roomPrice = button.getAttribute('data-room-price');
+            const roomCap = button.getAttribute('data-room-cap');
 
-                // Извлекаем данные из data-атрибутов
-                const roomId = button.getAttribute('data-room-id');
-                const roomName = button.getAttribute('data-room-name');
-                const roomDesc = button.getAttribute('data-room-desc');
-                const roomPrice = button.getAttribute('data-room-price');
-                const roomCap = button.getAttribute('data-room-cap');
+            document.getElementById('editRoomId').value = roomId;
+            document.getElementById('editInputName').value = roomName;
+            document.getElementById('editInputDesc').value = roomDesc;
+            document.getElementById('editInputPrice').value = roomPrice;
+            document.getElementById('editInputCap').value = roomCap;
 
-                // Обновляем поля формы внутри модального окна
-                document.getElementById('editRoomId').value = roomId;
-                document.getElementById('editInputName').value = roomName;
-                document.getElementById('editInputDesc').value = roomDesc;
-                document.getElementById('editInputPrice').value = roomPrice;
-                document.getElementById('editInputCap').value = roomCap;
-
-                // Сброс поля файла (чтобы не отправлять старый файл случайно)
-                const fileInput = editModal.querySelector('input[type="file"]');
-                if(fileInput) fileInput.value = '';
-            });
-        }
-        // Превью фото до загрузки
-        function previewPhoto(input, previewId, textId) {
-            const file = input.files[0];
-            if (!file) return;
-            const preview = document.getElementById(previewId);
-            const text    = document.getElementById(textId);
-            preview.src = URL.createObjectURL(file);
-            preview.style.display = 'block';
-            text.style.display    = 'none';
-        }
-    
-        // Подставляем roomId в модальное окно загрузки
-        document.getElementById('uploadPhotoModal').addEventListener('show.bs.modal', e => {
-            const btn = e.relatedTarget;
-            document.getElementById('uploadRoomId').value   = btn.dataset.roomId;
-            document.getElementById('uploadRoomName').textContent = 'Комната: ' + btn.dataset.roomName;
-            // Сброс превью
-            document.getElementById('editPreview').style.display = 'none';
-            document.getElementById('editUploadText').style.display = 'block';
+            const fileInput = editModal.querySelector('input[type="file"]');
+            if(fileInput) fileInput.value = '';
         });
-    
-        function deleteRoom(id, name) {
-            if (confirm(`Удалить комнату "${name}"?`)) {
-                fetch(`?handler=Delete&roomId=${id}`, {
-                    method: 'POST',
-                    headers: { 'RequestVerificationToken': document.querySelector('[name=__RequestVerificationToken]').value }
-                }).then(() => location.reload());
-            }
+    }
+
+    function previewPhoto(input, previewId, textId) {
+        const file = input.files[0];
+        if (!file) return;
+        const preview = document.getElementById(previewId);
+        const text    = document.getElementById(textId);
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+        text.style.display    = 'none';
+    }
+
+    function deleteRoom(id, name) {
+        const msg = "@Localizer["DeleteConfirm"]".replace("{0}", name);
+
+        if (confirm(`Удалить комнату "${msg}"?`)) {
+            fetch(`?handler=Delete&roomId=${id}`, {
+                method: 'POST',
+                headers: { 'RequestVerificationToken': document.querySelector('[name=__RequestVerificationToken]').value }
+            }).then(() => location.reload());
         }
-    </script>
+    }
+</script>
 }

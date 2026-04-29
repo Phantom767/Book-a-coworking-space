@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="PageTitle" xml:space="preserve"><value>Бөлмелерді басқару</value></data>
+    <data name="AddRoomButton" xml:space="preserve"><value>Бөлме қосу</value></data>
+    <data name="TablePhotoHeader" xml:space="preserve"><value>Фото</value></data>
+    <data name="TableNameHeader" xml:space="preserve"><value>Атауы</value></data>
+    <data name="TableDescHeader" xml:space="preserve"><value>Сипаттама</value></data>
+    <data name="TablePriceHeader" xml:space="preserve"><value>Бағасы (₸/сағ)</value></data>
+    <data name="TableCapacityHeader" xml:space="preserve"><value>Сыйымдылығы</value></data>
+    <data name="TableActionsHeader" xml:space="preserve"><value>Әрекеттер</value></data>
+    <data name="EditButton" xml:space="preserve"><value>Өзгерту</value></data>
+    <data name="DeleteButton" xml:space="preserve"><value>Жою</value></data>
+    <data name="CreateModalTitle" xml:space="preserve"><value>Жаңа бөлме</value></data>
+    <data name="EditModalTitle" xml:space="preserve"><value>Бөлмені өзгерту</value></data>
+    <data name="LabelName" xml:space="preserve"><value>Атауы</value></data>
+    <data name="LabelDescription" xml:space="preserve"><value>Сипаттама</value></data>
+    <data name="LabelPrice" xml:space="preserve"><value>Сағатына бағасы (₸)</value></data>
+    <data name="LabelCapacity" xml:space="preserve"><value>Сыйымдылығы</value></data>
+    <data name="LabelPhoto" xml:space="preserve"><value>Бөлме фото</value></data>
+    <data name="PhotoHint" xml:space="preserve"><value>(міндетті емес)</value></data>
+    <data name="PhotoUploadText" xml:space="preserve"><value>Файлды басыңыз немесе сүйреп әкеліңіз &lt;small&gt;JPG, PNG, WEBP · 5 МБ дейін&lt;/small&gt;</value></data>
+    <data name="CancelButton" xml:space="preserve"><value>Бас тарту</value></data>
+    <data name="CreateButton" xml:space="preserve"><value>Жасау</value></data>
+    <data name="SaveButton" xml:space="preserve"><value>Өзгерістерді сақтау</value></data>
+    <data name="DeleteConfirm" xml:space="preserve"><value>"{0}" бөлмесін жою керек пе?</value></data>
+</root>
