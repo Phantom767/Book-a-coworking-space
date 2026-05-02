@@ -8,6 +8,9 @@
 //------------------------------------------------------------------------------
 
 namespace Coworking.WebApi.Resources.Pages {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -35,7 +38,7 @@ namespace Coworking.WebApi.Resources.Pages {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Coworking.WebApi.Resources.Pages.Room", typeof(Room).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Coworking.WebApi.Resources.Pages.Rooms.Room", typeof(Room).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -156,6 +159,33 @@ namespace Coworking.WebApi.Resources.Pages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Попробуйте изменить параметры поиска или.
+        /// </summary>
+        internal static string EmptyStateText {
+            get {
+                return ResourceManager.GetString("EmptyStateText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Применить.
+        /// </summary>
+        internal static string FilterButton {
+            get {
+                return ResourceManager.GetString("FilterButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Найдено:.
+        /// </summary>
+        internal static string FindTitle {
+            get {
+                return ResourceManager.GetString("FindTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Современные рабочие зоны в самом центре города. Бронируйте онлайн за пару кликов..
         /// </summary>
         internal static string HeroSubtitle {
@@ -179,6 +209,33 @@ namespace Coworking.WebApi.Resources.Pages {
         internal static string HourLabel {
             get {
                 return ResourceManager.GetString("HourLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Макс. цена.
+        /// </summary>
+        internal static string MaxPriceLabel {
+            get {
+                return ResourceManager.GetString("MaxPriceLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Мин. вместимость.
+        /// </summary>
+        internal static string MinCapacityLabel {
+            get {
+                return ResourceManager.GetString("MinCapacityLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Мин. цена.
+        /// </summary>
+        internal static string MinPriceLabel {
+            get {
+                return ResourceManager.GetString("MinPriceLabel", resourceCulture);
             }
         }
         
@@ -215,6 +272,42 @@ namespace Coworking.WebApi.Resources.Pages {
         internal static string PricePerHourLabel {
             get {
                 return ResourceManager.GetString("PricePerHourLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to сбросить фильтры.
+        /// </summary>
+        internal static string ResetFiltersLink {
+            get {
+                return ResourceManager.GetString("ResetFiltersLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to залов.
+        /// </summary>
+        internal static string RoomsTitle {
+            get {
+                return ResourceManager.GetString("RoomsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to зал.
+        /// </summary>
+        internal static string RoomTitle {
+            get {
+                return ResourceManager.GetString("RoomTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Поиск по названию или описанию....
+        /// </summary>
+        internal static string SearchPlaceholder {
+            get {
+                return ResourceManager.GetString("SearchPlaceholder", resourceCulture);
             }
         }
         

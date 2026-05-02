@@ -46,4 +46,34 @@
     <data name="DaySat" xml:space="preserve"><value>Sat</value></data>
     <data name="DaySun" xml:space="preserve"><value>Sun</value></data>
     <data name="HourLabel" xml:space="preserve"><value>h</value></data>
+    <data name="EmptyStateText" xml:space="preserve">
+        <value>Try changing your search parameters or</value>
+    </data>
+    <data name="ResetFiltersLink" xml:space="preserve">
+        <value>reset filters</value>
+    </data>
+    <data name="SearchPlaceholder" xml:space="preserve">
+        <value>Search by name or description...</value>
+    </data>
+    <data name="MinPriceLabel" xml:space="preserve">
+        <value>Min price</value>
+    </data>
+    <data name="MaxPriceLabel" xml:space="preserve">
+        <value>Max price</value>
+    </data>
+    <data name="MinCapacityLabel" xml:space="preserve">
+        <value>Min capacity</value>
+    </data>
+    <data name="FilterButton" xml:space="preserve">
+        <value>Apply</value>
+    </data>
+    <data name="FindTitle" xml:space="preserve">
+        <value>find:</value>
+    </data>
+    <data name="RoomTitle" xml:space="preserve">
+        <value>hall</value>
+    </data>
+    <data name="RoomsTitle" xml:space="preserve">
+        <value>halls</value>
+    </data>
 </root>

@@ -43,4 +43,34 @@
     <data name="DaySat" xml:space="preserve"><value>сб</value></data>
     <data name="DaySun" xml:space="preserve"><value>жк</value></data>
     <data name="HourLabel" xml:space="preserve"><value>с</value></data>
+    <data name="ResetFiltersLink" xml:space="preserve">
+        <value>сүзгілерді тастаңыз</value>
+    </data>
+    <data name="MinPriceLabel" xml:space="preserve">
+        <value>Минималды баға</value>
+    </data>
+    <data name="SearchPlaceholder" xml:space="preserve">
+        <value>Атауы немесе сипаттамасы бойынша іздеу...</value>
+    </data>
+    <data name="EmptyStateText" xml:space="preserve">
+        <value>Атауы немесе сипаттамасы бойынша іздеу...</value>
+    </data>
+    <data name="MaxPriceLabel" xml:space="preserve">
+        <value>Максималды баға</value>
+    </data>
+    <data name="MinCapacityLabel" xml:space="preserve">
+        <value>Минималды сыйымдылық</value>
+    </data>
+    <data name="FilterButton" xml:space="preserve">
+        <value>Қолдану</value>
+    </data>
+    <data name="FindTitle" xml:space="preserve">
+        <value>табылды:</value>
+    </data>
+    <data name="RoomTitle" xml:space="preserve">
+        <value>зал</value>
+    </data>
+    <data name="RoomsTitle" xml:space="preserve">
+        <value>залдар</value>
+    </data>
 </root>

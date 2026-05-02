@@ -102,4 +102,34 @@
     <data name="HourLabel" xml:space="preserve">
         <value>ч</value>
     </data>
+    <data name="EmptyStateText" xml:space="preserve">
+        <value>Попробуйте изменить параметры поиска или</value>
+    </data>
+    <data name="ResetFiltersLink" xml:space="preserve">
+        <value>сбросить фильтры</value>
+    </data>
+    <data name="SearchPlaceholder" xml:space="preserve">
+        <value>Поиск по названию или описанию...</value>
+    </data>
+    <data name="MinPriceLabel" xml:space="preserve">
+        <value>Мин. цена</value>
+    </data>
+    <data name="MaxPriceLabel" xml:space="preserve">
+        <value>Макс. цена</value>
+    </data>
+    <data name="MinCapacityLabel" xml:space="preserve">
+        <value>Мин. вместимость</value>
+    </data>
+    <data name="FilterButton" xml:space="preserve">
+        <value>Применить</value>
+    </data>
+    <data name="FindTitle" xml:space="preserve">
+        <value>Найдено:</value>
+    </data>
+    <data name="RoomTitle" xml:space="preserve">
+        <value>зал</value>
+    </data>
+    <data name="RoomsTitle" xml:space="preserve">
+        <value>залов</value>
+    </data>
 </root>

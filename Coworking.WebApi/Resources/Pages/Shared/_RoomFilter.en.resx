@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+
+    <!-- English -->
+    <data name="NameValueSearchFullPlaceholder" xml:space="preserve">
+    <value>Search by name or amenities…</value>
+  </data>
+    <data name="SortDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+    <data name="SortNewest" xml:space="preserve">
+    <value>Newest first</value>
+  </data>
+    <data name="SortOldest" xml:space="preserve">
+    <value>Oldest first</value>
+  </data>
+    <data name="SortAmenities" xml:space="preserve">
+    <value>By amenities</value>
+  </data>
+    <data name="SortPriceAsc" xml:space="preserve">
+    <value>Price: low to high</value>
+  </data>
+    <data name="SortPriceDesc" xml:space="preserve">
+    <value>Price: high to low</value>
+  </data>
+    <data name="SortCapacity" xml:space="preserve">
+    <value>By capacity</value>
+  </data>
+    <data name="PriceLabel" xml:space="preserve">
+    <value>Price per hour</value>
+  </data>
+    <data name="From" xml:space="preserve">
+    <value>from</value>
+  </data>
+    <data name="To" xml:space="preserve">
+    <value>to</value>
+  </data>
+    <data name="DateFromLabel" xml:space="preserve">
+    <value>Check-in</value>
+  </data>
+    <data name="DateToLabel" xml:space="preserve">
+    <value>Check-out</value>
+  </data>
+    <data name="GuestsLabel" xml:space="preserve">
+    <value>Guests</value>
+  </data>
+    <data name="GuestsPlaceholder" xml:space="preserve">
+    <value>Qty</value>
+  </data>
+    <data name="FindButton" xml:space="preserve">
+    <value>Search</value>
+  </data>
+    <data name="ResetFilterLink" xml:space="preserve">
+    <value>Reset Filters</value>
+  </data>
+</root>

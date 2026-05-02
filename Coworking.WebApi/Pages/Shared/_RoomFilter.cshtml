@@ -1,0 +1,377 @@
+@* ═══════════════════════════════════════════════════════
+   _RoomFilter.cshtml  — partial, include on Rooms/Index
+   Usage: <partial name="_RoomFilter" />
+   ═══════════════════════════════════════════════════════ *@
+
+<style>
+@@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+/* ── Filter wrapper ── */
+.rf-wrap {
+    font-family: 'Montserrat', sans-serif;
+    background: #1e1e2e;
+    border: 1px solid #2e2e45;
+    border-radius: 20px;
+    padding: 28px 32px 24px;
+    margin-bottom: 36px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+}
+
+/* ── Top row: search + sort ── */
+.rf-top {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 20px;
+    align-items: stretch;
+}
+
+.rf-search-wrap {
+    position: relative;
+    flex: 1;
+}
+
+.rf-search-wrap .rf-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #555;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.rf-search {
+    width: 100%;
+    background: #12121f;
+    border: 1px solid #2e2e45;
+    color: #e0e0f0;
+    border-radius: 12px;
+    padding: 12px 14px 12px 40px;
+    font-size: 13px;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+.rf-search::placeholder { color: #444; }
+.rf-search:focus {
+    border-color: #6c5ce7;
+    box-shadow: 0 0 0 3px rgba(108,92,231,0.18);
+}
+
+/* Sort select */
+.rf-sort {
+    background: #12121f;
+    border: 1px solid #2e2e45;
+    color: #e0e0f0;
+    border-radius: 12px;
+    padding: 12px 40px 12px 14px;
+    font-size: 13px;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    cursor: pointer;
+    min-width: 200px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236c5ce7' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+.rf-sort:focus {
+    border-color: #6c5ce7;
+    box-shadow: 0 0 0 3px rgba(108,92,231,0.18);
+}
+.rf-sort option { background: #1e1e2e; color: #e0e0f0; }
+
+/* ── Filters row ── */
+.rf-filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    gap: 14px;
+    align-items: end;
+}
+
+.rf-field { display: flex; flex-direction: column; gap: 6px; }
+
+.rf-label {
+    color: #777;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+.rf-input {
+    background: #12121f;
+    border: 1px solid #2e2e45;
+    color: #e0e0f0;
+    border-radius: 12px;
+    padding: 11px 13px;
+    font-size: 13px;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+    width: 100%;
+}
+.rf-input::placeholder { color: #444; }
+.rf-input:focus {
+    border-color: #6c5ce7;
+    box-shadow: 0 0 0 3px rgba(108,92,231,0.18);
+}
+.rf-input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5) sepia(1) saturate(3) hue-rotate(220deg);
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+/* Price range: two inputs in one row */
+.rf-price-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+/* Capacity input with icon */
+.rf-capacity-wrap { position: relative; }
+.rf-capacity-wrap .rf-cap-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #555;
+    font-size: 13px;
+    pointer-events: none;
+}
+
+/* ── Buttons ── */
+.rf-btn-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.rf-btn-apply {
+    background: linear-gradient(135deg, #6c5ce7, #4834d4);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 11px 22px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    transition: opacity 0.2s, transform 0.1s;
+    white-space: nowrap;
+}
+.rf-btn-apply:hover  { opacity: 0.88; }
+.rf-btn-apply:active { transform: scale(0.97); }
+
+.rf-btn-reset {
+    background: transparent;
+    color: #555;
+    border: 1px solid #2e2e45;
+    border-radius: 12px;
+    padding: 10px 22px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+}
+.rf-btn-reset:hover { color: #ef4444; border-color: #ef4444; text-decoration: none; }
+
+/* ── Active filters pills ── */
+.rf-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+    min-height: 0;
+}
+
+.rf-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(108,92,231,0.15);
+    border: 1px solid rgba(108,92,231,0.35);
+    color: #a89be8;
+    border-radius: 20px;
+    padding: 5px 12px 5px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.rf-pill-remove {
+    color: #6c5ce7;
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1;
+    opacity: 0.7;
+    transition: opacity 0.15s;
+}
+.rf-pill-remove:hover { opacity: 1; color: #ef4444; }
+
+/* ── Results count ── */
+.rf-results-meta {
+    color: #555;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 0;
+    padding: 0 2px 18px;
+    letter-spacing: 0.2px;
+}
+.rf-results-meta strong { color: #6c5ce7; }
+
+/* ── Responsive ── */
+@@media (max-width: 900px) {
+    .rf-filters { grid-template-columns: 1fr 1fr 1fr; }
+    .rf-btn-row { flex-direction: row; }
+}
+@@media (max-width: 600px) {
+    .rf-wrap { padding: 20px 16px; }
+    .rf-top { flex-direction: column; }
+    .rf-filters { grid-template-columns: 1fr 1fr; }
+    .rf-sort { min-width: unset; width: 100%; }
+}
+</style>
+
+@{
+    // Pull current values from query string for sticky state
+    var q        = Context.Request.Query["q"].ToString();
+    var priceMin = Context.Request.Query["priceMin"].ToString();
+    var priceMax = Context.Request.Query["priceMax"].ToString();
+    var dateFrom = Context.Request.Query["dateFrom"].ToString();
+    var dateTo   = Context.Request.Query["dateTo"].ToString();
+    var capacity = Context.Request.Query["capacity"].ToString();
+    var sortBy   = Context.Request.Query["sortBy"].ToString();
+
+    bool hasFilters = !string.IsNullOrEmpty(q) || !string.IsNullOrEmpty(priceMin) ||
+                      !string.IsNullOrEmpty(priceMax) || !string.IsNullOrEmpty(dateFrom) ||
+                      !string.IsNullOrEmpty(dateTo) || !string.IsNullOrEmpty(capacity);
+}
+
+<form method="get" asp-page="/Rooms/Index" class="rf-wrap" id="roomFilterForm">
+
+    @* ── TOP ROW: Search + Sort ── *@
+    <div class="rf-top">
+        <div class="rf-search-wrap">
+            <i class="fa-solid fa-magnifying-glass rf-icon"></i>
+            <input type="text" name="q" value="@q"
+                   class="rf-search"
+                   placeholder="@Localizer["SearchFullPlaceholder"]" />
+        </div>
+
+        <select name="sortBy" class="rf-sort" onchange="this.form.submit()">
+            <option value=""           selected="@(sortBy == "" ? "selected" : null)">@Localizer["SortDefault"]</option>
+            <option value="newest"     selected="@(sortBy == "newest" ? "selected" : null)">@Localizer["SortNewest"]</option>
+            <option value="oldest"     selected="@(sortBy == "oldest" ? "selected" : null)">@Localizer["SortOldest"]</option>
+            <option value="amenities"  selected="@(sortBy == "amenities" ? "selected" : null)">@Localizer["SortAmenities"]</option>
+            <option value="price_asc"  selected="@(sortBy == "price_asc" ? "selected" : null)">@Localizer["SortPriceAsc"]</option>
+            <option value="price_desc" selected="@(sortBy == "price_desc" ? "selected" : null)">@Localizer["SortPriceDesc"]</option>
+            <option value="capacity"   selected="@(sortBy == "capacity" ? "selected" : null)">@Localizer["SortCapacity"]</option>
+        </select>
+    </div>
+
+    @* ── FILTERS ROW ── *@
+    <div class="rf-filters">
+
+        @* Price range *@
+        <div class="rf-field">
+            <span class="rf-label"><i class="fa-solid fa-tenge-sign" style="margin-right:4px"></i>@Localizer["PriceLabel"]</span>
+            <div class="rf-price-pair">
+                <input type="number" name="priceMin" value="@priceMin"
+                       class="rf-input" placeholder="@Localizer["From"]" min="0" step="100" />
+                <input type="number" name="priceMax" value="@priceMax"
+                       class="rf-input" placeholder="@Localizer["To"]" min="0" step="100" />
+            </div>
+        </div>
+
+        @* Date from *@
+        <div class="rf-field">
+            <span class="rf-label"><i class="fa-regular fa-calendar" style="margin-right:4px"></i>@Localizer["DateFromLabel"]</span>
+            <input type="date" name="dateFrom" value="@dateFrom" class="rf-input"
+                   min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+        </div>
+
+        @* Date to *@
+        <div class="rf-field">
+            <span class="rf-label"><i class="fa-regular fa-calendar-check" style="margin-right:4px"></i>@Localizer["DateToLabel"]</span>
+            <input type="date" name="dateTo" value="@dateTo" class="rf-input"
+                   min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+        </div>
+
+        @* Capacity *@
+        <div class="rf-field">
+            <span class="rf-label"><i class="fa-solid fa-users" style="margin-right:4px"></i>@Localizer["GuestsLabel"]</span>
+            <div class="rf-capacity-wrap">
+                <input type="number" name="capacity" value="@capacity"
+                       class="rf-input" placeholder="@Localizer["GuestsPlaceholder"]" min="1" max="100" />
+                <i class="fa-solid fa-user rf-cap-icon"></i>
+            </div>
+        </div>
+
+        @* Action buttons *@
+        <div class="rf-btn-row">
+            <button type="submit" class="rf-btn-apply">
+                <i class="fa-solid fa-sliders" style="margin-right:6px"></i>@Localizer["FindButton"]
+            </button>
+            
+            <a href="@Url.Page("/Rooms/Index")" class="rf-btn-reset @(!hasFilters ? "disabled-link" : "")">
+                <i class="fa-solid fa-xmark" style="margin-right:4px"></i>@Localizer["ResetFilterLink"]
+            </a>
+        </div>
+
+    </div>
+
+ @* ── ACTIVE FILTER PILLS ── *@
+    @if (hasFilters)
+    {
+        <div class="rf-pills">
+            @if (!string.IsNullOrEmpty(q))
+            {
+                <span class="rf-pill">
+                    <i class="fa-solid fa-magnifying-glass" style="font-size:10px"></i>
+                    @q
+                    <a href="@Url.Page("/Rooms/Index", null, new { priceMin, priceMax, dateFrom, dateTo, capacity, sortBy })"
+                       class="rf-pill-remove">×</a>
+                </span>
+            }
+            @if (!string.IsNullOrEmpty(priceMin) || !string.IsNullOrEmpty(priceMax))
+            {
+                <span class="rf-pill">
+                    <i class="fa-solid fa-tenge-sign" style="font-size:10px"></i>
+                    @(string.IsNullOrEmpty(priceMin) ? "0" : priceMin) — @(string.IsNullOrEmpty(priceMax) ? "∞" : priceMax) ₸@Localizer["HourLabel"]
+                    <a href="@Url.Page("/Rooms/Index", null, new { q, dateFrom, dateTo, capacity, sortBy })"
+                       class="rf-pill-remove">×</a>
+                </span>
+            }
+            @if (!string.IsNullOrEmpty(dateFrom) || !string.IsNullOrEmpty(dateTo))
+            {
+                <span class="rf-pill">
+                    <i class="fa-regular fa-calendar" style="font-size:10px"></i>
+                    @(string.IsNullOrEmpty(dateFrom) ? "…" : dateFrom) → @(string.IsNullOrEmpty(dateTo) ? "…" : dateTo)
+                    <a href="@Url.Page("/Rooms/Index", null, new { q, priceMin, priceMax, capacity, sortBy })"
+                       class="rf-pill-remove">×</a>
+                </span>
+            }
+            @if (!string.IsNullOrEmpty(capacity))
+            {
+                <span class="rf-pill">
+                    <i class="fa-solid fa-users" style="font-size:10px"></i>
+                    @capacity @Localizer["CapacityLabel"]
+                    <a href="@Url.Page("/Rooms/Index", null, new { q, priceMin, priceMax, dateFrom, dateTo, sortBy })"
+                       class="rf-pill-remove">×</a>
+                </span>
+            }
+        </div>
+    }
+</form>

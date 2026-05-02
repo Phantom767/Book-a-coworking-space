@@ -1,43 +1,161 @@
 ﻿@page
-@model Coworking.WebApi.Pages.Rooms.Room
+@model Room
 @{
 ViewData["Title"] = Localizer["PageTitle"];
 Layout = "_Layout";
 }
 
 @section Styles {
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <style>
-    .hero {
-        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
-        padding: 100px 0 80px;
-        position: relative;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    .rooms-page {
+        background: #0f172a;
+        min-height: 100vh;
+        padding: 40px 0 60px;
+        font-family: 'Montserrat', sans-serif;
     }
+
+    .rooms-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Page heading ── */
+    .rooms-heading {
+        color: #fff;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+    .rooms-meta {
+        color: #555;
+        font-size: 13px;
+        margin-bottom: 28px;
+    }
+    .rooms-meta strong { color: #6c5ce7; }
+
+    /* ── Cards grid ── */
+    .rooms-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 22px;
+    }
+
+    /* ── Room card ── */
+    .room-card {
+        background: #1e1e2e;
+        border: 1px solid #2a2a3e;
+        border-radius: 18px;
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+    }
+    .room-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 40px rgba(108,92,231,0.2);
+        border-color: rgba(108,92,231,0.4);
+    }
+
+    .room-card-img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        background: #12121f;
+    }
+    .room-card-img-placeholder {
+        width: 100%;
+        height: 180px;
+        background: linear-gradient(135deg, #12121f, #1a1a2e);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #2a2a3e;
+        font-size: 36px;
+    }
+
+    .room-card-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column; }
+
+    .room-card-name {
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .room-card-desc {
+        color: #777;
+        font-size: 12px;
+        line-height: 1.55;
+        margin-bottom: 14px;
+        flex: 1;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Amenities */
+    .room-amenities {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 16px;
+    }
+    .room-amenity-tag {
+        background: rgba(108,92,231,0.12);
+        border: 1px solid rgba(108,92,231,0.25);
+        color: #9b8fe8;
+        border-radius: 16px;
+        padding: 3px 10px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+    }
+
+    /* Footer: price + capacity + CTA */
+    .room-card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid #2a2a3e;
+        padding-top: 14px;
+        margin-top: auto;
+    }
+
+    .room-price {
+        color: #fff;
+        font-size: 17px;
+        font-weight: 700;
+    }
+    .room-price small {
+        color: #555;
+        font-size: 11px;
+        font-weight: 400;
+        margin-left: 2px;
+    }
+
+    .room-capacity {
+        color: #666;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    /* ── Empty state ── */
+    .rooms-empty {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 80px 20px;
+        color: #444;
+    }
+    .rooms-empty-icon { font-size: 48px; margin-bottom: 16px; color: #2a2a3e; }
+    .rooms-empty h3 { color: #666; font-size: 18px; margin-bottom: 8px; }
+    .rooms-empty p { font-size: 13px; }
 
     nav{
         background-color: rgba(15, 23, 42, 0.9) !important;
         backdrop-filter: blur(10px);
         border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .room-card {
-        background-color: var(--card-bg);
-        border: 1px solid #334155;
-        border-radius: 20px;
-        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
-        height: 100%;
-    }
-
-    .room-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        border-color: var(--accent-color);
-    }
-
-    .price-tag {
-        color: #818cf8;
-        font-size: 1.4rem;
-        font-weight: 800;
     }
 
     .btn-book {
@@ -56,23 +174,6 @@ Layout = "_Layout";
         color: white;
     }
 
-    .room-image-placeholder {
-        height: 200px;
-        background: #2d3748;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 20px 20px 0 0;
-        color: #4a5568;
-        overflow: hidden; /* Чтобы картинка не вылезала */
-    }
-
-    .room-thumb {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
     .section-label {
         font-size: 11px; letter-spacing: .1em; color: #64748b;
         text-transform: uppercase; margin: 0 0 12px;
@@ -83,7 +184,6 @@ Layout = "_Layout";
         cursor: pointer; font-size: 16px; line-height: 1;
     }
     .cal-nav-btn:hover { background: rgba(255,255,255,.06); }
-    .dow { font-size: 11px; color: #64748b; padding: 4px 0; display: block; }
     .dur-btn {
         flex: 1; padding: 10px 0; border: 1px solid rgba(255,255,255,.08);
         background: transparent; border-radius: 10px; color: #e2e8f0;
@@ -94,76 +194,97 @@ Layout = "_Layout";
 </style>
 }
 
-<div class="hero">
-    <div class="container text-center">
-        <h1 class="display-3 fw-bold mb-3 text-white">@Localizer["HeroTitle"]</h1>
-        <p class="fs-5 text-light opacity-75 mx-auto" style="max-width: 700px; color: #ffffff">
-            @Localizer["HeroSubtitle"]
+<div class="rooms-page">
+    <div class="rooms-container">
+
+        <h1 class="rooms-heading">@Localizer["SectionTitle"]</h1>
+        <p class="rooms-meta">
+            @Localizer["FindTitle"] <strong>@Model.TotalCount</strong>
+            @(Model.TotalCount % 10 == 1 && Model.TotalCount % 100 != 11 ? @Localizer["RoomTitle"] :
+            Model.TotalCount % 10 is >= 2 and <= 4 && (Model.TotalCount % 100 < 10 || Model.TotalCount % 100 >= 20) ? @Localizer["RoomsTitle"] : @Localizer["RoomTitle"])
         </p>
-    </div>
-</div>
 
-<div class="container my-5">
-    <div class="d-flex justify-content-between align-items-end mb-5">
-        <div>
-            <h2 class="h2 text-white mb-0" style="color: #ffffff">@Localizer["SectionTitle"]</h2>
-            <div style="width: auto; height: 4px; background: var(--accent-color); border-radius: 2px; margin-top: 8px;"></div>
-        </div>
-    </div>
+        @* ── Filter partial ── *@
+        <partial name="_RoomFilter" />
 
-    @if (Model.Rooms.Any())
-    {
-    <div class="row g-4">
-        @foreach (var room in Model.Rooms)
-        {
-        <div class="col-12 col-md-6 col-lg-4">
-            <a asp-page="/Rooms/Details" asp-route-id="@room.Id" class="text-decoration-none text-reset">
-                <div class="card room-card shadow-sm h-100">
-                    <div class="room-image-placeholder">
-                        @if (!string.IsNullOrEmpty(room.PhotoUrl))
+        @* ── Cards ── *@
+        <div class="rooms-grid">
+            @if (!Model.Rooms.Any())
+            {
+                <div class="rooms-empty">
+                    <div class="rooms-empty-icon"><i class="fa-regular fa-folder-open"></i></div>
+                    <h3>@Localizer["NoRoomsMessage"]</h3>
+                    <p>
+                        @Localizer["EmptyStateText"] 
+                        <a href="@Url.Page("/Rooms/Room")" style="color:#6c5ce7">@Localizer["ResetFiltersLink"]</a>.
+                    </p>
+                </div>
+            }
+            else
+            {
+            @foreach (var room in Model.Rooms)
+            {
+            <a href="/Rooms/Details/@room.Id" class="room-card">
+
+                @if (!string.IsNullOrEmpty(room.PhotoUrl))
+                {
+                <img src="@room.PhotoUrl"
+                     @(room.PhotoHash != null ? $"data-hash=\"{room.PhotoHash}\"" : "")
+                     alt="@room.Name"
+                     class="room-card-img"
+                     loading="lazy" />
+                }
+                else
+                {
+                <div class="room-card-img-placeholder">
+                    <i class="fa-regular fa-image"></i>
+                </div>
+                }
+
+                <div class="room-card-body">
+                    <div class="room-card-name">@room.Name</div>
+
+                    @if (!string.IsNullOrEmpty(room.Description))
+                    {
+                    <p class="room-card-desc">@room.Description</p>
+                    }
+
+                    @if (room.Amenities?.Count > 0)
+                    {
+                    <div class="room-amenities">
+                        @foreach (var amenity in room.Amenities.Take(4))
                         {
-                        <img src="@room.PhotoUrl" class="room-thumb" alt="@room.Name" />
+                        <span class="room-amenity-tag">@amenity</span>
                         }
-                        else
+                        @if (room.Amenities.Count > 4)
                         {
-                        <i class="bi bi-door-open fs-1"></i>
+                        <span class="room-amenity-tag">+@(room.Amenities.Count - 4)</span>
                         }
                     </div>
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between mb-3">
-                            <h5 class="card-title h4 mb-0 text-white">@room.Name</h5>
-                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2">
-                                    @room.Capacity @Localizer["CapacityLabel"]
-                                </span>
-                        </div>
+                    }
 
-                        <p class="text-secondary mb-4" style="color: #ffffff">
-                            @(room.Description ?? "Превосходное пространство для фокусировки и продуктивной работы.")
-                        </p>
-
-                        <div class="d-flex justify-content-between align-items-center mt-4">
-                            <div>
-                                <span class="price-tag">@room.PricePerHour ₸</span>
-                                <small class="text-muted d-block">@Localizer["PricePerHourLabel"]</small>
-                            </div>
-                            <button class="btn btn-book px-4"
-                                    onclick="event.preventDefault(); event.stopPropagation(); openBookingModal('@room.Id', '@room.Name', @room.Capacity, @room.PricePerHour)">
-                                @Localizer["BookButton"]
-                            </button>
+                    <div class="room-card-footer">
+                        <div class="room-price">
+                            @room.PricePerHour.ToString("N0") ₸<small>@Localizer["HourLabel"]</small>
                         </div>
+                        <div class="room-capacity">
+                            <i class="fa-solid fa-users" style="font-size:10px"></i>
+                            @* Используем "до" (up to) или просто число *@
+                            @room.Capacity @Localizer["CapacityLabel"]
+                        </div>
+                        @* ... кнопка ... *@
+                        <button class="btn btn-book px-4"
+                                onclick="event.preventDefault(); event.stopPropagation(); openBookingModal('@room.Id', '@room.Name', @room.Capacity, @room.PricePerHour)">
+                            @Localizer["BookButton"]
+                        </button>
                     </div>
                 </div>
             </a>
+            }
+            }
         </div>
-        }
+
     </div>
-    }
-    else
-    {
-    <div class="text-center py-5 rounded-4" style="background: rgba(255,255,255,0.02); border: 2px dashed rgba(255,255,255,0.1)">
-        <p class="fs-5" style="color: #ffffff">@Localizer["NoRoomsMessage"]</p>
-    </div>
-    }
 </div>
 
 <!-- Модальное окно бронирования -->
