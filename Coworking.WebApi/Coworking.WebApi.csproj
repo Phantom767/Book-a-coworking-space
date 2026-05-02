@@ -163,6 +163,26 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ResetPassword.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Shared\_RoomFilter.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>_RoomFilter.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Shared\_RoomFilter.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>_RoomFilter.en.Designer.cs</LastGenOutput>
+        <DependentUpon>_RoomFilter.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Shared\_RoomFilter.kk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>_RoomFilter.kk.Designer.cs</LastGenOutput>
+        <DependentUpon>_RoomFilter.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Shared\_Layout.en.resx">
+        <DependentUpon>_Layout.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Pages\Shared\_Layout.kk.resx">
+        <DependentUpon>_Layout.resx</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -210,6 +230,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>ResetPassword.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Pages\Shared\_RoomFilter.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>_RoomFilter.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
