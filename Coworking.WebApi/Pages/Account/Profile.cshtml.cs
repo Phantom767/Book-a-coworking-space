@@ -35,11 +35,15 @@ public class ProfileModel(
         if (user == null) return;
 
         // Заполняем данные для отображения
-        FirstName = user.FirstName ?? string.Empty;
-        LastName = user.LastName ?? string.Empty;
-        Email = user.Email ?? string.Empty;
-        Is2FAEnabled = await userManager.GetTwoFactorEnabledAsync(user);
-        EmailNotificationsEnabled = user.EmailNotificationsEnabled;
+        ProfileInput = new UpdateProfileRequest
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            Phone = user.PhoneNumber,
+        // Is2FAEnabled = await userManager.GetTwoFactorEnabledAsync(user)
+            EmailNotificationsEnabled = user.EmailNotificationsEnabled
+        };
         
         var passDate = await profileService.GetPasswordChangedDateAsync(user.Id);
         PasswordChangedDisplay = passDate?.ToString("dd MMM yyyy") ?? "Никогда";
@@ -47,9 +51,9 @@ public class ProfileModel(
         // Заполняем форму ввода текущими данными
         ProfileInput = new UpdateProfileRequest
         {
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Email = user.Email,
+            FirstName = user.FirstName ?? string.Empty,
+            LastName = user.LastName ?? string.Empty,
+            Email = user.Email ?? string.Empty,
             Phone = user.PhoneNumber,
             EmailNotificationsEnabled = user.EmailNotificationsEnabled
         };
