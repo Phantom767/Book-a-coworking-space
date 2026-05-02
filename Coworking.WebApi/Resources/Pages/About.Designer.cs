@@ -159,7 +159,7 @@ namespace Coworking.WebApi.Resources.Pages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Комфорт: Эргономичная мебель и тишина..
+        ///   Looks up a localized string similar to .
         /// </summary>
         internal static string ValueComfort {
             get {
@@ -168,20 +168,56 @@ namespace Coworking.WebApi.Resources.Pages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Развитие: Мы поддерживаем обучение и рост..
+        ///   Looks up a localized string similar to Эргономичная мебель и тишина..
         /// </summary>
-        internal static string ValueGrowth {
+        internal static string ValueComfortDesc {
             get {
-                return ResourceManager.GetString("ValueGrowth", resourceCulture);
+                return ResourceManager.GetString("ValueComfortDesc", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Открытость: Мы открыты для новых идей и людей..
+        ///   Looks up a localized string similar to Комфорт: .
         /// </summary>
-        internal static string ValueOpenness {
+        internal static string ValueComfortTitle {
             get {
-                return ResourceManager.GetString("ValueOpenness", resourceCulture);
+                return ResourceManager.GetString("ValueComfortTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Мы поддерживаем обучение и рост..
+        /// </summary>
+        internal static string ValueGrowthDesc {
+            get {
+                return ResourceManager.GetString("ValueGrowthDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Развитие: .
+        /// </summary>
+        internal static string ValueGrowthTitle {
+            get {
+                return ResourceManager.GetString("ValueGrowthTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Мы открыты для новых идей и людей..
+        /// </summary>
+        internal static string ValueOpennessDesc {
+            get {
+                return ResourceManager.GetString("ValueOpennessDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Открытость: .
+        /// </summary>
+        internal static string ValueOpennessTitle {
+            get {
+                return ResourceManager.GetString("ValueOpennessTitle", resourceCulture);
             }
         }
         

@@ -28,12 +28,18 @@
     <data name="MissionTitle" xml:space="preserve"><value>Наша миссия</value></data>
     <data name="MissionText" xml:space="preserve"><value>Предоставить каждому предпринимателю инструменты для роста. Мы верим, что правильное окружение ускоряет развитие бизнеса в 2 раза.</value></data>
     <data name="ValuesTitle" xml:space="preserve"><value>Наши ценности</value></data>
-    <data name="ValueOpenness" xml:space="preserve"><value>Открытость: Мы открыты для новых идей и людей.</value></data>
-    <data name="ValueComfort" xml:space="preserve"><value>Комфорт: Эргономичная мебель и тишина.</value></data>
-    <data name="ValueGrowth" xml:space="preserve"><value>Развитие: Мы поддерживаем обучение и рост.</value></data>
+    <data name="ValueOpennessTitle" xml:space="preserve"><value>Открытость: </value></data>
+    <data name="ValueOpennessDesc" xml:space="preserve"><value>Мы открыты для новых идей и людей.</value></data>
+    <data name="ValueComfortTitle" xml:space="preserve"><value>Комфорт: </value></data>
+    <data name="ValueComfortDesc" xml:space="preserve"><value>Эргономичная мебель и тишина.</value></data>
+    <data name="ValueGrowthTitle" xml:space="preserve"><value>Развитие: </value></data>
+    <data name="ValueGrowthDesc" xml:space="preserve"><value>Мы поддерживаем обучение и рост.</value></data>
     <data name="TeamTitle" xml:space="preserve"><value>Наша команда</value></data>
     <data name="FounderName" xml:space="preserve"><value>Алексей</value></data>
     <data name="FounderRole" xml:space="preserve"><value>Основатель</value></data>
     <data name="ManagerName" xml:space="preserve"><value>Мария</value></data>
     <data name="ManagerRole" xml:space="preserve"><value>Комьюнити-менеджер</value></data>
+    <data name="ValueComfort" xml:space="preserve">
+        <value />
+    </data>
 </root>

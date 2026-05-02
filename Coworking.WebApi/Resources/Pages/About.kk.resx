@@ -7,9 +7,12 @@
     <data name="MissionTitle" xml:space="preserve"><value>Біздің миссиямыз</value></data>
     <data name="MissionText" xml:space="preserve"><value>Әрбір кәсіпкерге өсу құралдарын беру. Біз дұрыс орта бизнестің дамуын 2 есе жылдамдататынына сенеміз.</value></data>
     <data name="ValuesTitle" xml:space="preserve"><value>Біздің құндылықтарымыз</value></data>
-    <data name="ValueOpenness" xml:space="preserve"><value>Ашықтық: Біз жаңа идеялар мен адамдарға ашықпыз.</value></data>
-    <data name="ValueComfort" xml:space="preserve"><value>Жайлылық: Эргономикалық жиһаз және тыныштық.</value></data>
-    <data name="ValueGrowth" xml:space="preserve"><value>Даму: Біз оқуды және өсуді қолдаймыз.</value></data>
+    <data name="ValueOpennessTitle" xml:space="preserve"><value>Ашықтық: </value></data>
+    <data name="ValueOpennessDesc" xml:space="preserve"><value>Біз жаңа идеялар мен адамдарға ашықпыз.</value></data>
+    <data name="ValueComfortTitle" xml:space="preserve"><value>Жайлылық: </value></data>
+    <data name="ValueComfortDesc" xml:space="preserve"><value>Эргономикалық жиһаз және тыныштық.</value></data>
+    <data name="ValueGrowthTitle" xml:space="preserve"><value>Даму: </value></data>
+    <data name="ValueGrowthDesc" xml:space="preserve"><value>Біз оқуды және өсуді қолдаймыз.</value></data>
     <data name="TeamTitle" xml:space="preserve"><value>Біздің команда</value></data>
     <data name="FounderName" xml:space="preserve"><value>Алексей</value></data>
     <data name="FounderRole" xml:space="preserve"><value>Негізін қалаушы</value></data>

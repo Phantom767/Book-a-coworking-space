@@ -7,9 +7,12 @@
     <data name="MissionTitle" xml:space="preserve"><value>Our Mission</value></data>
     <data name="MissionText" xml:space="preserve"><value>To provide every entrepreneur with tools for growth. We believe that the right environment accelerates business development by 2 times.</value></data>
     <data name="ValuesTitle" xml:space="preserve"><value>Our Values</value></data>
-    <data name="ValueOpenness" xml:space="preserve"><value>Openness: We are open to new ideas and people.</value></data>
-    <data name="ValueComfort" xml:space="preserve"><value>Comfort: Ergonomic furniture and silence.</value></data>
-    <data name="ValueGrowth" xml:space="preserve"><value>Growth: We support learning and development.</value></data>
+    <data name="ValueOpennessTitle" xml:space="preserve"><value>Openness: </value></data>
+    <data name="ValueOpennessDesc" xml:space="preserve"><value>We are open to new ideas and people.</value></data>
+    <data name="ValueComfortTitle" xml:space="preserve"><value>Comfort: </value></data>
+    <data name="ValueComfortDesc" xml:space="preserve"><value>Ergonomic furniture and silence.</value></data>
+    <data name="ValueGrowthTitle" xml:space="preserve"><value>Growth: </value></data>
+    <data name="ValueGrowthDesc" xml:space="preserve"><value>We support learning and development.</value></data>
     <data name="TeamTitle" xml:space="preserve"><value>Our Team</value></data>
     <data name="FounderName" xml:space="preserve"><value>Alexey</value></data>
     <data name="FounderRole" xml:space="preserve"><value>Founder</value></data>
