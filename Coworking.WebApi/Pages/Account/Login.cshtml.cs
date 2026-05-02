@@ -14,7 +14,7 @@ namespace Coworking.WebApi.Pages.Account
         : PageModel
     {
         [BindProperty] 
-        public LoginRequest Input { get; set; }
+        public required LoginRequest Input { get; set; }
 
         public void OnGet() { }
 

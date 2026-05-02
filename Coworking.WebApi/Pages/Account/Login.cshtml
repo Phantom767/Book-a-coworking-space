@@ -66,13 +66,15 @@
                        placeholder="@Localizer["EmailPlaceholder"]" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
-
-            <div class="mb-3">
-                <label asp-for="Input.Password" class="form-label" style="color:#fff">
-                    @Localizer["PasswordLabel"]
-                </label>
-                <input asp-for="Input.Password" type="password" class="form-control form-control-lg"
-                       placeholder="@Localizer["PasswordPlaceholder"]" />
+            
+            <div class="mb-3 position-relative">
+                <label asp-for="Input.Password" class="form-label" style="color:#fff">@Localizer["PasswordLabel"]</label>
+                <div class="input-group">
+                    <input asp-for="Input.Password" type="password" class="form-control text-white border-0" id="registerPassword" placeholder="@Localizer["PasswordPlaceholder"]" />
+                    <button class="btn btn-outline-secondary border-0 text-white" type="button" onclick="togglePassword('registerPassword', this)">
+                        <i class="bi bi-eye-slash"></i>
+                    </button>
+                </div>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
 
@@ -88,6 +90,10 @@
                            color:#fff; font-weight:600; border-radius:8px;">
                 @Localizer["LoginButton"]
             </button>
+            
+            <div class="mb-3 text-end">
+                <a asp-page="./ForgotPassword" class="text-decoration-none small">Забыли пароль?</a>
+            </div>
 
             <div class="text-center" style="color:#aaa">
                 @Localizer["NoAccount"]
@@ -96,3 +102,21 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector('i');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            } else {
+                input.type = "password";
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            }
+        }
+    </script>
+}
