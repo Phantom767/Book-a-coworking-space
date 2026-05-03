@@ -14,8 +14,19 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Конфигурирование Serilog
+builder.Host.UseSerilog((context, configuration) =>
+    configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .Enrich.FromLogContext()
+        .Enrich.WithMachineName()
+        .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+);
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -196,6 +207,8 @@ if (app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
+
+app.UseSerilogRequestLogging();
 
 app.UseCors("AllowReactApp");
 
