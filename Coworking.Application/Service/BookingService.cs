@@ -71,7 +71,7 @@ public class BookingService(
         // 5. Создаем бронь
          var booking = mapper.Map<Booking>(dto);
              booking.Id = Guid.NewGuid();
-             booking.RoomName = room.Name;  // Устанавливаем имя комнаты
+             booking.Room = room;  // Устанавливаем имя комнаты
              booking.TotalPrice = totalPrice;
              booking.Status = BookingStatus.Pending; // Ждет подтверждения
 

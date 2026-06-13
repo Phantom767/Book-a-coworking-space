@@ -6,5 +6,6 @@ public enum BookingStatus
     Active,
     Pending,   // В ожидании подтверждения
     Confirmed, // Подтверждено
-    Cancelled   // Отменено
+    Cancelled,   // Отменено
+    Completed
 }
