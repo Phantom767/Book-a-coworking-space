@@ -194,7 +194,11 @@
             <div class="si-title">@Localizer["PasswordTitle"]</div>
             <div class="si-sub">@Localizer["PasswordLastChanged"] @Model.PasswordChangedDisplay</div>
           </div>
-          <a asp-page="/Account/ChangePassword"><button class="btn-sm-outline">@Localizer["ChangeButton"]</button></a>
+          <a asp-page="/Account/ForgotPassword">
+            <button type="button" class="btn-sm-outline">
+              @Localizer["ChangeButton"]
+            </button>
+          </a>
         </div>
 
         <form method="post" asp-page-handler="Toggle2FA">
