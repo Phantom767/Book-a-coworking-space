@@ -76,15 +76,15 @@
                         switch (booking.Status)
                             {
                                 case BookingStatus.Confirmed:
-                                statusText = Localizer["StatusConfirmed"].ToString();
+                                statusText = Localizer["StatusConfirmed"].Value;
                                 badgeClass = "bg-success";
                                 break;
                                 case BookingStatus.Pending:
-                                statusText = Localizer["StatusPending"].ToString();
+                                statusText = Localizer["StatusPending"].Value;
                                 badgeClass = "bg-warning";
                                 break;
                                 default:
-                                statusText = Localizer["StatusCancelled"].ToString();
+                                statusText = Localizer["StatusCancelled"].Value;
                                 badgeClass = "bg-danger";
                                 break;
                             }
