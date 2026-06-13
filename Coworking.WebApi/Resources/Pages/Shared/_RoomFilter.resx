@@ -66,4 +66,8 @@
     <data name="ResetFilterLink" xml:space="preserve">
     <value>Сбросить фильтры</value>
   </data>
+    <data name="CapacityLabel" xml:space="preserve">
+      <value>CapacityLabel</value>
+      <comment>CapacityLabel</comment>
+    </data>
 </root>

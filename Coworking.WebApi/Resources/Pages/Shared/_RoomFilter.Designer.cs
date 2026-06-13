@@ -60,6 +60,15 @@ namespace Coworking.WebApi.Resources.Pages.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CapacityLabel.
+        /// </summary>
+        internal static string CapacityLabel {
+            get {
+                return ResourceManager.GetString("CapacityLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Дата заезда.
         /// </summary>
         internal static string DateFromLabel {
