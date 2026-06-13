@@ -1,382 +1,579 @@
 ﻿@page
-@model Room
+@using System.Text.Json
+@model Coworking.WebApi.Pages.Rooms.Room
 @{
-ViewData["Title"] = Localizer["PageTitle"];
-Layout = "_Layout";
+    Layout = "_Layout";
+    ViewData["Title"] = "Коворкинг — план помещения";
+
+    // Дата, для которой строится план и временная шкала.
+    var planDate = Model.Filter.DateFrom ?? DateOnly.FromDateTime(DateTime.Today);
+
+    // Рабочие часы шкалы
+    const int dayStartHour = 9;
+    const int dayEndHour   = 22; // не включительно (22:00 — конец последнего слота)
+
+    var jsonOptions = new JsonSerializerOptions
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+
+    // Готовим данные комнат для клиента: id, название, описание, цена, вместимость,
+    // удобства и список бронирований (только Start/End — нужны для расчёта занятости).
+    var roomsForClient = Model.Rooms.Select(r => new
+    {
+        id = r.Id,
+        name = r.Name,
+        description = r.Description,
+        price = r.PricePerHour,
+        capacity = r.Capacity,
+        amenities = r.Amenities ?? new List<string>(),
+        bookings = (r.Bookings ?? Enumerable.Empty<dynamic>())
+            .Select(b => new { start = (DateTime)b.StartTime, end = (DateTime)b.EndTime })
+            .ToList()
+    });
+
+    var roomsJson = JsonSerializer.Serialize(roomsForClient, jsonOptions);
 }
 
 @section Styles {
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-<style>
-    .rooms-page {
-        background: #0f172a;
-        min-height: 100vh;
-        padding: 40px 0 60px;
-        font-family: 'Montserrat', sans-serif;
-    }
+    <style>
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+            align-items: end;
+            margin-bottom: 1.25rem;
+        }
+        .filter-bar label {
+            display: flex;
+            flex-direction: column;
+            font-size: .8rem;
+            color: #555;
+            gap: .25rem;
+        }
+        .filter-bar input,
+        .filter-bar select {
+            padding: .4rem .5rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: .9rem;
+        }
+        .filter-bar button {
+            padding: .5rem 1rem;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background: #fff;
+            cursor: pointer;
+        }
 
-    .rooms-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .plan-legend {
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: .9rem;
+            color: #444;
+        }
+        .legend-swatch {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            margin-right: .35rem;
+            vertical-align: middle;
+            border: 1px solid rgba(0,0,0,.15);
+        }
+        .legend-free     { background: #4caf50; }
+        .legend-occupied { background: #f44336; }
+        .legend-partial  { background: linear-gradient(135deg, #4caf50 50%, #f44336 50%); }
 
-    /* ── Page heading ── */
-    .rooms-heading {
-        color: #fff;
-        font-size: 28px;
-        font-weight: 700;
-        margin-bottom: 6px;
-    }
-    .rooms-meta {
-        color: #555;
-        font-size: 13px;
-        margin-bottom: 28px;
-    }
-    .rooms-meta strong { color: #6c5ce7; }
+        /* ───────────── 2D floor plan ───────────── */
+        .floor-plan {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(110px, 1fr));
+            grid-auto-rows: 90px;
+            gap: 10px;
+            background: #f4f6f8;
+            border: 1px solid #dde2e6;
+            border-radius: 12px;
+            padding: 16px;
+        }
+        .room-tile {
+            border-radius: 10px;
+            border: 2px solid transparent;
+            padding: .5rem .6rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: #fff;
+            cursor: pointer;
+            transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,.15);
+            overflow: hidden;
+        }
+        .room-tile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,.2);
+        }
+        .room-tile.selected {
+            border-color: #1976d2;
+            box-shadow: 0 0 0 3px rgba(25,118,210,.35);
+        }
+        .room-tile.status-free     { background: #4caf50; }
+        .room-tile.status-occupied { background: #f44336; }
+        .room-tile.status-partial  {
+            background: linear-gradient(135deg, #4caf50 0%, #4caf50 55%, #f44336 55%, #f44336 100%);
+        }
+        .room-tile .room-name {
+            font-weight: 600;
+            font-size: .95rem;
+            line-height: 1.2;
+            text-shadow: 0 1px 2px rgba(0,0,0,.25);
+        }
+        .room-tile .room-meta {
+            font-size: .75rem;
+            opacity: .95;
+            text-shadow: 0 1px 2px rgba(0,0,0,.25);
+        }
 
-    /* ── Cards grid ── */
-    .rooms-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 22px;
-    }
+        /* size variation based on capacity — gives the grid a "floor plan" feel */
+        .room-tile.size-l { grid-column: span 2; grid-row: span 2; }
+        .room-tile.size-m { grid-column: span 2; }
+        .room-tile.size-s { grid-column: span 1; }
 
-    /* ── Room card ── */
-    .room-card {
-        background: #1e1e2e;
-        border: 1px solid #2a2a3e;
-        border-radius: 18px;
-        overflow: hidden;
-        transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-        text-decoration: none;
-        display: flex;
-        flex-direction: column;
-    }
-    .room-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 16px 40px rgba(108,92,231,0.2);
-        border-color: rgba(108,92,231,0.4);
-    }
+        /* ───────────── Room detail / timeline panel ───────────── */
+        .room-panel {
+            margin-top: 1.5rem;
+            border: 1px solid #dde2e6;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            background: #fff;
+            display: none;
+        }
+        .room-panel.open { display: block; }
+        .room-panel h3 { margin: 0 0 .25rem; }
+        .room-panel .room-desc { color: #666; font-size: .9rem; margin-bottom: .5rem; }
+        .room-panel .room-info {
+            display: flex;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+            font-size: .9rem;
+            color: #333;
+            margin-bottom: .75rem;
+        }
+        .room-panel .room-info b { color: #111; }
 
-    .room-card-img {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-        background: #12121f;
-    }
-    .room-card-img-placeholder {
-        width: 100%;
-        height: 180px;
-        background: linear-gradient(135deg, #12121f, #1a1a2e);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #2a2a3e;
-        font-size: 36px;
-    }
+        .timeline-date {
+            font-size: .9rem;
+            color: #444;
+            margin-bottom: .5rem;
+        }
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(13, 1fr);
+            gap: 4px;
+            margin-bottom: .75rem;
+        }
+        .slot {
+            position: relative;
+            border-radius: 6px;
+            padding: .5rem .25rem .35rem;
+            text-align: center;
+            font-size: .75rem;
+            color: #fff;
+            cursor: pointer;
+            border: 2px solid transparent;
+            background: #4caf50;
+            user-select: none;
+        }
+        .slot.occupied {
+            background: #f44336;
+            cursor: not-allowed;
+        }
+        .slot.selected {
+            border-color: #1976d2;
+            box-shadow: inset 0 0 0 2px rgba(255,255,255,.6);
+        }
+        .slot .slot-time { display: block; font-weight: 600; }
 
-    .room-card-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column; }
+        .booking-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .booking-bar .summary {
+            font-size: .9rem;
+            color: #333;
+        }
+        .booking-bar button {
+            padding: .55rem 1.25rem;
+            border-radius: 6px;
+            border: none;
+            background: #1976d2;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .booking-bar button:disabled {
+            background: #b0bec5;
+            cursor: not-allowed;
+        }
+        .booking-msg {
+            font-size: .85rem;
+            margin-top: .5rem;
+        }
+        .booking-msg.error   { color: #c62828; }
+        .booking-msg.success { color: #2e7d32; }
 
-    .room-card-name {
-        color: #fff;
-        font-size: 16px;
-        font-weight: 700;
-        margin-bottom: 6px;
-    }
-
-    .room-card-desc {
-        color: #777;
-        font-size: 12px;
-        line-height: 1.55;
-        margin-bottom: 14px;
-        flex: 1;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    /* Amenities */
-    .room-amenities {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin-bottom: 16px;
-    }
-    .room-amenity-tag {
-        background: rgba(108,92,231,0.12);
-        border: 1px solid rgba(108,92,231,0.25);
-        color: #9b8fe8;
-        border-radius: 16px;
-        padding: 3px 10px;
-        font-size: 10px;
-        font-weight: 600;
-        letter-spacing: 0.3px;
-    }
-
-    /* Footer: price + capacity + CTA */
-    .room-card-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-top: 1px solid #2a2a3e;
-        padding-top: 14px;
-        margin-top: auto;
-    }
-
-    .room-price {
-        color: #fff;
-        font-size: 17px;
-        font-weight: 700;
-    }
-    .room-price small {
-        color: #555;
-        font-size: 11px;
-        font-weight: 400;
-        margin-left: 2px;
-    }
-
-    .room-capacity {
-        color: #666;
-        font-size: 12px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    /* ── Empty state ── */
-    .rooms-empty {
-        grid-column: 1 / -1;
-        text-align: center;
-        padding: 80px 20px;
-        color: #444;
-    }
-    .rooms-empty-icon { font-size: 48px; margin-bottom: 16px; color: #2a2a3e; }
-    .rooms-empty h3 { color: #666; font-size: 18px; margin-bottom: 8px; }
-    .rooms-empty p { font-size: 13px; }
-
-    nav{
-        background-color: rgba(15, 23, 42, 0.9) !important;
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .btn-book {
-        background: linear-gradient(90deg, #4f46e5, #7c3aed);
-        border: none;
-        border-radius: 12px;
-        padding: 12px;
-        font-weight: 600;
-        color: white;
-        transition: all 0.3s;
-    }
-
-    .btn-book:hover {
-        filter: brightness(1.2);
-        box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
-        color: white;
-    }
-
-    .section-label {
-        font-size: 11px; letter-spacing: .1em; color: #64748b;
-        text-transform: uppercase; margin: 0 0 12px;
-    }
-    .cal-nav-btn {
-        background: transparent; border: 1px solid rgba(255,255,255,.08);
-        color: #373970; border-radius: 8px; width: 30px; height: 30px;
-        cursor: pointer; font-size: 16px; line-height: 1;
-    }
-    .cal-nav-btn:hover { background: rgba(255,255,255,.06); }
-    .dur-btn {
-        flex: 1; padding: 10px 0; border: 1px solid rgba(255,255,255,.08);
-        background: transparent; border-radius: 10px; color: #e2e8f0;
-        font-size: 13px; cursor: pointer; transition: all .12s;
-    }
-    .dur-btn:hover { background: #243045; }
-    .dur-btn.active { background: rgba(99,102,241,.15); border-color: #6366f1; color: #6366f1; }
-</style>
+        .empty-state {
+            padding: 2rem;
+            text-align: center;
+            color: #888;
+        }
+    </style>
 }
 
-<div class="rooms-page">
-    <div class="rooms-container">
+<h2>Свободные помещения коворкинга</h2>
 
-        <h1 class="rooms-heading">@Localizer["SectionTitle"]</h1>
-        <p class="rooms-meta">
-            @Localizer["FindTitle"] <strong>@Model.TotalCount</strong>
-            @(Model.TotalCount % 10 == 1 && Model.TotalCount % 100 != 11 ? @Localizer["RoomTitle"] :
-            Model.TotalCount % 10 is >= 2 and <= 4 && (Model.TotalCount % 100 < 10 || Model.TotalCount % 100 >= 20) ? @Localizer["RoomsTitle"] : @Localizer["RoomTitle"])
-        </p>
-
-        @* ── Filter partial ── *@
-        <partial name="_RoomFilter" />
-
-        @* ── Cards ── *@
-        <div class="rooms-grid">
-            @if (!Model.Rooms.Any())
-            {
-                <div class="rooms-empty">
-                    <div class="rooms-empty-icon"><i class="fa-regular fa-folder-open"></i></div>
-                    <h3>@Localizer["NoRoomsMessage"]</h3>
-                    <p>
-                        @Localizer["EmptyStateText"] 
-                        <a href="@Url.Page("/Rooms/Room")" style="color:#6c5ce7">@Localizer["ResetFiltersLink"]</a>.
-                    </p>
-                </div>
-            }
-            else
-            {
-            @foreach (var room in Model.Rooms)
-            {
-            <a href="/Rooms/Details/@room.Id" class="room-card">
-
-                @if (!string.IsNullOrEmpty(room.PhotoUrl))
+@* ───────────── Filter form ───────────── *@
+<form method="get" class="filter-bar">
+    <label>
+        Поиск
+        <input type="text" name="Filter.Q" value="@Model.Filter.Q" placeholder="название, удобства…" />
+    </label>
+    <label>
+        Цена от
+        <input type="number" step="1" min="0" name="Filter.PriceMin" value="@Model.Filter.PriceMin" />
+    </label>
+    <label>
+        Цена до
+        <input type="number" step="1" min="0" name="Filter.PriceMax" value="@Model.Filter.PriceMax" />
+    </label>
+    <label>
+        Вместимость от
+        <input type="number" step="1" min="1" name="Filter.Capacity" value="@Model.Filter.Capacity" />
+    </label>
+    <label>
+        Дата
+        <input type="date" name="Filter.DateFrom" value="@planDate.ToString("yyyy-MM-dd")" />
+    </label>
+    <label>
+        Сортировка
+        <select name="Filter.SortBy">
+            @{
+                var sortOptions = new (string Value, string Label)[]
                 {
-                <img src="@room.PhotoUrl"
-                     @(room.PhotoHash != null ? $"data-hash=\"{room.PhotoHash}\"" : "")
-                     alt="@room.Name"
-                     class="room-card-img"
-                     loading="lazy" />
+                    ("newest", "Сначала новые"),
+                    ("oldest", "Сначала старые"),
+                    ("amenities", "По удобствам"),
+                    ("price_asc", "Цена ↑"),
+                    ("price_desc", "Цена ↓"),
+                    ("capacity", "По вместимости"),
+                };
+            }
+            @foreach (var opt in sortOptions)
+            {
+                if (Model.Filter.SortBy == opt.Value)
+                {
+                    <option value="@opt.Value" selected>@opt.Label</option>
                 }
                 else
                 {
-                <div class="room-card-img-placeholder">
-                    <i class="fa-regular fa-image"></i>
-                </div>
+                    <option value="@opt.Value">@opt.Label</option>
                 }
-
-                <div class="room-card-body">
-                    <div class="room-card-name">@room.Name</div>
-
-                    @if (!string.IsNullOrEmpty(room.Description))
-                    {
-                    <p class="room-card-desc">@room.Description</p>
-                    }
-
-                    @if (room.Amenities?.Count > 0)
-                    {
-                    <div class="room-amenities">
-                        @foreach (var amenity in room.Amenities.Take(4))
-                        {
-                        <span class="room-amenity-tag">@amenity</span>
-                        }
-                        @if (room.Amenities.Count > 4)
-                        {
-                        <span class="room-amenity-tag">+@(room.Amenities.Count - 4)</span>
-                        }
-                    </div>
-                    }
-
-                    <div class="room-card-footer">
-                        <div class="room-price">
-                            @room.PricePerHour.ToString("N0") ₸<small>@Localizer["HourLabel"]</small>
-                        </div>
-                        <div class="room-capacity">
-                            <i class="fa-solid fa-users" style="font-size:10px"></i>
-                            @* Используем "до" (up to) или просто число *@
-                            @room.Capacity @Localizer["CapacityLabel"]
-                        </div>
-                        @* ... кнопка ... *@
-                        <button class="btn btn-book px-4"
-                                onclick="event.preventDefault(); event.stopPropagation(); openBookingModal('@room.Id', '@room.Name', @room.Capacity, @room.PricePerHour)">
-                            @Localizer["BookButton"]
-                        </button>
-                    </div>
-                </div>
-            </a>
             }
-            }
-        </div>
+        </select>
+    </label>
+    <button type="submit">Применить</button>
+</form>
 
-    </div>
+@* ───────────── Legend ───────────── *@
+<div class="plan-legend">
+    <span><span class="legend-swatch legend-free"></span>Свободна весь день</span>
+    <span><span class="legend-swatch legend-partial"></span>Частично занята</span>
+    <span><span class="legend-swatch legend-occupied"></span>Занята весь день</span>
+    <span>Всего найдено: <b>@Model.TotalCount</b></span>
 </div>
 
-<!-- Модальное окно бронирования -->
-<div class="modal fade" id="bookingModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered" style="max-width:480px;">
-        <div class="modal-content" style="background:#1e293b;border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;color:#e2e8f0;">
+@* ───────────── 2D floor plan ───────────── *@
+@if (Model.Rooms.Count == 0)
+{
+    <div class="empty-state">Помещения не найдены — измените параметры фильтра.</div>
+}
+else
+{
+    <div class="floor-plan" id="floorPlan"></div>
+}
 
-            <div style="background:linear-gradient(135deg,#1e1b4b,#312e81);padding:24px 28px 20px;">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <p style="font-size:11px;letter-spacing:.12em;color:rgba(255,255,255,.45);text-transform:uppercase;margin:0 0 4px;">@Localizer["ModalTitleLabel"]</p>
-                        <h5 id="modalTitle" style="font-size:20px;font-weight:600;margin:0;color:#fff;"></h5>
-                        <div class="d-flex gap-3 mt-2">
-                            <span id="modalCapacity" style="font-size:12px;color:rgba(255,255,255,.5);"></span>
-                            <span id="modalPrice"    style="font-size:12px;color:rgba(255,255,255,.5);"></span>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            style="background-color:rgba(255,255,255,.1);border-radius:8px;padding:8px;opacity:1;"></button>
-                </div>
-            </div>
-
-            <div class="modal-body" style="padding:24px 28px;">
-
-                <!-- Выбор даты -->
-                <p class="section-label">@Localizer["SelectDateLabel"]</p>
-                <div id="bookCalendar" style="background:#0f172a;border-radius:14px;padding:16px;margin-bottom:24px;">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <button onclick="prevMonth()" class="cal-nav-btn">&#8249;</button>
-                        <span id="monthLabel" style="font-size:14px;font-weight:500;"></span>
-                        <button onclick="nextMonth()" class="cal-nav-btn">&#8250;</button>
-                    </div>
-                    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;margin-bottom:8px;">
-                        <!-- Дни недели теперь берутся из ресурсов через JS или можно захардкодить, если язык меняется редко -->
-                        <span class="dow">@Localizer["DayMon"]</span><span class="dow">@Localizer["DayTue"]</span><span class="dow">@Localizer["DayWed"]</span>
-                        <span class="dow">@Localizer["DayThu"]</span><span class="dow">@Localizer["DayFri"]</span><span class="dow">@Localizer["DaySat"]</span><span class="dow">@Localizer["DaySun"]</span>
-                    </div>
-                    <div id="calDays" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;"></div>
-                </div>
-
-                <!-- Выбор времени -->
-                <div id="timeSection" style="display:none;">
-                    <p class="section-label">@Localizer["SelectTimeLabel"]</p>
-                    <div id="timeSlots" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px;"></div>
-
-                    <!-- Продолжительность -->
-                    <div id="durSection" style="display:none;">
-                        <p class="section-label">@Localizer["DurationLabel"]</p>
-                        <div class="d-flex gap-2 mb-4" id="durBtns">
-                            <button onclick="setDur(1)" data-d="1" class="dur-btn">1 @Localizer["HourLabel"]</button>
-                            <button onclick="setDur(2)" data-d="2" class="dur-btn">2 @Localizer["HourLabel"]</button>
-                            <button onclick="setDur(3)" data-d="3" class="dur-btn">3 @Localizer["HourLabel"]</button>
-                            <button onclick="setDur(4)" data-d="4" class="dur-btn">4 @Localizer["HourLabel"]</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Итого -->
-                <div id="summarySection" style="display:none;background:#0f172a;border-radius:14px;padding:16px;margin-bottom:20px;">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span style="font-size:13px;color:#64748b;">@Localizer["SummaryDatetimeLabel"]</span>
-                        <span id="sumDatetime" style="font-size:13px;"></span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span style="font-size:13px;color:#64748b;">@Localizer["SummaryDurationLabel"]</span>
-                        <span id="sumDur" style="font-size:13px;"></span>
-                    </div>
-                    <hr style="border-color:rgba(255,255,255,.08);margin:12px 0;">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span style="font-weight:600;">@Localizer["TotalLabel"]</span>
-                        <span id="sumPrice" style="font-size:20px;font-weight:700;color:#6366f1;"></span>
-                    </div>
-                </div>
-
-                <button id="confirmBtn" onclick="createBooking()" style="display:none;width:100%;padding:14px;background:#6366f1;border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;">
-                    @Localizer["ConfirmButton"]
-                </button>
-
-                <div id="successMsg" style="display:none;text-align:center;padding:8px 0;">
-                    <div style="width:52px;height:52px;background:rgba(16,185,129,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M5 13l4 4L19 7" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                    <p style="font-size:16px;font-weight:600;margin:0 0 6px;">@Localizer["SuccessTitle"]</p>
-                    <p id="successDetail" style="font-size:13px;color:#64748b;margin:0;"></p>
-                </div>
-            </div>
-        </div>
+@* ───────────── Room detail / timeline panel ───────────── *@
+<div class="room-panel" id="roomPanel">
+    <h3 id="rpName"></h3>
+    <div class="room-desc" id="rpDescription"></div>
+    <div class="room-info">
+        <div>Цена: <b id="rpPrice"></b> / час</div>
+        <div>Вместимость: <b id="rpCapacity"></b> чел.</div>
+        <div>Удобства: <b id="rpAmenities"></b></div>
     </div>
+
+    <div class="timeline-date">
+        Доступность на <b id="rpDate"></b> (09:00–22:00). Кликните по свободному слоту,
+        затем по конечному, чтобы выбрать интервал.
+    </div>
+    <div class="timeline" id="rpTimeline"></div>
+
+    <div class="booking-bar">
+        <div class="summary" id="rpSummary">Выберите время бронирования.</div>
+        <button id="rpBookBtn" disabled>Забронировать</button>
+    </div>
+    <div class="booking-msg" id="rpMsg"></div>
 </div>
+
+@* ───────────── Antiforgery token for AJAX POST ───────────── *@
+<form id="antiForgeryForm" style="display:none">
+    @Html.AntiForgeryToken()
+</form>
 
 @section Scripts {
-<script src="~/js/booking.js"></script>
+    <script>
+        (function () {
+            const rooms = @Html.Raw(roomsJson);
+            const planDate = "@planDate.ToString("yyyy-MM-dd")";
+            const DAY_START = @dayStartHour;
+            const DAY_END = @dayEndHour;
+
+            const floorPlanEl = document.getElementById('floorPlan');
+            const panelEl = document.getElementById('roomPanel');
+            const tokenInput = document.querySelector('#antiForgeryForm input[name="__RequestVerificationToken"]');
+
+            let selectedRoom = null;
+            let selStart = null; // selected start slot index
+            let selEnd = null;   // selected end slot index (exclusive)
+
+            // ── helpers ────────────────────────────────────────────
+            function hourLabel(h) {
+                return String(h).padStart(2, '0') + ':00';
+            }
+
+            // Returns array of booleans: true = free, for hours [DAY_START, DAY_END)
+            function slotAvailability(room) {
+                const slots = [];
+                for (let h = DAY_START; h < DAY_END; h++) {
+                    const slotStart = new Date(planDate + 'T' + String(h).padStart(2, '0') + ':00:00');
+                    const slotEnd = new Date(slotStart.getTime() + 60 * 60 * 1000);
+                    const occupied = (room.bookings || []).some(b => {
+                        const bs = new Date(b.start);
+                        const be = new Date(b.end);
+                        return bs < slotEnd && be > slotStart;
+                    });
+                    slots.push(!occupied);
+                }
+                return slots;
+            }
+
+            function roomStatusClass(slots) {
+                const freeCount = slots.filter(Boolean).length;
+                if (freeCount === slots.length) return 'status-free';
+                if (freeCount === 0) return 'status-occupied';
+                return 'status-partial';
+            }
+
+            function sizeClass(capacity) {
+                if (capacity >= 8) return 'size-l';
+                if (capacity >= 4) return 'size-m';
+                return 'size-s';
+            }
+
+            // ── render floor plan ─────────────────────────────────
+            function renderFloorPlan() {
+                floorPlanEl.innerHTML = '';
+                rooms.forEach(room => {
+                    const slots = slotAvailability(room);
+                    const tile = document.createElement('div');
+                    tile.className = 'room-tile ' + roomStatusClass(slots) + ' ' + sizeClass(room.capacity);
+                    tile.dataset.roomId = room.id;
+                    tile.innerHTML =
+                        '<div class="room-name">' + escapeHtml(room.name) + '</div>' +
+                        '<div class="room-meta">' + room.price + ' ₸/ч · до ' + room.capacity + ' чел.</div>';
+                    tile.addEventListener('click', () => selectRoom(room, tile));
+                    floorPlanEl.appendChild(tile);
+                });
+            }
+
+            function escapeHtml(str) {
+                const div = document.createElement('div');
+                div.textContent = str ?? '';
+                return div.innerHTML;
+            }
+
+            // ── room panel / timeline ───────────────────────────────
+            function selectRoom(room, tile) {
+                document.querySelectorAll('.room-tile.selected').forEach(t => t.classList.remove('selected'));
+                tile.classList.add('selected');
+
+                selectedRoom = room;
+                selStart = null;
+                selEnd = null;
+
+                document.getElementById('rpName').textContent = room.name;
+                document.getElementById('rpDescription').textContent = room.description || '';
+                document.getElementById('rpPrice').textContent = room.price;
+                document.getElementById('rpCapacity').textContent = room.capacity;
+                document.getElementById('rpAmenities').textContent =
+                    (room.amenities && room.amenities.length) ? room.amenities.join(', ') : '—';
+                document.getElementById('rpDate').textContent = planDate;
+                document.getElementById('rpMsg').textContent = '';
+                document.getElementById('rpMsg').className = 'booking-msg';
+
+                renderTimeline();
+                updateSummary();
+                panelEl.classList.add('open');
+                panelEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            function renderTimeline() {
+                const timelineEl = document.getElementById('rpTimeline');
+                timelineEl.innerHTML = '';
+                const slots = slotAvailability(selectedRoom);
+
+                slots.forEach((free, idx) => {
+                    const hour = DAY_START + idx;
+                    const slotEl = document.createElement('div');
+                    slotEl.className = 'slot' + (free ? '' : ' occupied');
+                    slotEl.innerHTML = '<span class="slot-time">' + hourLabel(hour) + '</span>';
+                    if (free) {
+                        slotEl.addEventListener('click', () => onSlotClick(idx));
+                    }
+                    timelineEl.appendChild(slotEl);
+                });
+
+                highlightSelection();
+            }
+
+            function onSlotClick(idx) {
+                const slots = slotAvailability(selectedRoom);
+
+                if (selStart === null) {
+                    selStart = idx;
+                    selEnd = idx + 1;
+                } else if (selEnd !== null && idx + 1 === selEnd && idx === selStart) {
+                    // clicking the same single slot again clears selection
+                    selStart = null;
+                    selEnd = null;
+                } else {
+                    const lo = Math.min(selStart, idx);
+                    const hi = Math.max(selStart, idx);
+
+                    // ensure every slot in [lo, hi] is free (contiguous, no occupied gaps)
+                    let allFree = true;
+                    for (let i = lo; i <= hi; i++) {
+                        if (!slots[i]) { allFree = false; break; }
+                    }
+
+                    if (allFree) {
+                        selStart = lo;
+                        selEnd = hi + 1;
+                    } else {
+                        // start a new selection from the clicked slot
+                        selStart = idx;
+                        selEnd = idx + 1;
+                    }
+                }
+
+                highlightSelection();
+                updateSummary();
+            }
+
+            function highlightSelection() {
+                const timelineEl = document.getElementById('rpTimeline');
+                Array.from(timelineEl.children).forEach((el, idx) => {
+                    if (selStart !== null && idx >= selStart && idx < selEnd) {
+                        el.classList.add('selected');
+                    } else {
+                        el.classList.remove('selected');
+                    }
+                });
+            }
+
+            function updateSummary() {
+                const summaryEl = document.getElementById('rpSummary');
+                const btn = document.getElementById('rpBookBtn');
+
+                if (selStart === null) {
+                    summaryEl.textContent = 'Выберите время бронирования.';
+                    btn.disabled = true;
+                    return;
+                }
+
+                const startHour = DAY_START + selStart;
+                const endHour = DAY_START + selEnd;
+                const hours = selEnd - selStart;
+                const total = (selectedRoom.price * hours).toFixed(0);
+
+                summaryEl.innerHTML =
+                    'Время: <b>' + hourLabel(startHour) + ' – ' + hourLabel(endHour) + '</b>' +
+                    ' (' + hours + ' ч) · Итого: <b>' + total + ' ₸</b>';
+                btn.disabled = false;
+            }
+
+            // ── booking submission ──────────────────────────────────
+            document.getElementById('rpBookBtn').addEventListener('click', async () => {
+                if (!selectedRoom || selStart === null) return;
+
+                const startHour = DAY_START + selStart;
+                const endHour = DAY_START + selEnd;
+
+                const startTime = planDate + 'T' + String(startHour).padStart(2, '0') + ':00:00';
+                const endTime = planDate + 'T' + String(endHour).padStart(2, '0') + ':00:00';
+
+                const btn = document.getElementById('rpBookBtn');
+                const msgEl = document.getElementById('rpMsg');
+                btn.disabled = true;
+                msgEl.textContent = 'Отправка…';
+                msgEl.className = 'booking-msg';
+
+                try {
+                    const response = await fetch('?handler=Create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': tokenInput ? tokenInput.value : ''
+                        },
+                        body: JSON.stringify({
+                            roomId: selectedRoom.id,
+                            startTime: startTime,
+                            endTime: endTime
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        msgEl.textContent = 'Бронирование подтверждено!';
+                        msgEl.className = 'booking-msg success';
+                        // add the new booking locally so the plan/timeline update immediately
+                        selectedRoom.bookings.push({ start: startTime, end: endTime });
+                        selStart = null;
+                        selEnd = null;
+                        renderFloorPlan();
+                        renderTimeline();
+                        updateSummary();
+                        // re-mark this room as selected
+                        const tile = floorPlanEl.querySelector('[data-room-id="' + selectedRoom.id + '"]');
+                        if (tile) tile.classList.add('selected');
+                    } else {
+                        msgEl.textContent = data.message || 'Не удалось создать бронирование.';
+                        msgEl.className = 'booking-msg error';
+                        btn.disabled = false;
+                    }
+                } catch (e) {
+                    msgEl.textContent = 'Ошибка сети. Попробуйте ещё раз.';
+                    msgEl.className = 'booking-msg error';
+                    btn.disabled = false;
+                }
+            });
+
+            renderFloorPlan();
+        })();
+    </script>
 }

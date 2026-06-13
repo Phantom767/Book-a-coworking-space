@@ -1,128 +1,139 @@
-﻿using AutoMapper;
-using Coworking.Application.DTOs;
+﻿using Coworking.Application.DTOs;
 using Coworking.Application.Interfaces;
+using Coworking.Application.Service;
+using Coworking.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 
 namespace Coworking.WebApi.Pages.Admin;
 
-public class Rooms(IRoomService roomService, IAdminRoomService adminRoomService, IMapper mapper) : PageModel
+[Authorize(Roles = "Admin")]
+public class Rooms(
+    IAdminRoomService adminRoomService,
+    IRoomService roomService,
+    IAdminBookingService bookingService,
+    IStringLocalizer<Rooms> localizer) : PageModel
 {
-    [BindProperty]
-    public InputModel Input { get; set; } = new();
-    [BindProperty] 
-    public IFormFile? Photo { get; set; }
-    public List<RoomDto> RoomDtos { get; set; } = new();
+    // ── Данные для страницы ─────────────────────────────────────
+    public List<RoomDto> RoomDtos { get; private set; } = [];
+    public List<BookingAdminDto> Bookings { get; private set; } = [];
+    public (int Total, int Pending, int Confirmed, int Cancelled) BookingStats { get; private set; }
 
-    public class InputModel
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public decimal Price { get; set; }
-        public int Capacity { get; set; }
-    }
+    // ── Фильтр бронирований ─────────────────────────────────────
+    [BindProperty(SupportsGet = true)] public string? BookingSearch   { get; set; }
+    [BindProperty(SupportsGet = true)] public string? BookingStatus   { get; set; }
+    [BindProperty(SupportsGet = true)] public Guid?   BookingRoomId   { get; set; }
+    [BindProperty(SupportsGet = true)] public string? BookingDateFrom { get; set; }
+    [BindProperty(SupportsGet = true)] public string? BookingDateTo   { get; set; }
+    [BindProperty(SupportsGet = true)] public string  ActiveTab       { get; set; } = "rooms";
 
-    
+    // ── Input для создания / редактирования комнаты ─────────────
+    [BindProperty] public RoomInputModel Input  { get; set; } = new();
+    [BindProperty] public IFormFile?      Photo { get; set; }
+
+    // ───────────────────────────────────────────────────────────
     public async Task OnGetAsync()
     {
-        RoomDtos = await roomService.GetAllRoomsAsync();
+        await LoadDataAsync();
     }
 
+    // ── Создание комнаты ────────────────────────────────────────
     public async Task<IActionResult> OnPostAsync()
     {
-        if (!ModelState.IsValid)
+        var dto = new CreateRoomDto
         {
-            return Page();
-        }
-        
-        var createDto = new CreateRoomDto()
-        {
-            Name = Input.Name,
-            Description = Input.Description,
+            Name         = Input.Name,
+            Description  = Input.Description,
             PricePerHour = Input.Price,
-            Capacity = Input.Capacity,
-            PhotoUrl = "/images/default-room.jpg", // Дефолтное значение
-            PhotoHash = "default" // Дефолтное значение
+            Capacity     = Input.Capacity,
+            Photo        = Photo
         };
 
-        var room = mapper.Map<CreateRoomDto>(await adminRoomService.CreateRoomAsync(createDto));
-        
-        if (Photo is { Length: > 0 })
-        {
-            try
-            {
-                await roomService.UploadRoomPhotoAsync(room.Id, Photo);
-            }
-            catch (InvalidOperationException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                RoomDtos = await roomService.GetAllRoomsAsync();
-                return Page();
-            }
-        }
-        return RedirectToPage();
-    }
-    
-    public async Task<IActionResult> OnPostUploadPhotoAsync(Guid roomId)
-    {
-        if (Photo is not { Length: > 0 })
-        {
-            ModelState.AddModelError(string.Empty, "Выберите файл");
-            RoomDtos = await roomService.GetAllRoomsAsync();
-            return Page();
-        }
+        var result = await adminRoomService.CreateRoomAsync(dto);
+        if (result.IsError)
+            ModelState.AddModelError("", result.FirstError.Description);
 
-        try
-        {
-            await roomService.UploadRoomPhotoAsync(roomId, Photo);
-        }
-        catch (InvalidOperationException ex)
-        {
-            ModelState.AddModelError(string.Empty, ex.Message);
-        }
-
-        return RedirectToPage();
+        return RedirectToPage(new { ActiveTab = "rooms" });
     }
-    
+
+    // ── Редактирование комнаты ──────────────────────────────────
     public async Task<IActionResult> OnPostEditAsync(Guid roomId)
     {
-        if (!ModelState.IsValid)
+        var dto = new UpdateRoomDto
         {
-            RoomDtos = await roomService.GetAllRoomsAsync();
-            return Page();
-        }
+            Name         = Input.Name,
+            Description  = Input.Description,
+            PricePerHour = Input.Price,
+            Capacity     = Input.Capacity,
+            Photo        = Photo
+        };
 
-        try
-        {
-            var updateDto = new UpdateRoomDto
-            {
-                Id = roomId,
-                Name = Input.Name,
-                Description = Input.Description,
-                PricePerHour = Input.Price,
-                Capacity = Input.Capacity
-            };
-
-            await roomService.UpdateAsync(updateDto);
-            
-            if (Photo is { Length: > 0 })
-            {
-                await roomService.UploadRoomPhotoAsync(roomId, Photo);
-            }
-        }
-        catch (Exception ex)
-        {
-            ModelState.AddModelError(string.Empty, $"Ошибка обновления: {ex.Message}");
-            RoomDtos = await roomService.GetAllRoomsAsync();
-            return Page();
-        }
-
-        return RedirectToPage();
+        await adminRoomService.UpdateRoomAsync(roomId, dto);
+        return RedirectToPage(new { ActiveTab = "rooms" });
     }
 
+    // ── Удаление комнаты ────────────────────────────────────────
     public async Task<IActionResult> OnPostDeleteAsync(Guid roomId)
     {
         await adminRoomService.DeleteRoomAsync(roomId);
-        return RedirectToPage();
+        return RedirectToPage(new { ActiveTab = "rooms" });
+    }
+
+    // ── Подтвердить бронь ───────────────────────────────────────
+    public async Task<IActionResult> OnPostConfirmBookingAsync(Guid bookingId)
+    {
+        var result = await bookingService.ConfirmAsync(bookingId);
+        if (result.IsError)
+            ModelState.AddModelError("", result.FirstError.Description);
+
+        return RedirectToPage(new { ActiveTab = "bookings" });
+    }
+
+    // ── Отменить бронь ──────────────────────────────────────────
+    public async Task<IActionResult> OnPostCancelBookingAsync(Guid bookingId, string? cancelReason)
+    {
+        var result = await bookingService.CancelAsync(bookingId, cancelReason);
+        if (result.IsError)
+            ModelState.AddModelError("", result.FirstError.Description);
+
+        return RedirectToPage(new { ActiveTab = "bookings" });
+    }
+
+    // ── Приватный помощник ──────────────────────────────────────
+    private async Task LoadDataAsync()
+    {
+        RoomDtos = await roomService.GetAllRoomsAsync();
+
+        BookingStatus? statusEnum = BookingStatus switch
+        {
+            "Pending"   => Coworking.Domain.Enums.BookingStatus.Pending,
+            "Confirmed" => Coworking.Domain.Enums.BookingStatus.Confirmed,
+            "Cancelled" => Coworking.Domain.Enums.BookingStatus.Cancelled,
+            "Completed" => Coworking.Domain.Enums.BookingStatus.Completed,
+            _ => null
+        };
+
+        DateTime? from = DateTime.TryParse(BookingDateFrom, out var df) ? df : null;
+        DateTime? to   = DateTime.TryParse(BookingDateTo,   out var dt) ? dt : null;
+
+        Bookings = await bookingService.GetAllAsync(
+            status:   statusEnum,
+            roomId:   BookingRoomId,
+            search:   BookingSearch,
+            dateFrom: from,
+            dateTo:   to);
+
+        BookingStats = await bookingService.GetStatsAsync();
+    }
+
+    // ── Input model ─────────────────────────────────────────────
+    public class RoomInputModel
+    {
+        public string  Name        { get; set; } = string.Empty;
+        public string? Description { get; set; }
+        public decimal Price       { get; set; }
+        public int     Capacity    { get; set; }
     }
 }

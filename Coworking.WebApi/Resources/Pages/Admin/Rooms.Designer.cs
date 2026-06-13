@@ -105,7 +105,7 @@ namespace Coworking.WebApi.Resources.Pages.Admin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Удалить комнату &quot;{0}&quot;?.
+        ///   Looks up a localized string similar to Удалить комнату.
         /// </summary>
         internal static string DeleteConfirm {
             get {
@@ -195,11 +195,20 @@ namespace Coworking.WebApi.Resources.Pages.Admin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Нажмите или перетащите файл &lt;small&gt;JPG, PNG, WEBP · до 5 МБ&lt;/small&gt;.
+        ///   Looks up a localized string similar to Нажмите или перетащите файл .
         /// </summary>
         internal static string PhotoUploadText {
             get {
                 return ResourceManager.GetString("PhotoUploadText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  до 5 МБ.
+        /// </summary>
+        internal static string PhotoUploadTextSmall {
+            get {
+                return ResourceManager.GetString("PhotoUploadTextSmall", resourceCulture);
             }
         }
         

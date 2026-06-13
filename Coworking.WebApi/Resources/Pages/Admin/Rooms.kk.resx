@@ -18,9 +18,12 @@
     <data name="LabelCapacity" xml:space="preserve"><value>Сыйымдылығы</value></data>
     <data name="LabelPhoto" xml:space="preserve"><value>Бөлме фото</value></data>
     <data name="PhotoHint" xml:space="preserve"><value>(міндетті емес)</value></data>
-    <data name="PhotoUploadText" xml:space="preserve"><value>Файлды басыңыз немесе сүйреп әкеліңіз &lt;small&gt;JPG, PNG, WEBP · 5 МБ дейін&lt;/small&gt;</value></data>
+    <data name="PhotoUploadText" xml:space="preserve"><value>Файлды басыңыз немесе сүйреп әкеліңіз</value></data>
     <data name="CancelButton" xml:space="preserve"><value>Бас тарту</value></data>
     <data name="CreateButton" xml:space="preserve"><value>Жасау</value></data>
     <data name="SaveButton" xml:space="preserve"><value>Өзгерістерді сақтау</value></data>
-    <data name="DeleteConfirm" xml:space="preserve"><value>"{0}" бөлмесін жою керек пе?</value></data>
+    <data name="DeleteConfirm" xml:space="preserve"><value>бөлмесін жою керек пе?</value></data>
+    <data name="PhotoUploadTextSmall" xml:space="preserve">
+        <value>5 МБ дейін</value>
+    </data>
 </root>

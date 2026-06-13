@@ -18,9 +18,12 @@
     <data name="LabelCapacity" xml:space="preserve"><value>Capacity</value></data>
     <data name="LabelPhoto" xml:space="preserve"><value>Room Photo</value></data>
     <data name="PhotoHint" xml:space="preserve"><value>(optional)</value></data>
-    <data name="PhotoUploadText" xml:space="preserve"><value>Click or drag file here &lt;small&gt;JPG, PNG, WEBP · up to 5 MB&lt;/small&gt;</value></data>
+    <data name="PhotoUploadText" xml:space="preserve"><value>Click or drag file here</value></data>
     <data name="CancelButton" xml:space="preserve"><value>Cancel</value></data>
     <data name="CreateButton" xml:space="preserve"><value>Create</value></data>
     <data name="SaveButton" xml:space="preserve"><value>Save Changes</value></data>
-    <data name="DeleteConfirm" xml:space="preserve"><value>Delete room "{0}"?</value></data>
+    <data name="DeleteConfirm" xml:space="preserve"><value>Delete room</value></data>
+    <data name="PhotoUploadTextSmall" xml:space="preserve">
+        <value>up to 5 MB</value>
+    </data>
 </root>

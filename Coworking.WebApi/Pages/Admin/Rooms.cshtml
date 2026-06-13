@@ -1,51 +1,239 @@
 ﻿@page
 @model Coworking.WebApi.Pages.Admin.Rooms
+@using Coworking.Domain.Enums
 @{
 ViewData["Title"] = Localizer["PageTitle"];
 Layout = "_Layout";
+bool isBookingsTab = Model.ActiveTab == "bookings";
 }
 
 @section Styles {
 <style>
-    .admin-container { padding: 2rem; width: 100%; }
+    /* ── Base ── */
+    .admin-container { padding: 2rem; width: 100%; font-family: 'Montserrat', sans-serif; }
+
+    /* ── Stat cards ── */
+    .stat-cards { display: flex; gap: 14px; margin-bottom: 28px; flex-wrap: wrap; }
+    .stat-card {
+        background: #1e1e2e;
+        border: 1px solid #2a2a3e;
+        border-radius: 14px;
+        padding: 16px 22px;
+        min-width: 140px;
+        flex: 1;
+    }
+    .stat-card .stat-num { font-size: 26px; font-weight: 700; color: #fff; line-height: 1; }
+    .stat-card .stat-lbl { font-size: 11px; color: #666; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-card.c-purple { border-color: rgba(108,92,231,.4); }
+    .stat-card.c-yellow { border-color: rgba(253,203,110,.4); }
+    .stat-card.c-green  { border-color: rgba(0,184,148,.4); }
+    .stat-card.c-red    { border-color: rgba(255,118,117,.4); }
+    .stat-card.c-purple .stat-num { color: #a29bfe; }
+    .stat-card.c-yellow .stat-num { color: #fdcb6e; }
+    .stat-card.c-green  .stat-num { color: #00b894; }
+    .stat-card.c-red    .stat-num { color: #ff7675; }
+
+    /* ── Tabs ── */
+    .admin-tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid #2a2a3e; }
+    .admin-tab {
+        padding: 10px 20px;
+        border: none;
+        background: transparent;
+        color: #666;
+        font-size: 13px;
+        font-weight: 600;
+        font-family: 'Montserrat', sans-serif;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        text-decoration: none;
+        letter-spacing: 0.3px;
+        transition: color .2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+    }
+    .admin-tab:hover { color: #aaa; text-decoration: none; }
+    .admin-tab.active { color: #6c5ce7; border-bottom-color: #6c5ce7; }
+    .admin-tab .tab-badge {
+        background: rgba(108,92,231,.2);
+        color: #a29bfe;
+        border-radius: 10px;
+        padding: 1px 7px;
+        font-size: 10px;
+    }
+    .admin-tab .tab-badge.yellow {
+        background: rgba(253,203,110,.15);
+        color: #fdcb6e;
+    }
+
+    /* ── Table ── */
     .table { background: #1e1e2e; color: #e0e0e0; }
-    .table th { background: #25253a; }
-    .btn-purple { background: #6c5ce7; border: none; color: #fff; }
+    .table th { background: #25253a; color: #aaa; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-color: #2a2a3e !important; font-family: 'Montserrat', sans-serif; }
+    .table td { border-color: #2a2a3e !important; vertical-align: middle; font-size: 13px; }
+    .table tbody tr:hover { background: rgba(108,92,231,.05); }
+
+    /* ── Status badge ── */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+    }
+    .status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .status-pending   { background: rgba(253,203,110,.15); color: #fdcb6e; }
+    .status-confirmed { background: rgba(0,184,148,.15);   color: #00b894; }
+    .status-cancelled { background: rgba(255,118,117,.15); color: #ff7675; }
+    .status-completed { background: rgba(116,125,140,.15); color: #747d8c; }
+
+    /* ── Filter bar (bookings) ── */
+    .bf-bar {
+        background: #1a1a2a;
+        border: 1px solid #2a2a3e;
+        border-radius: 14px;
+        padding: 18px 20px;
+        margin-bottom: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: flex-end;
+    }
+    .bf-field { display: flex; flex-direction: column; gap: 5px; }
+    .bf-label { color: #666; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .bf-input, .bf-select {
+        background: #12121f;
+        border: 1px solid #2a2a3e;
+        color: #e0e0e0;
+        border-radius: 9px;
+        padding: 8px 12px;
+        font-size: 12px;
+        font-family: 'Montserrat', sans-serif;
+        outline: none;
+        transition: border .2s;
+        height: 36px;
+    }
+    .bf-input:focus, .bf-select:focus { border-color: #6c5ce7; }
+    .bf-input::placeholder { color: #444; }
+    .bf-select { appearance: none; padding-right: 28px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%236c5ce7' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: right 10px center; }
+    .bf-select option { background: #1e1e2e; }
+    .bf-search { flex: 1; min-width: 200px; }
+    .bf-search .bf-input { width: 100%; }
+    .bf-date { min-width: 150px; }
+    .bf-date .bf-input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.5) sepia(1) saturate(3) hue-rotate(220deg); }
+
+    /* ── Buttons ── */
+    .btn-purple      { background: #6c5ce7; border: none; color: #fff; font-family: 'Montserrat', sans-serif; }
     .btn-purple:hover { background: #5a4bd1; color: #fff; }
-    .room-thumb { width: 52px; height: 40px; object-fit: cover;
-        border-radius: 6px; border: 1px solid #3a3a5e; }
-    .no-photo { width: 52px; height: 40px; border-radius: 6px;
-        background: #2a2a3e; border: 1px dashed #3a3a5e;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 18px; color: #555; }
-    .upload-zone { border: 2px dashed #3a3a5e; border-radius: 8px;
-        padding: 20px; text-align: center; cursor: pointer;
-        transition: border-color .2s; position: relative; }
+    .btn-confirm     { background: rgba(0,184,148,.15); border: 1px solid rgba(0,184,148,.4); color: #00b894; }
+    .btn-confirm:hover { background: rgba(0,184,148,.25); color: #00b894; }
+    .btn-cancel-bk   { background: rgba(255,118,117,.12); border: 1px solid rgba(255,118,117,.35); color: #ff7675; }
+    .btn-cancel-bk:hover { background: rgba(255,118,117,.22); color: #ff7675; }
+    .btn-view-bk     { background: rgba(108,92,231,.12); border: 1px solid rgba(108,92,231,.35); color: #a29bfe; }
+    .btn-view-bk:hover { background: rgba(108,92,231,.22); color: #a29bfe; }
+
+    /* ── Room thumb ── */
+    .room-thumb { width: 52px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid #3a3a5e; }
+    .no-photo { width: 52px; height: 40px; border-radius: 6px; background: #2a2a3e; border: 1px dashed #3a3a5e;
+        display: flex; align-items: center; justify-content: center; font-size: 18px; color: #555; }
+
+    /* ── Upload zone ── */
+    .upload-zone { border: 2px dashed #3a3a5e; border-radius: 8px; padding: 20px; text-align: center;
+        cursor: pointer; transition: border-color .2s; position: relative; }
     .upload-zone:hover { border-color: #6c5ce7; }
-    .upload-zone input[type=file] { position: absolute; inset: 0;
-        opacity: 0; cursor: pointer; }
-    .upload-zone .preview { width: 100%; max-height: 160px;
-        object-fit: cover; border-radius: 6px;
-        display: none; margin-top: 10px; }
+    .upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .upload-zone .preview { width: 100%; max-height: 160px; object-fit: cover; border-radius: 6px; display: none; margin-top: 10px; }
+
+    /* ── Form controls ── */
     .form-control { background: #2a2a3e; border: 1px solid #3a3a5e; color: #fff; }
-    .form-control:focus { background: #2a2a3e; border-color: #6c5ce7;
-        color: #fff; box-shadow: none; }
+    .form-control:focus { background: #2a2a3e; border-color: #6c5ce7; color: #fff; box-shadow: none; }
+    .form-select-dark { background: #2a2a3e; border: 1px solid #3a3a5e; color: #fff; }
+
+    /* ── Booking detail modal ── */
+    .bk-detail-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #2a2a3e; font-size: 13px; }
+    .bk-detail-row:last-child { border-bottom: none; }
+    .bk-detail-key { color: #777; }
+    .bk-detail-val { color: #e0e0e0; font-weight: 500; }
+
+    /* ── User cell ── */
+    .user-cell { display: flex; flex-direction: column; gap: 2px; }
+    .user-cell-name { color: #e0e0e0; font-weight: 600; }
+    .user-cell-email { color: #666; font-size: 11px; }
+
+    /* ── Empty state ── */
+    .admin-empty { text-align: center; padding: 60px 20px; color: #444; }
+    .admin-empty-icon { font-size: 40px; margin-bottom: 12px; color: #2a2a3e; }
+
+    @@media (max-width: 768px) {
+        .stat-cards { gap: 10px; }
+        .bf-bar { flex-direction: column; }
+    }
 </style>
 }
 
-<div class="container-fluid mt-4 px-4">
+<div class="admin-container">
 
     @if (!ViewData.ModelState.IsValid)
     {
-    <div class="alert alert-danger">
+    <div class="alert alert-danger mb-3">
         @foreach (var e in ViewData.ModelState[""]?.Errors ?? [])
         { <div>@e.ErrorMessage</div> }
     </div>
     }
 
+    @* ── Stat cards ── *@
+    <div class="stat-cards">
+        <div class="stat-card c-purple">
+            <div class="stat-num">@Model.BookingStats.Total</div>
+            <div class="stat-lbl">Всего броней</div>
+        </div>
+        <div class="stat-card c-yellow">
+            <div class="stat-num">@Model.BookingStats.Pending</div>
+            <div class="stat-lbl">Ожидают</div>
+        </div>
+        <div class="stat-card c-green">
+            <div class="stat-num">@Model.BookingStats.Confirmed</div>
+            <div class="stat-lbl">Подтверждены</div>
+        </div>
+        <div class="stat-card c-red">
+            <div class="stat-num">@Model.BookingStats.Cancelled</div>
+            <div class="stat-lbl">Отменены</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-num">@Model.RoomDtos.Count</div>
+            <div class="stat-lbl">Залов</div>
+        </div>
+    </div>
+
+    @* ── Tabs ── *@
+    <div class="admin-tabs">
+        <a href="?ActiveTab=rooms" class="admin-tab @(!isBookingsTab ? "active" : "")">
+            <i class="bi bi-building"></i>
+            Залы
+            <span class="tab-badge">@Model.RoomDtos.Count</span>
+        </a>
+        <a href="?ActiveTab=bookings" class="admin-tab @(isBookingsTab ? "active" : "")">
+            <i class="bi bi-calendar-check"></i>
+            Бронирования
+            @if (Model.BookingStats.Pending > 0)
+            {
+            <span class="tab-badge yellow">@Model.BookingStats.Pending</span>
+            }
+        </a>
+    </div>
+
+    @* ════════════════════════════════════════════════
+       TAB: ЗАЛЫ
+       ════════════════════════════════════════════════ *@
+    @if (!isBookingsTab)
+    {
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 style="color:#fff">@Localizer["PageTitle"]</h2>
-        <button class="btn btn-purple" data-bs-toggle="modal" data-bs-target="#createRoomModal">
+        <h4 style="color:#fff; margin:0">Управление залами</h4>
+        <button class="btn btn-purple btn-sm" data-bs-toggle="modal" data-bs-target="#createRoomModal">
             <i class="bi bi-plus-lg"></i> @Localizer["AddRoomButton"]
         </button>
     </div>
@@ -68,36 +256,29 @@ Layout = "_Layout";
             <tr>
                 <td>
                     @if (!string.IsNullOrEmpty(room.PhotoUrl))
-                    {
-                    <img src="@room.PhotoUrl" class="room-thumb" alt="@room.Name" />
-                    }
+                    { <img src="@room.PhotoUrl" class="room-thumb" alt="@room.Name" /> }
                     else
-                    {
-                    <div class="no-photo">🖼</div>
-                    }
+                    { <div class="no-photo">🖼</div> }
                 </td>
                 <td><strong>@room.Name</strong></td>
-                <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">
+                <td style="max-width:180px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#888">
                     @room.Description
                 </td>
-                <td>@room.PricePerHour ₸</td>
-                <td>@room.Capacity чел.</td>
+                <td><span style="color:#a29bfe; font-weight:600">@room.PricePerHour ₸</span></td>
+                <td>@room.Capacity <span style="color:#666; font-size:11px">чел.</span></td>
                 <td>
-                    <button type="button"
-                            class="btn btn-sm btn-outline-light me-1"
-                            data-bs-toggle="modal"
-                            data-bs-target="#editRoomModal"
+                    <button type="button" class="btn btn-sm btn-view-bk me-1"
+                            data-bs-toggle="modal" data-bs-target="#editRoomModal"
                             data-room-id="@room.Id"
                             data-room-name="@room.Name"
                             data-room-desc="@room.Description"
                             data-room-price="@room.PricePerHour"
                             data-room-cap="@room.Capacity">
-                        @Localizer["EditButton"]
+                        <i class="bi bi-pencil"></i> @Localizer["EditButton"]
                     </button>
-
-                    <button class="btn btn-sm btn-danger"
+                    <button class="btn btn-sm btn-cancel-bk"
                             onclick="deleteRoom('@room.Id', '@room.Name')">
-                        @Localizer["DeleteButton"]
+                        <i class="bi bi-trash"></i> @Localizer["DeleteButton"]
                     </button>
                 </td>
             </tr>
@@ -105,9 +286,165 @@ Layout = "_Layout";
             </tbody>
         </table>
     </div>
+    }
+
+    @* ════════════════════════════════════════════════
+       TAB: БРОНИРОВАНИЯ
+       ════════════════════════════════════════════════ *@
+    else
+    {
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 style="color:#fff; margin:0">Все бронирования</h4>
+    </div>
+
+    @* ── Filter bar ── *@
+    <form method="get" class="bf-bar">
+        <input type="hidden" name="ActiveTab" value="bookings" />
+
+        <div class="bf-field bf-search">
+            <span class="bf-label"><i class="bi bi-search"></i> Поиск</span>
+            <input name="BookingSearch" value="@Model.BookingSearch"
+                   class="bf-input" placeholder="Email, имя, зал…" />
+        </div>
+
+        <div class="bf-field">
+            <span class="bf-label">Статус</span>
+            <select name="BookingStatus" class="bf-select" style="min-width:160px">
+                <option value="">Все статусы</option>
+                <option value="Pending"   selected="@(Model.BookingStatus == "Pending"   ? "selected" : null)">Ожидают</option>
+                <option value="Confirmed" selected="@(Model.BookingStatus == "Confirmed" ? "selected" : null)">Подтверждены</option>
+                <option value="Cancelled" selected="@(Model.BookingStatus == "Cancelled" ? "selected" : null)">Отменены</option>
+                <option value="Completed" selected="@(Model.BookingStatus == "Completed" ? "selected" : null)">Завершены</option>
+            </select>
+        </div>
+
+        <div class="bf-field">
+            <span class="bf-label">Зал</span>
+            <select name="BookingRoomId" class="bf-select" style="min-width:160px">
+                <option value="">Все залы</option>
+                @foreach (var r in Model.RoomDtos)
+                {
+                <option value="@r.Id" selected="@(Model.BookingRoomId == r.Id ? "selected" : null)">@r.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="bf-field bf-date">
+            <span class="bf-label">С даты</span>
+            <input type="date" name="BookingDateFrom" value="@Model.BookingDateFrom" class="bf-input" />
+        </div>
+        <div class="bf-field bf-date">
+            <span class="bf-label">По дату</span>
+            <input type="date" name="BookingDateTo" value="@Model.BookingDateTo" class="bf-input" />
+        </div>
+
+        <div class="bf-field" style="justify-content:flex-end; gap:6px; flex-direction:row">
+            <button type="submit" class="btn btn-purple btn-sm" style="height:36px; padding:0 16px">
+                <i class="bi bi-funnel"></i> Фильтр
+            </button>
+            <a href="?ActiveTab=bookings" class="btn btn-sm btn-outline-secondary" style="height:36px; padding:0 12px; display:flex; align-items:center">
+                <i class="bi bi-x"></i>
+            </a>
+        </div>
+    </form>
+
+    @* ── Table ── *@
+    @if (!Model.Bookings.Any())
+    {
+    <div class="admin-empty">
+        <div class="admin-empty-icon"><i class="bi bi-calendar-x"></i></div>
+        <p style="color:#666">Бронирований не найдено</p>
+    </div>
+    }
+    else
+    {
+    <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle">
+            <thead>
+            <tr>
+                <th>Клиент</th>
+                <th>Зал</th>
+                <th>Начало</th>
+                <th>Конец</th>
+                <th>Длит.</th>
+                <th>Сумма</th>
+                <th>Статус</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var bk in Model.Bookings)
+            {
+            <tr>
+                <td>
+                    <div class="user-cell">
+                        <span class="user-cell-name">@(string.IsNullOrEmpty(bk.UserFullName) ? "—" : bk.UserFullName)</span>
+                        <span class="user-cell-email">@bk.UserEmail</span>
+                    </div>
+                </td>
+                <td><strong>@bk.RoomName</strong></td>
+                <td style="white-space:nowrap">@bk.StartTime.ToString("dd.MM.yyyy HH:mm")</td>
+                <td style="white-space:nowrap">@bk.EndTime.ToString("dd.MM.yyyy HH:mm")</td>
+                <td style="color:#888">@bk.DurationHours.ToString("0.#") ч</td>
+                <td><span style="color:#a29bfe; font-weight:600">@bk.TotalPrice.ToString("N0") ₸</span></td>
+                <td>
+                    <span class="status-badge status-@bk.StatusBadgeClass">@bk.StatusLabel</span>
+                </td>
+                <td>
+                    <div style="display:flex; gap:6px; flex-wrap:wrap">
+                        @* Детали *@
+                        <button type="button" class="btn btn-sm btn-view-bk"
+                                data-bs-toggle="modal" data-bs-target="#bookingDetailModal"
+                                data-bk-id="@bk.Id"
+                                data-bk-room="@bk.RoomName"
+                                data-bk-user="@bk.UserFullName"
+                                data-bk-email="@bk.UserEmail"
+                                data-bk-start="@bk.StartTime.ToString("dd.MM.yyyy HH:mm")"
+                                data-bk-end="@bk.EndTime.ToString("dd.MM.yyyy HH:mm")"
+                                data-bk-dur="@bk.DurationHours.ToString("0.#")"
+                                data-bk-price="@bk.TotalPrice.ToString("N0")"
+                                data-bk-status="@bk.StatusLabel"
+                                data-bk-created="@bk.CreatedAt.ToString("dd.MM.yyyy HH:mm")">
+                            <i class="bi bi-eye"></i>
+                        </button>
+
+                        @* Подтвердить — только для Pending *@
+                        @if (bk.Status == BookingStatus.Pending)
+                        {
+                        <form method="post" asp-page-handler="ConfirmBooking" style="display:inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="bookingId" value="@bk.Id" />
+                            <button type="submit" class="btn btn-sm btn-confirm"
+                                    onclick="return confirm('Подтвердить бронь?')">
+                                <i class="bi bi-check-lg"></i> Подтвердить
+                            </button>
+                        </form>
+                        }
+
+                        @* Отменить — не для уже отменённых и завершённых *@
+                        @if (bk.Status != BookingStatus.Cancelled && bk.Status != BookingStatus.Completed)
+                        {
+                        <button type="button" class="btn btn-sm btn-cancel-bk"
+                                data-bs-toggle="modal" data-bs-target="#cancelBookingModal"
+                                data-bk-id="@bk.Id"
+                                data-bk-room="@bk.RoomName">
+                            <i class="bi bi-x-lg"></i> Отменить
+                        </button>
+                        }
+                    </div>
+                </td>
+            </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    }
+    }
+
 </div>
 
-<!-- Модальное окно создания комнаты -->
+@* ════ МОДАЛКИ ЗАЛОВ (без изменений) ════ *@
+
 <div class="modal fade" id="createRoomModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content" style="background:#1e1e2e; color:#e0e0e0;">
@@ -118,41 +455,28 @@ Layout = "_Layout";
             <div class="modal-body">
                 <form method="post" enctype="multipart/form-data">
                     @Html.AntiForgeryToken()
-                    <div class="mb-3">
-                        <label class="form-label">@Localizer["LabelName"]</label>
-                        <input asp-for="Input.Name" class="form-control" required />
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">@Localizer["LabelDescription"]</label>
-                        <textarea asp-for="Input.Description" class="form-control" rows="3" required></textarea>
-                    </div>
+                    <div class="mb-3"><label class="form-label">@Localizer["LabelName"]</label>
+                        <input asp-for="Input.Name" class="form-control" required /></div>
+                    <div class="mb-3"><label class="form-label">@Localizer["LabelDescription"]</label>
+                        <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea></div>
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">@Localizer["LabelPrice"]</label>
-                            <input asp-for="Input.Price" type="number" class="form-control" required />
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">@Localizer["LabelCapacity"]</label>
-                            <input asp-for="Input.Capacity" type="number" class="form-control" required />
-                        </div>
+                        <div class="col-md-6 mb-3"><label class="form-label">@Localizer["LabelPrice"]</label>
+                            <input asp-for="Input.Price" type="number" class="form-control" required /></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">@Localizer["LabelCapacity"]</label>
+                            <input asp-for="Input.Capacity" type="number" class="form-control" required /></div>
                     </div>
-                    <!-- Зона загрузки фото -->
                     <div class="mb-3">
                         <label class="form-label">@Localizer["LabelPhoto"] <span style="color:#888">@Localizer["PhotoHint"]</span></label>
-                        <div class="upload-zone" id="createUploadZone">
-                            <input type="file" asp-for="Photo"
-                                   accept="image/jpeg,image/png,image/webp"
-                                   onchange="previewPhoto(this, 'createPreview', 'createUploadText')" />
+                        <div class="upload-zone">
+                            <input type="file" asp-for="Photo" accept="image/jpeg,image/png,image/webp"
+                                   onchange="previewPhoto(this,'createPreview','createUploadText')" />
                             <div id="createUploadText">
                                 <i class="bi bi-cloud-upload" style="font-size:24px; color:#6c5ce7"></i>
-                                <p style="color:#888; margin:6px 0 0; font-size:13px">
-                                    @Html.Raw(Localizer["PhotoUploadText"])
-                                </p>
+                                <p style="color:#888; margin:6px 0 0; font-size:13px">@Localizer["PhotoUploadText"]</p>
                             </div>
                             <img id="createPreview" class="preview" alt="Превью" />
                         </div>
                     </div>
-
                     <div class="modal-footer border-secondary px-0 pb-0">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["CancelButton"]</button>
                         <button type="submit" class="btn btn-purple">@Localizer["CreateButton"]</button>
@@ -163,7 +487,6 @@ Layout = "_Layout";
     </div>
 </div>
 
-<!-- ==================== МОДАЛЬНОЕ ОКНО РЕДАКТИРОВАНИЯ ==================== -->
 <div class="modal fade" id="editRoomModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content" style="background:#1e1e2e; color:#e0e0e0;">
@@ -172,52 +495,32 @@ Layout = "_Layout";
                     <h5 class="modal-title" style="color:#fff">@Localizer["EditModalTitle"]</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-
                 <div class="modal-body">
                     @Html.AntiForgeryToken()
-
-                    <!-- Скрытое поле ID комнаты -->
                     <input type="hidden" name="roomId" id="editRoomId" />
-
-                    <div class="mb-3">
-                        <label class="form-label">@Localizer["LabelName"]</label>
-                        <input asp-for="Input.Name" id="editInputName" class="form-control" required />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">@Localizer["LabelDescription"]</label>
-                        <textarea asp-for="Input.Description" id="editInputDesc" class="form-control" rows="3" required></textarea>
-                    </div>
-
+                    <div class="mb-3"><label class="form-label">@Localizer["LabelName"]</label>
+                        <input asp-for="Input.Name" id="editInputName" class="form-control" required /></div>
+                    <div class="mb-3"><label class="form-label">@Localizer["LabelDescription"]</label>
+                        <textarea asp-for="Input.Description" id="editInputDesc" class="form-control" rows="3"></textarea></div>
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">@Localizer["LabelPrice"]</label>
-                            <input asp-for="Input.Price" id="editInputPrice" type="number" class="form-control" required />
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">@Localizer["LabelCapacity"]</label>
-                            <input asp-for="Input.Capacity" id="editInputCap" type="number" class="form-control" required />
-                        </div>
+                        <div class="col-md-6 mb-3"><label class="form-label">@Localizer["LabelPrice"]</label>
+                            <input asp-for="Input.Price" id="editInputPrice" type="number" class="form-control" required /></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">@Localizer["LabelCapacity"]</label>
+                            <input asp-for="Input.Capacity" id="editInputCap" type="number" class="form-control" required /></div>
                     </div>
-
-                    <!-- Зона загрузки фото -->
                     <div class="mb-3">
                         <label class="form-label">@Localizer["LabelPhoto"] <span style="color:#888">@Localizer["PhotoHint"]</span></label>
-                        <div class="upload-zone" id="editUploadZone">
-                            <input type="file" asp-for="Photo"
-                                   accept="image/jpeg,image/png,image/webp"
-                                   onchange="previewPhoto(this, 'editPreview', 'editUploadText')" />
+                        <div class="upload-zone">
+                            <input type="file" asp-for="Photo" accept="image/jpeg,image/png,image/webp"
+                                   onchange="previewPhoto(this,'editPreview','editUploadText')" />
                             <div id="editUploadText">
                                 <i class="bi bi-cloud-upload" style="font-size:24px; color:#6c5ce7"></i>
-                                <p style="color:#888; margin:6px 0 0; font-size:13px">
-                                    @Html.Raw(Localizer["PhotoUploadText"])
-                                </p>
+                                <p style="color:#888; margin:6px 0 0; font-size:13px">@Localizer["PhotoUploadText"]</p>
                             </div>
                             <img id="editPreview" class="preview" alt="Превью" />
                         </div>
                     </div>
                 </div>
-
                 <div class="modal-footer border-secondary">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["CancelButton"]</button>
                     <button type="submit" class="btn btn-purple">@Localizer["SaveButton"]</button>
@@ -227,30 +530,114 @@ Layout = "_Layout";
     </div>
 </div>
 
+@* ════ МОДАЛКИ БРОНИРОВАНИЙ ════ *@
+
+@* ── Детали брони ── *@
+<div class="modal fade" id="bookingDetailModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background:#1e1e2e; color:#e0e0e0;">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title" style="color:#fff"><i class="bi bi-calendar-event me-2"></i>Детали бронирования</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="bk-detail-row"><span class="bk-detail-key">Зал</span><span class="bk-detail-val" id="bd-room">—</span></div>
+                <div class="bk-detail-row"><span class="bk-detail-key">Клиент</span><span class="bk-detail-val" id="bd-user">—</span></div>
+                <div class="bk-detail-row"><span class="bk-detail-key">Email</span><span class="bk-detail-val" id="bd-email">—</span></div>
+                <div class="bk-detail-row"><span class="bk-detail-key">Начало</span><span class="bk-detail-val" id="bd-start">—</span></div>
+                <div class="bk-detail-row"><span class="bk-detail-key">Конец</span><span class="bk-detail-val" id="bd-end">—</span></div>
+                <div class="bk-detail-row"><span class="bk-detail-key">Длительность</span><span class="bk-detail-val" id="bd-dur">—</span></div>
+                <div class="bk-detail-row"><span class="bk-detail-key">Сумма</span><span class="bk-detail-val" id="bd-price">—</span></div>
+                <div class="bk-detail-row"><span class="bk-detail-key">Статус</span><span class="bk-detail-val" id="bd-status">—</span></div>
+                <div class="bk-detail-row"><span class="bk-detail-key">Создано</span><span class="bk-detail-val" id="bd-created">—</span></div>
+                <div class="bk-detail-row"><span class="bk-detail-key">ID</span><span class="bk-detail-val" id="bd-id" style="font-size:11px; word-break:break-all">—</span></div>
+            </div>
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* ── Отмена брони с причиной ── *@
+<div class="modal fade" id="cancelBookingModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background:#1e1e2e; color:#e0e0e0;">
+            <form method="post" asp-page-handler="CancelBooking">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="bookingId" id="cancelBookingId" />
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" style="color:#ff7675"><i class="bi bi-x-circle me-2"></i>Отменить бронирование</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p style="color:#aaa; font-size:13px; margin-bottom:16px">
+                        Вы отменяете бронь для: <strong id="cancelRoomName" style="color:#fff"></strong>
+                    </p>
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size:12px; color:#888">Причина отмены <span style="color:#555">(необязательно)</span></label>
+                        <textarea name="cancelReason" class="form-control" rows="3"
+                                  placeholder="Укажите причину отмены…"
+                                  style="background:#12121f; border:1px solid #2a2a3e; color:#e0e0e0; font-family:'Montserrat',sans-serif; font-size:13px; resize:none"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Назад</button>
+                    <button type="submit" class="btn btn-cancel-bk">
+                        <i class="bi bi-x-lg me-1"></i>Подтвердить отмену
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
 <script>
+    // ── Edit room modal ──────────────────────────────────────
     const editModal = document.getElementById('editRoomModal');
-
     if (editModal) {
-        editModal.addEventListener('show.bs.modal', function (event) {
-            const button = event.relatedTarget;
-            const roomId = button.getAttribute('data-room-id');
-            const roomName = button.getAttribute('data-room-name');
-            const roomDesc = button.getAttribute('data-room-desc');
-            const roomPrice = button.getAttribute('data-room-price');
-            const roomCap = button.getAttribute('data-room-cap');
-
-            document.getElementById('editRoomId').value = roomId;
-            document.getElementById('editInputName').value = roomName;
-            document.getElementById('editInputDesc').value = roomDesc;
-            document.getElementById('editInputPrice').value = roomPrice;
-            document.getElementById('editInputCap').value = roomCap;
-
-            const fileInput = editModal.querySelector('input[type="file"]');
-            if(fileInput) fileInput.value = '';
+        editModal.addEventListener('show.bs.modal', e => {
+            const b = e.relatedTarget;
+            document.getElementById('editRoomId').value    = b.dataset.roomId;
+            document.getElementById('editInputName').value = b.dataset.roomName;
+            document.getElementById('editInputDesc').value = b.dataset.roomDesc;
+            document.getElementById('editInputPrice').value = b.dataset.roomPrice;
+            document.getElementById('editInputCap').value  = b.dataset.roomCap;
+            const fi = editModal.querySelector('input[type="file"]');
+            if (fi) fi.value = '';
         });
     }
 
+    // ── Booking detail modal ─────────────────────────────────
+    const detailModal = document.getElementById('bookingDetailModal');
+    if (detailModal) {
+        detailModal.addEventListener('show.bs.modal', e => {
+            const b = e.relatedTarget;
+            document.getElementById('bd-id').textContent      = b.dataset.bkId;
+            document.getElementById('bd-room').textContent    = b.dataset.bkRoom;
+            document.getElementById('bd-user').textContent    = b.dataset.bkUser || '—';
+            document.getElementById('bd-email').textContent   = b.dataset.bkEmail;
+            document.getElementById('bd-start').textContent   = b.dataset.bkStart;
+            document.getElementById('bd-end').textContent     = b.dataset.bkEnd;
+            document.getElementById('bd-dur').textContent     = b.dataset.bkDur + ' ч';
+            document.getElementById('bd-price').textContent   = b.dataset.bkPrice + ' ₸';
+            document.getElementById('bd-status').textContent  = b.dataset.bkStatus;
+            document.getElementById('bd-created').textContent = b.dataset.bkCreated;
+        });
+    }
+
+    // ── Cancel booking modal ─────────────────────────────────
+    const cancelModal = document.getElementById('cancelBookingModal');
+    if (cancelModal) {
+        cancelModal.addEventListener('show.bs.modal', e => {
+            const b = e.relatedTarget;
+            document.getElementById('cancelBookingId').value    = b.dataset.bkId;
+            document.getElementById('cancelRoomName').textContent = b.dataset.bkRoom;
+        });
+    }
+
+    // ── Photo preview ────────────────────────────────────────
     function previewPhoto(input, previewId, textId) {
         const file = input.files[0];
         if (!file) return;
@@ -261,10 +648,9 @@ Layout = "_Layout";
         text.style.display    = 'none';
     }
 
+    // ── Delete room ──────────────────────────────────────────
     function deleteRoom(id, name) {
-        const msg = "@Localizer["DeleteConfirm"]".replace("{0}", name);
-
-        if (confirm(`Удалить комнату "${msg}"?`)) {
+        if (confirm(`Удалить зал "${name}"?`)) {
             fetch(`?handler=Delete&roomId=${id}`, {
                 method: 'POST',
                 headers: { 'RequestVerificationToken': document.querySelector('[name=__RequestVerificationToken]').value }
