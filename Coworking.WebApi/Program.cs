@@ -36,6 +36,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IAdminRoomService, AdminRoomService>();
+builder.Services.AddScoped<IAdminBookingService, AdminBookingService>();
 // Регистрация сервисов аутентификации
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
